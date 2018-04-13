@@ -1,0 +1,3 @@
+[submodule "displaytable"]
+	path = displaytable
+	url = https://github.com/ingeneric/displaytable.git
