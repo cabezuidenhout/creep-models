@@ -1,3 +1,5 @@
-addpath( GetAbsolutePath('createDataTemplate.m') );
-addpath( GetAbsolutePath('YoN.m') );
-addpath( GetAbsolutePath('displayTable.m') );
+addpath('Data');
+addpath('displaytable');
+addpath('Helpers');
+addpath('MansonHaferd');
+addpath('Regression');

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Loading..</title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport'  />
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- CSS Files -->
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../assets/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
+  <link href="../../assets/css/style.css" rel="stylesheet" />
+</head>
+
+<body class="">
+  <div class="wrapper ">
+    <div class="main-panel">
+      <div class="panel-header">
+      </div>
+      <div class="content">
+
+        <!-- Model Parameters -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title" id="pageTitle">Loading...</h4>
+              </div>
+              <div class="card-body">
+                
+                <!-- Parameter Equation and Title -->
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <p>Manson-Haferd Parameters</p>
+                    <br>
+                    <img src="../../assets/img/MH.gif">
+                  </div>
+                </div>
+                <!-- Parameter Table -->
+                <div class="row justify-content-center">
+                  <div class="col-10">
+                    <table class="table">
+                      <thead class="text-primary">
+                        <th class="text-center">
+                          log(ta)
+                        </th>
+                        <th class="text-center">
+                          Ta
+                        </th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="text-center cp" id="logtaParam"  title="Click to copy to Clipboard">
+                            Loading..
+                          </td>
+                          <td class="text-center cp" id="TaParam" title="Click to copy to Clipboard">
+                            Loading..
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                <!-- Mastercurve Equation and Title -->
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <p>Mastercurve</p>
+                    <br>
+                    <img src="../../assets/img/MC.gif">
+                  </div>
+                </div>
+                <!-- Mastercurve Coefficients -->
+                <div class="row justify-content-center">
+                  <div class="col-10">
+                    <table class="table">
+                      <thead class="text-primary">
+                        <th class="text-center">
+                          A
+                        </th>
+                        <th class="text-center">
+                          B
+                        </th>
+                        <th class="text-center">
+                          C
+                        </th>
+                        <th class="text-center">
+                          D
+                        </th>
+                        <th class="text-center">
+                          E
+                        </th>
+                      </thead>
+                      <tbody>
+                        <tr id="masterCurveCoefficients">
+                         
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Fit Graphs -->
+        <div class="row">
+          <!-- Paramter Fit Graph -->
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Mastercurve Fit</h4>
+              </div>
+              <div class="card-body">
+                <canvas id="parameterFit"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- Iso-Stress Graph -->
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title" id="isoStressTitle">Iso-Stress</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <canvas id="isoStress"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stress Test -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Stress Prediction Test</h4>
+              </div>
+              <div class="card-body">
+                <table class="table table-hover" id="stressTest"></table>                
+              </div>
+              <div class="card-footer">
+                <h4>Stress Prediction Summary</h4>
+                <table class="table">
+                  <thead class="text-primary">
+                    <tr>
+                      <th class="text-center"></th>
+                      <th class="text-center">Minimum</th>
+                      <th class="text-center">Average</th>
+                      <th class="text-center">Maximum</th>
+                      <th class="text-center">RSquare</th>
+                      <th class="text-center">MSE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-primary">|Error| (MPa)</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestMinErr">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestAvgErr">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestMaxErr">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" rowspan="2" id="stressTestR">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" rowspan="2" id="stressTestMSE">Loading..</td>
+                    </tr>
+                    <tr>
+                      <td class="text-primary">|Error| (&percnt;)</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestMinErrP">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestAvgErrP">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestMaxErrP">Loading..</td>
+                    </tr>
+                  </tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">Time to Rupture Prediction Test</h4>
+              </div>
+              <div class="card-body">
+                <table class="table table-hover">
+                  <thead class="text-primary">
+                    <th class="text-center">Temperature (&deg;C)</th>
+                    <th class="text-center">Code Time to Rupture (h)</th>
+                    <th class="text-center">Predicted Time to Rupture (h)</th>
+                    <th class="text-center">Error (h)</th>
+                    <th class="text-center">|Error| (&percnt;)</th>
+                  </thead>
+                  <tbody id="trTest">
+
+                  </tbody>
+                </table>
+              </div>
+              <div class="card-footer">
+                <h4>Time to Rupture Prediction Summary</h4>
+                <table class="table">
+                  <thead class="text-primary">
+                    <tr>
+                      <th class="text-center"></th>
+                      <th class="text-center">Minimum</th>
+                      <th class="text-center">Average</th>
+                      <th class="text-center">Maximum</th>
+                      <th class="text-center">RSquare</th>
+                      <th class="text-center">MSE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-primary">|Error| (h)</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestMinErr">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestAvgErr">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestMaxErr">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" rowspan="2" id="trTestR">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" rowspan="2" id="trTestMSE">Loading..</td>
+                    </tr>
+                    <tr>
+                      <td class="text-primary">|Error| (&percnt;)</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestMinErrP">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestAvgErrP">Loading..</td>
+                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestMaxErrP">Loading..</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  
+      <footer class="footer">
+        <div class="container-fluid">
+          <nav>
+            <ul>
+              <li>
+                <a href="https://www.creative-tim.com">
+                  License : GPL v3
+                </a>
+              </li>
+              <li>
+                <a href="http://presentation.creative-tim.com">
+                  Star github
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div class="copyright">
+            &copy;
+            <script>
+              document.write(new Date().getFullYear())
+            </script>, Created by           
+            <a href="https://www.creative-tim.com" target="_blank">CA Bezuidenhout</a>.
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+<!--   Core JS Files   -->
+<script src="../../assets/js/core/jquery.min.js"></script>
+<script src="../../assets/js/core/popper.min.js"></script>
+<script src="../../assets/js/core/bootstrap.min.js"></script>
+<script src="../../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+
+<!-- Chart JS -->
+<script src="../../assets/js/plugins/chartjs.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="../../assets/js/plugins/bootstrap-notify.js"></script>
+
+
+<script src="data.js"></script>
+<script src="mansonHaferd.js"></script>
+<script src="main.js"></script>
+
+</html>

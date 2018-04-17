@@ -15,7 +15,7 @@
 # along with creep-models.  If not, see <http://www.gnu.org/licenses/>.
 #=====================================================================
 function creepData = LoadCreepData( filename )
-  filepath = GetAbsolutePath('createDataTemplate.m');
+  filepath = GetAbsolutePath('Dummy.m');
   creepData = -1;
 
   filepath = strcat( filepath, '/', filename, '.csv' );
@@ -29,7 +29,7 @@ function creepData = LoadCreepData( filename )
       firstLine = fgetl(dataFile);
       fclose(dataFile);
       firstLine = strsplit( firstLine, ',');
-      creepData.materialName = firstLine{1};
+      creepData.material = firstLine{1};
 
       rawData = csvread( filepath );
 
