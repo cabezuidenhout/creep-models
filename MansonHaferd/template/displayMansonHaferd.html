@@ -34,7 +34,7 @@
                 <!-- Parameter Equation and Title -->
                 <div class="row">
                   <div class="col-md-12 text-center">
-                    <p>Manson-Haferd Parameters</p>
+                    <p class="text-primary">Manson-Haferd Parameters</p>
                     <br>
                     <img src="../../assets/img/MH.gif">
                   </div>
@@ -68,7 +68,7 @@
                 <!-- Mastercurve Equation and Title -->
                 <div class="row text-center">
                   <div class="col-md-12">
-                    <p>Mastercurve</p>
+                    <p class="text-primary">Mastercurve</p>
                     <br>
                     <img src="../../assets/img/MC.gif">
                   </div>
@@ -98,6 +98,48 @@
                         <tr id="masterCurveCoefficients">
                          
                         </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center">
+                  <div class="col-md-12 text-center">
+                    <p class="text-primary">Valid Ranges</p>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center">
+                  <div class="col-md-10">
+                    <table class="table">
+                      <thead class="text-primary">
+                        <th></th>
+                        <th class="text-center">
+                          Stress (MPa)
+                        </th>
+                        <th class="text-center">
+                          Temperature (&deg;C)
+                        </th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="text-primary">Minimum</td>
+                          <td class="text-center cp" id="minStress"  title="Click to copy to Clipboard">
+                            Loading..
+                          </td>
+                          <td class="text-center cp" id="minTemperature" title="Click to copy to Clipboard">
+                              Loading..
+                          </td>
+                        </tr>
+                        <tr>
+                            <td class="text-primary">Max</td>
+                            <td class="text-center cp" id="maxStress"  title="Click to copy to Clipboard">
+                              Loading..
+                            </td>
+                            <td class="text-center cp" id="maxTemperature" title="Click to copy to Clipboard">
+                              Loading..
+                            </td>
+                          </tr>
                       </tbody>
                     </table>
                   </div>
@@ -179,7 +221,7 @@
             </div>
           </div>
         </div>
-
+        <!-- Time to Rupture Test -->
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -234,6 +276,31 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <!-- Constant Stress -->
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                  <h4 class="card-title">Constant Stress</h4>
+              </div>
+              <div class="card-body">
+                <canvas id="constantStress"></canvas>
+              </div>
+            </div>
+          </div>
+          <!-- Constant Temperaure -->
+          <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Constant Temperature</h4>
+                </div>
+                <div class="card-body">
+                  <canvas id="constantTemperature"></canvas>
+                </div>
+              </div>
+            </div>
+        </div>
       </div>
 
   
@@ -242,13 +309,13 @@
           <nav>
             <ul>
               <li>
-                <a href="https://www.creative-tim.com">
+                <a href="">
                   License : GPL v3
                 </a>
               </li>
               <li>
-                <a href="http://presentation.creative-tim.com">
-                  Star github
+                <a href="">
+                  Github Page
                 </a>
               </li>
             </ul>
@@ -258,7 +325,7 @@
             <script>
               document.write(new Date().getFullYear())
             </script>, Created by           
-            <a href="https://www.creative-tim.com" target="_blank">CA Bezuidenhout</a>.
+            <a href="" target="_blank">CA Bezuidenhout</a>.
           </div>
         </div>
       </footer>

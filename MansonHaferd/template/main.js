@@ -3,10 +3,13 @@ const parsedData = JSON.parse(data);
 setTitle(parsedData.material);
 showParameters( parsedData.logta, parsedData.Ta);
 showMasterCurve( parsedData.masterCurve.coefficients);
+showRanges( parsedData.stressRange, parsedData.temperatureRange);
 plotParameterFit( parsedData.masterCurve.trainData, parsedData.masterCurve.testData );
 plotIsoStress( parsedData.isoStressData, parsedData.isoStressFit )
 showStressTestTable( parsedData.stressTest );
 showTrTestTable( parsedData.trTest );
+plotConstantStress( parsedData.constStress );
+plotConstantTemperature( parsedData.constT );
 
 document.addEventListener( 'click', (event) => {
   if( event.target.classList.contains('cp') ) {

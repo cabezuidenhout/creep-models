@@ -25,6 +25,13 @@ function showMasterCurve( coefficients ) {
   }
 }
 
+function showRanges( stressRange, temperatureRange ) {
+  document.querySelector('#minStress').innerText = stressRange.min;
+  document.querySelector('#minTemperature').innerText = temperatureRange.min;
+  document.querySelector('#maxStress').innerText = stressRange.max;
+  document.querySelector('#maxTemperature').innerText = temperatureRange.max;
+}
+
 function plotParameterFit( trainData, testData ) {
 
   const ctx = document.querySelector('#parameterFit').getContext('2d');
@@ -351,4 +358,108 @@ function showTrTestTable( trTest ) {
   document.querySelector('#trTestMinErrP').innerText = trTest.errors.minAbsPercentage.toFixed(3);
   document.querySelector('#trTestAvgErrP').innerText = trTest.errors.AverageAbsPercentage.toFixed(3);
   document.querySelector('#trTestMaxErrP').innerText = trTest.errors.maxAbsPercentage.toFixed(3);
+}
+
+function plotConstantStress( constStress ) {
+  const ctx = document.querySelector('#constantStress').getContext('2d');
+
+  const dataPoints = [];
+  for( let i = 0; i < constStress.tr.length; i++) {
+    dataPoints.push( { x: constStress.T[i][0] , y : constStress.tr[i][0] } );
+  }
+
+  const chart = new Chart( ctx, {
+    type: 'line',
+    data : {
+      datasets: [{
+        label: `${constStress.stress} MPa`,
+        backgroundColor: blue,
+        borderColor: blue,
+        data: dataPoints,
+        fill: false,
+        pointRadius: '0',
+      }]
+    },
+    options: {
+      responsive: true,
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Temperature (°C)'
+          },
+          type: 'linear'
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Time to Rupture (h)'
+          },
+          type: 'logarithmic'
+        }]
+      }
+    }
+  });
+}
+
+function plotConstantTemperature( constT ) {
+  const ctx = document.querySelector('#constantTemperature').getContext('2d');
+
+  const dataPoints = [];
+  for( let i = 0; i < constT.tr.length; i++) {
+    dataPoints.push( { x: constT.stress[i] , y : constT.tr[i][0] } );
+  }
+
+  const chart = new Chart( ctx, {
+    type: 'line',
+    data : {
+      datasets: [{
+        label: `${constT.T} (°C)`,
+        backgroundColor: blue,
+        borderColor: blue,
+        data: dataPoints,
+        fill: false,
+        pointRadius: '0',
+      }]
+    },
+    options: {
+      responsive: true,
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true
+      },
+      scales: {
+        xAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Stress (MPa)'
+          },
+          type: 'linear'
+        }],
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Time to Rupture (h)'
+          },
+          type: 'logarithmic'
+        }]
+      }
+    }
+  });
 }
