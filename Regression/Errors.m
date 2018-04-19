@@ -19,20 +19,28 @@ function errors = Errors( predicted, actual )
     errors.Err = predicted -  actual;
     errors.Abs = abs( errors.Err );
     errors.Percentage = 100.*( errors.Err ./ actual );
+
     errors.Average = mean( errors.Err(:) );
     errors.AverageAbs = mean( errors.Abs(:) );
     errors.AveragePercentage = mean( errors.Percentage(:) );
     errors.AverageAbsPercentage = mean( abs(errors.Percentage(:)) );
+
     errors.Min = min( errors.Err(:) );
     errors.Max = max( errors.Err(:) );
     errors.MinAbs = min( errors.Abs(:) );
     errors.MaxAbs = max( errors.Abs(:) );
+
     errors.minPercentage = min( errors.Percentage(:) );
     errors.maxPercentage = max( errors.Percentage(:) );
     errors.minAbsPercentage = min( abs( errors.Percentage(:) ) );
     errors.maxAbsPercentage = max( abs( errors.Percentage(:) ) );
+
     errors.MSE = mean( errors.Err(:).^2 );
     errors.R = RSquare( predicted(:), actual(:) );
+
+    errors.Err = errors.Err';
+    errors.Abs = errors.Abs';
+    erros.Percentage = errors.Percentage';
   else
     printf('Perdicted and Actual must have same size\n');
   end
