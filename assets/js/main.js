@@ -13,6 +13,71 @@ function setTitle( titleElement, material, model) {
   titleElement.innerText = material + ' ' + model + ' Model';
 }
 
+function showValidRangesTable( tableElement, stressRange, temperatureRange) {
+  const table = tableElement;
+  
+  const head = table.createTHead();
+  head.classList = 'text-primary';
+
+  const headRow = head.insertRow();
+
+  let headCell = document.createElement('th');
+  headCell.classList = 'text-center';
+  headCell.innerText = '';
+  headRow.appendChild(headCell);
+
+  headCell = document.createElement('th');
+  headCell.classList = 'text-center';
+  headCell.innerText = 'Stress (MPa)';
+  headRow.appendChild(headCell);
+
+  headCell = document.createElement('th');
+  headCell.classList = 'text-center';
+  headCell.innerHTML = 'Temperature (&deg;C)';
+  headRow.appendChild(headCell);
+
+  const body = table.createTBody();
+  let bodyRow = body.insertRow();
+
+  bodyCell = bodyRow.insertCell();
+  bodyCell.classList = 'text-center text-primary';
+  bodyCell.innerHTML = 'Minimum<sup>*</sup>';
+
+  bodyCell = bodyRow.insertCell();
+  bodyCell.classList = 'text-center cp';
+  bodyCell.innerText = stressRange.min;
+  bodyCell.title = 'Click to copy to Clipboard';
+
+  bodyCell = bodyRow.insertCell();
+  bodyCell.classList = 'text-center cp';
+  bodyCell.innerText = temperatureRange.min;
+  bodyCell.title = 'Click to copy to Clipboard';
+
+  bodyRow = body.insertRow();
+
+  bodyCell = bodyRow.insertCell();
+  bodyCell.classList = 'text-center text-primary';
+  bodyCell.innerHTML = 'Maximum<sup>*</sup>';
+
+  bodyCell = bodyRow.insertCell();
+  bodyCell.classList = 'text-center cp';
+  bodyCell.innerText = stressRange.max;
+  bodyCell.title = 'Click to copy to Clipboard';
+
+  bodyCell = bodyRow.insertCell();
+  bodyCell.classList = 'text-center cp';
+  bodyCell.innerText = temperatureRange.max;
+  bodyCell.title = 'Click to copy to Clipboard';
+
+
+  const footnote = table.parentElement.appendChild( document.createElement('p') );
+  footnote.classList = 'text-danger';
+  footnote.innerHTML = '<small>* If additional data points were added manually some of the values might be incorrect</small>';
+  /*const foot = table.createTFoot();
+  foot.classList = 'text-danger';
+  foot.innerText = '*If additional points are added these ranges might not be correct';*/
+}
+
 function showStressTestTable( tableElement , stressTest ) {
   const table = tableElement;
 
@@ -266,8 +331,8 @@ function showTestSummaryTable( tableElement, testErrors, unit, decimals = 3 ) {
   bodyCell.innerText = testErrors.maxAbsPercentage.toFixed(3);
 }
 
-function plotConstantStress( constStress ) {
-  const ctx = document.querySelector('#constantStress').getContext('2d');
+function plotConstantStress( graphCanvas, constStress ) {
+  const ctx = graphCanvas.getContext('2d');
 
   const dataPoints = [];
   for( let i = 0; i < constStress.tr.length; i++) {
@@ -318,8 +383,8 @@ function plotConstantStress( constStress ) {
   });
 }
 
-function plotConstantTemperature( constT ) {
-  const ctx = document.querySelector('#constantTemperature').getContext('2d');
+function plotConstantTemperature( graphCanvas, constT ) {
+  const ctx = graphCanvas.getContext('2d');
 
   const dataPoints = [];
   for( let i = 0; i < constT.tr.length; i++) {

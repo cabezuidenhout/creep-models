@@ -1,7 +1,8 @@
 setTitle( document.querySelector('#pageTitle'), parsedData.material, parsedData.model);
 showParameters( parsedData.logta, parsedData.Ta);
 showMasterCurve( parsedData.masterCurve.coefficients);
-showRanges( parsedData.stressRange, parsedData.temperatureRange);
+
+showValidRangesTable( document.querySelector('#validRangesTable'), parsedData.stressRange, parsedData.temperatureRange);
 
 plotParameterFit( parsedData.masterCurve.trainData, parsedData.masterCurve.testData );
 
@@ -13,6 +14,5 @@ showTestSummaryTable( document.querySelector('#stressTestSummaryTable'), parsedD
 showTrTestTable( document.querySelector('#trTestTable'), parsedData.trTest );
 showTestSummaryTable( document.querySelector('#trTestSummaryTable'), parsedData.trTest.errors, 'h', 0 );
 
-plotConstantStress( parsedData.constStress );
-plotConstantTemperature( parsedData.constT );
-
+plotConstantStress( document.querySelector('#constantStress'), parsedData.constStress );
+plotConstantTemperature( document.querySelector('#constantTemperature'), parsedData.constT );
