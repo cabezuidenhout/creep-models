@@ -1,18 +1,24 @@
-setTitle( document.querySelector('#pageTitle'), parsedData.material, parsedData.model);
-showParameters( parsedData.logta, parsedData.Ta);
-showMasterCurve( parsedData.masterCurve.coefficients);
 
-showValidRangesTable( document.querySelector('#validRangesTable'), parsedData.stressRange, parsedData.temperatureRange);
+loadData('data.json' , displayMansonHaferd );
 
-plotParameterFit( parsedData.masterCurve.trainData, parsedData.masterCurve.testData );
+function displayMansonHaferd() {
+  setTitle( document.querySelector('#pageTitle'), parsedData.material, parsedData.model);
+  showParameters( parsedData.logta, parsedData.Ta);
+  showMasterCurve( parsedData.masterCurve.coefficients);
 
-plotIsoStress( parsedData.isoStressData, parsedData.isoStressFit )
+  showValidRangesTable( document.querySelector('#validRangesTable'), parsedData.stressRange, parsedData.temperatureRange);
 
-showStressTestTable( document.querySelector('#stressTestTable'), parsedData.stressTest );
-showTestSummaryTable( document.querySelector('#stressTestSummaryTable'), parsedData.stressTest.errors, 'MPa', 3 );
+  plotParameterFit( parsedData.masterCurve.trainData, parsedData.masterCurve.testData );
 
-showTrTestTable( document.querySelector('#trTestTable'), parsedData.trTest );
-showTestSummaryTable( document.querySelector('#trTestSummaryTable'), parsedData.trTest.errors, 'h', 0 );
+  plotIsoStress( parsedData.isoStressData, parsedData.isoStressFit )
 
-plotConstantStress( document.querySelector('#constantStress'), parsedData.constStress );
-plotConstantTemperature( document.querySelector('#constantTemperature'), parsedData.constT );
+  showStressTestTable( document.querySelector('#stressTestTable'), parsedData.stressTest );
+  showTestSummaryTable( document.querySelector('#stressTestSummaryTable'), parsedData.stressTest.errors, 'MPa', 3 );
+
+  showTrTestTable( document.querySelector('#trTestTable'), parsedData.trTest );
+  showTestSummaryTable( document.querySelector('#trTestSummaryTable'), parsedData.trTest.errors, 'h', 0 );
+
+  plotConstantStress( document.querySelector('#constantStress'), parsedData.constStress );
+  plotConstantTemperature( document.querySelector('#constantTemperature'), parsedData.constT );
+}
+

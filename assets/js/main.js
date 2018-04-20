@@ -1,12 +1,33 @@
-//TODO : Add model ranges
-const parsedData = JSON.parse(data);
-
 const orange = '#f96332';
 const blue = '#2a5788';
 const randomColor = () => {
   return `rgb(${Math.floor(256*Math.random())},${Math.floor(256*Math.random())},${Math.floor(256*Math.random())})`;
 }
 
+let parsedData;
+
+function loadJSON( file, callback, doneCallback ) {
+  const xobj = new XMLHttpRequest();
+  xobj.overrideMimeType('application/json');
+  xobj.open('GET', file, true);
+
+  xobj.onreadystatechange = () => {
+    if (xobj.readyState == 4 && xobj.status == "200") {      
+      callback(xobj.responseText, doneCallback);
+    }
+  };
+
+  xobj.send(null);
+}
+
+function setData( jsonString , callback ) {
+  parsedData = JSON.parse(jsonString);
+  callback();
+}
+
+function loadData( file , doneCallback ) {
+  loadJSON( file, setData, doneCallback );
+}
 
 function setTitle( titleElement, material, model) {
   document.querySelector('title').innerText = material + ' ' + model + ' model';
