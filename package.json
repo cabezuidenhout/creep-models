@@ -1,7 +1,12 @@
 {
+  "name": "creep-models",
+  "author": "CA Bezuidenhout",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
     "babel-preset-es2015": "^6.24.1"
+  },
+  "scripts": {
+    "build": "echo To be implemented"  
   }
 }
