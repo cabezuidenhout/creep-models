@@ -23,3 +23,10 @@ function createBodyCell( cellContent ) {
   bodyCell.innerHTML = cellContent;
   return bodyCell;
 }
+
+function createWarning( warningContent ) {
+  const warningElement = document.createElement('div');
+  warningElement.classList = "alert alert-warning";
+  warningElement.innerHTML = '<b>Warning - </b> ' + warningContent;  
+  return warningElement;
+}
