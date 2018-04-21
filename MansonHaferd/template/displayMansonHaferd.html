@@ -111,37 +111,7 @@
 
                 <div class="row justify-content-center">
                   <div class="col-md-10">
-                    <table class="table">
-                      <thead class="text-primary">
-                        <th></th>
-                        <th class="text-center">
-                          Stress (MPa)
-                        </th>
-                        <th class="text-center">
-                          Temperature (&deg;C)
-                        </th>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="text-primary">Minimum</td>
-                          <td class="text-center cp" id="minStress"  title="Click to copy to Clipboard">
-                            Loading..
-                          </td>
-                          <td class="text-center cp" id="minTemperature" title="Click to copy to Clipboard">
-                              Loading..
-                          </td>
-                        </tr>
-                        <tr>
-                            <td class="text-primary">Max</td>
-                            <td class="text-center cp" id="maxStress"  title="Click to copy to Clipboard">
-                              Loading..
-                            </td>
-                            <td class="text-center cp" id="maxTemperature" title="Click to copy to Clipboard">
-                              Loading..
-                            </td>
-                          </tr>
-                      </tbody>
-                    </table>
+                    <table class="table table-hover" id="validRangesTable"></table>
                   </div>
                 </div>
 
@@ -185,38 +155,15 @@
                 <h4 class="card-title">Stress Prediction Test</h4>
               </div>
               <div class="card-body">
-                <table class="table table-hover" id="stressTest"></table>                
+                <table class="table table-hover" id="stressTestTable"></table>                
               </div>
               <div class="card-footer">
                 <h4>Stress Prediction Summary</h4>
-                <table class="table">
-                  <thead class="text-primary">
-                    <tr>
-                      <th class="text-center"></th>
-                      <th class="text-center">Minimum</th>
-                      <th class="text-center">Average</th>
-                      <th class="text-center">Maximum</th>
-                      <th class="text-center">RSquare</th>
-                      <th class="text-center">MSE</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-primary">|Error| (MPa)</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestMinErr">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestAvgErr">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestMaxErr">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" rowspan="2" id="stressTestR">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" rowspan="2" id="stressTestMSE">Loading..</td>
-                    </tr>
-                    <tr>
-                      <td class="text-primary">|Error| (&percnt;)</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestMinErrP">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestAvgErrP">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="stressTestMaxErrP">Loading..</td>
-                    </tr>
-                  </tbody>
-                  </table>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                      <table class="table" id="stressTestSummaryTable"></table>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
@@ -229,49 +176,16 @@
                 <h4 class="card-title">Time to Rupture Prediction Test</h4>
               </div>
               <div class="card-body">
-                <table class="table table-hover">
-                  <thead class="text-primary">
-                    <th class="text-center">Temperature (&deg;C)</th>
-                    <th class="text-center">Code Time to Rupture (h)</th>
-                    <th class="text-center">Predicted Time to Rupture (h)</th>
-                    <th class="text-center">Error (h)</th>
-                    <th class="text-center">|Error| (&percnt;)</th>
-                  </thead>
-                  <tbody id="trTest">
-
-                  </tbody>
+                <table class="table table-hover" id="trTestTable"></table>
                 </table>
               </div>
               <div class="card-footer">
                 <h4>Time to Rupture Prediction Summary</h4>
-                <table class="table">
-                  <thead class="text-primary">
-                    <tr>
-                      <th class="text-center"></th>
-                      <th class="text-center">Minimum</th>
-                      <th class="text-center">Average</th>
-                      <th class="text-center">Maximum</th>
-                      <th class="text-center">RSquare</th>
-                      <th class="text-center">MSE</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-primary">|Error| (h)</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestMinErr">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestAvgErr">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestMaxErr">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" rowspan="2" id="trTestR">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" rowspan="2" id="trTestMSE">Loading..</td>
-                    </tr>
-                    <tr>
-                      <td class="text-primary">|Error| (&percnt;)</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestMinErrP">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestAvgErrP">Loading..</td>
-                      <td class="text-center cp" title="Click to copy to clipboard" id="trTestMaxErrP">Loading..</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                      <table class="table" id="trTestSummaryTable"></table>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
@@ -310,12 +224,17 @@
             <ul>
               <li>
                 <a href="">
-                  License : GPL v3
+                  MIT Liscense
                 </a>
               </li>
               <li>
                 <a href="">
                   Github Page
+                </a>
+              </li>
+              <li>
+                <a href="">
+                  Donations
                 </a>
               </li>
             </ul>
@@ -343,9 +262,9 @@
 <!--  Notifications Plugin    -->
 <script src="../../assets/js/plugins/bootstrap-notify.js"></script>
 
-
-<script src="data.js"></script>
-<script src="mansonHaferd.js"></script>
-<script src="main.js"></script>
+<!-- <script src="data.js"></script> -->
+<script src="../../assets/js/main.js"></script>
+<script src="mhScript.js"></script>
+<script src="script.js"></script>
 
 </html>

@@ -37,6 +37,7 @@ function DisplayMansonHaferd( mhModel , creepData )
   mhInfo.trTest.trActual = mhInfo.trTest.trActual';
   mhInfo.trTest.trPredicted = mhInfo.trTest.trPredicted';
   mhInfo.trTest.errors.Err = mhInfo.trTest.errors.Err';
+  mhInfo.trTest.errors.Err = mhInfo.trTest.errors.Err';
   mhInfo.trTest.errors.Percentage = mhInfo.trTest.errors.Percentage';
 
 

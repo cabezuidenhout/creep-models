@@ -1,4 +1,4 @@
-data=`{
+{
 	"model": "Manson-Haferd",
 	"material": "dmv 347",
 	"logta": 27.8113679,
@@ -799,4 +799,3 @@ data=`{
 		]
 	}
 }
-`;
