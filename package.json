@@ -8,6 +8,7 @@
     "babel-preset-es2015": "^6.24.1"
   },
   "scripts": {
+    "test" : "live-server",
     "build": "npm run compile-displayCreepData | npm run compile-main | npm run compile-displayIsoStress",
     "watch-displayCreepData": "npx babel DisplayCreepData/displayCreepDataTemplate/js/script.js --watch --out-file DisplayCreepData/displayCreepDataTemplate/compiled.js",
     "watch-main" : "npx babel assets/js/main.js --watch --out-file assets/js/main-compiled.js",  
