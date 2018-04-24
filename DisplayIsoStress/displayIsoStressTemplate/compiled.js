@@ -1,11 +1,13 @@
 'use strict';
 
 var isoStressData = JSON.parse(data);
-var t = document.getElementById('test');
+var isoStressPlot = document.getElementById('isoStressPlot');
+var isoStressInversePlot = document.getElementById('isoStressInversePlot');
 
 setTitle(document.getElementById('pageTitle'), isoStressData.material + ' Iso-Stress with ' + isoStressData.tolerance + 'MPa tolerance');
 showIsoStressTable(document.getElementById('isoStressData'));
 plotIsoStress();
+plotIsoStressInverse();
 
 function showIsoStressTable(tableElement) {
   var head = createHead(tableElement);
@@ -76,13 +78,67 @@ function plotIsoStress() {
       title: 'log(t) (h)'
     },
     margin: {
-      t: 0
+      t: 20
     }
   };
 
-  Plotly.newPlot(t, data, layout);
+  Plotly.newPlot(isoStressPlot, data, layout);
+}
+
+function plotIsoStressInverse() {
+  var data = [];
+
+  for (var i = 0; i < isoStressData.stress.length; i++) {
+    var x = [];
+    var y = [];
+    var xFit = [];
+    var yFit = [];
+
+    for (var j = 0; j < isoStressData.T[i].length; j++) {
+      x.push(1.0 / isoStressData.T[i][j]);
+      y.push(Math.log10(isoStressData.tr[i][j]));
+      xFit.push(isoStressData.fitInverse.T[i][j]);
+      yFit.push(isoStressData.fitInverse.tr[i][j]);
+    }
+
+    var trace = { x: x,
+      y: y,
+      mode: 'markers',
+      showlegend: false,
+      name: isoStressData.stress[i] + 'MPa',
+      legendgroup: i,
+      marker: { color: colors[i] }
+    };
+
+    data.push(trace);
+
+    trace = { x: xFit,
+      y: yFit,
+      mode: 'line',
+      name: isoStressData.stress[i] + 'MPa Fitted',
+      legendgroup: i,
+      line: { color: colors[i] }
+    };
+
+    data.push(trace);
+  }
+
+  var layout = {
+    xaxis: {
+      title: '1/Temperature (1/°C)'
+    },
+    yaxis: {
+      title: 'log(t) (h)'
+    },
+    margin: {
+      t: 20
+    }
+  };
+
+  Plotly.newPlot(isoStressInversePlot, data, layout);
 }
 
 window.onresize = function () {
-  Plotly.Plots.resize(t);
+  Plotly.Plots.resize(isoStressPlot);
+  Plotly.Plots.resize(isoStressInversePlot);
 };
