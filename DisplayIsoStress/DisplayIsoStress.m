@@ -15,5 +15,10 @@
 % along with creep-models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
 function DisplayIsoStress( isoStressData )   
+  isoStressData.stress = isoStressData.stress';
+
+  jsonFilePath = GetAbsolutePath('DisplayIsoStress.m');
+  jsonFilePath = strcat( jsonFilePath, '/displayIsoStressTemplate/data.js');
   
+  SaveJSON( isoStressData, jsonFilePath);
 end

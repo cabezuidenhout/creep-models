@@ -1,10 +1,10 @@
 const creepData = JSON.parse(data);
 
-setTitle( document.querySelector('#pageTitle'), creepData.material + ' Creep Data');
-showCreepDataTable( document.querySelector('#creepDataTable') );
+setTitle( document.getElementById('pageTitle'), creepData.material + ' Creep Data');
+showCreepDataTable( document.getElementById('creepDataTable') );
 
 function showCreepDataTable( tableElement ) {
-  const head = createHeadRow(tableElement);
+  const head = createHead(tableElement);
   const headRow = head.insertRow();
   
   headRow.appendChild( createHeadCell( 'Temperature (&deg;C)' ) );
@@ -34,12 +34,10 @@ function showCreepDataTable( tableElement ) {
     for( let c = 0; c < creepData.tr.length; c++) {
       rowElement.appendChild( createBodyCell( creepData.stress[r][c] ) );
     }
-  }
-
-  console.log( orderWarning );
+  }  
 
   if( orderWarning ) {    
-    const creepTableWarning = document.querySelector('#creepDataTableWarning')
+    const creepTableWarning = document.getElementById('creepDataTableWarning')
     creepTableWarning.appendChild( createWarning("Time to rupture recomended order is ascending") );
   }
 }

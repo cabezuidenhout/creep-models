@@ -20,10 +20,5 @@ function DisplayCreepData( creepData )
   jsonFilePath = GetAbsolutePath('DisplayCreepData.m');
   jsonFilePath = strcat( jsonFilePath, '/displayCreepDataTemplate/data.js');
 
-  jsonFile = fopen(jsonFilePath, 'w');
-  jsonString = savejson('',creepData);
-  jsonString = strrep(jsonString, "\t", "");
-  jsonString = strrep(jsonString, "\n", "");
-  fprintf(jsonFile, "var data='%s';", jsonString);
-  fclose(jsonFile);
+  SaveJSON( creepData, jsonFilePath);
 end

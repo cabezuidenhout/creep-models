@@ -1,9 +1,9 @@
 function setTitle( titleElement, title ) {
-  document.querySelector('title').innerText = title;
+  document.getElementsByTagName('title')[0].innerText = title;
   titleElement.innerText = title;
 }
 
-function createHeadRow( tableElement ) {
+function createHead( tableElement ) {
   const head = tableElement.createTHead();
   head.classList = 'text-primary';
   return head;
@@ -29,6 +29,10 @@ function createWarning( warningContent ) {
   warningElement.classList = "alert alert-warning";
   warningElement.innerHTML = '<b>Warning - </b> ' + warningContent;  
   return warningElement;
+}
+
+function plotIsoStress( graphElement, isoStressData ) {
+  
 }
 
 document.addEventListener( 'click', ( event ) => {

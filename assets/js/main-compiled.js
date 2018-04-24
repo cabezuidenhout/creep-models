@@ -1,11 +1,11 @@
 'use strict';
 
 function setTitle(titleElement, title) {
-  document.querySelector('title').innerText = title;
+  document.getElementsByTagName('title')[0].innerText = title;
   titleElement.innerText = title;
 }
 
-function createHeadRow(tableElement) {
+function createHead(tableElement) {
   var head = tableElement.createTHead();
   head.classList = 'text-primary';
   return head;

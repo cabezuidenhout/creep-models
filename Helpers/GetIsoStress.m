@@ -47,6 +47,7 @@ function isoStress = GetIsoStress( creepData, tolerance = 0)
   end
 
   isoStress.tolerance = tolerance;
+  isoStress.material = creepData.material;
 
   if( isfield( isoStress, 'stress') )
     isoStress.stress = isoStress.stress';
