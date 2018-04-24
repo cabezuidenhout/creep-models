@@ -1,3 +1,12 @@
+const colors = [ 
+  '#2a5788', //Header blue
+  '#f96332', //Primary orange  
+  '#9b59b6', //Purple
+  '#2ecc71', //Green
+  '#1abc9c', //Turquoise
+  '#2c3e50' //Dark blue
+];
+
 function setTitle( titleElement, title ) {
   document.getElementsByTagName('title')[0].innerText = title;
   titleElement.innerText = title;
