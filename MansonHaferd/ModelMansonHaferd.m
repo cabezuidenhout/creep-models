@@ -14,35 +14,11 @@
 % You should have received a copy of the GNU General Public License
 % along with creep-models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function mhModel = ModelMansonHaferd( creepData, isoStressData )
-  T_iso = ConvTemp( isoStressData.T, 'c', 'k');
-  T = ConvTemp( creepData.T, 'c', 'k');
-  tr_iso = isoStressData.tr;
-  
-  
-  theta_temp = FitRegression( nOrderX( T_iso(1,:)', 1) ,  log10( tr_iso(1,:)' ) );
+function mhModel = ModelMansonHaferd( creepData, isoStressData )  
+  T = ConvTemp( creepData.T, 'c', 'k');  
 
-  c = theta_temp(1);
-  m = theta_temp(2);
-
-
-  isoStressFit.T = [T_iso(1,1), T_iso(1,size(T_iso,2))];
-  isoStressFit.tr = [ PredictRegression( theta_temp, nOrderX(isoStressFit.T(1,1),1) ), PredictRegression( theta_temp, nOrderX(isoStressFit.T(1,2),1) )];
-
-  for i=2:size(T_iso,1)
-    theta_temp = FitRegression( nOrderX( T_iso(i,:)', 1) ,  log10( tr_iso(i,:)' ) );
-    c = vertcat(c, theta_temp(1));
-    m = vertcat(m, theta_temp(2));
-    isoStressFit.T = vertcat( isoStressFit.T, [T_iso(i,1), T_iso(i,size(T_iso,2))] );
-    isoStressFit.tr = vertcat( isoStressFit.tr , [ PredictRegression( theta_temp, nOrderX(isoStressFit.T(i,1),1) ), PredictRegression( theta_temp, nOrderX(isoStressFit.T(i,2),1) )]);    
-  end
-
-  isoStressFit.m = m;
-  isoStressFit.c = c;
-  isoStressFit.stress = isoStressData.stress;
-  isoStressFit.tr = 10.^isoStressFit.tr;
-  isoStressFit.T = ConvTemp( isoStressFit.T, 'k','c');
-  
+  c = isoStressData.fitK.c';
+  m = isoStressData.fitK.m';
 
   A = [ -m , ones( size(m) ) ];
 
@@ -82,5 +58,4 @@ function mhModel = ModelMansonHaferd( creepData, isoStressData )
   mhModel.masterCurve.testData.p = PredictRegression( masterCurveCoeff, nOrderX( log10(mhModel.masterCurve.testData.stress), 4) );
 
   mhModel.isoStressData = isoStressData;
-  mhModel.isoStressFit = isoStressFit;
 endfunction

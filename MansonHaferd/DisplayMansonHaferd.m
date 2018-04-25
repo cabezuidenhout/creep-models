@@ -23,13 +23,9 @@ function DisplayMansonHaferd( mhModel , creepData )
   mhInfo.masterCurve.trainData.stress = mhInfo.masterCurve.trainData.stress';
 
   mhInfo.isoStressData.stress = mhInfo.isoStressData.stress';
-  mhInfo.isoStressFit.stress = mhInfo.isoStressFit.stress';
-
-  
 
   mhInfo.stressTest = StressTestMansonHaferd( mhModel, creepData );
   mhInfo.stressTest.T = mhInfo.stressTest.T';
-
 
   mhInfo.trTest = TrTestMansonHaferd( mhModel, creepData);
   mhInfo.trTest.T = mhInfo.trTest.T';
