@@ -17,3 +17,11 @@
   transition: background-color .15s ease-in-out;
 }
 .cp:active { -webkit-transform: scale( .90 ); transform: scale( .90 ); }
+
+.btn-info {
+  background: #2a5788;
+}
+
+.btn-info:hover {
+  background: #204065;
+}

@@ -13,7 +13,6 @@
   <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../../assets/css/theme.css" rel="stylesheet" />
   <link href="../../assets/css/style.css" rel="stylesheet" />
-  <link href="../../assets/css/tableexport.css" rel="stylesheet"/>
 </head>
 
 <body class="">
@@ -74,6 +73,12 @@
             </div>
           </div>
         </div>
+
+        <div class="row justify-content-center">
+          <div class="col-md-12">
+            <button class="btn btn-info btn-block" id="exportButton"> <img src="../../assets/img/xlsx.svg"> Export to excel</button>
+          </div>
+        </div>
       </div>
 
       <footer class="footer">
@@ -120,11 +125,11 @@
 <!--  Notifications Plugin    -->
 <script src="../../assets/js/plugins/bootstrap-notify.js"></script>
 
-<!-- Table export -->
-<script src="../../assets/js/plugins/xlsx.core.min.js"></script>
-<script src="../../assets/js/plugins/blob.min..js"></script>
-<script src="../../assets/js/plugins/FileSaver.min.js"></script>
-<script src="../../assets/js/plugins/tableexport.min.js"></script>
+<!-- My excel -->
+<script src="../../assets/js/plugins/myexcel/jszip.js"></script>
+<script src="../../assets/js/plugins/myexcel/FileSaver.js"></script>
+<script src="../../assets/js/plugins/myexcel/myexcel.js"></script>
+
 
 
 <script src="data.js"></script>
