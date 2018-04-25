@@ -155,6 +155,8 @@ exportButton.addEventListener('click', function () {
 
   excel.set(0, 0, 5, "Stress (MPa)");
 
+  var codeRow = 0;
+
   for (var i = 0; i < isoStressData.tr[0].length; i++) {
     excel.set(0, 1 + i, 5, isoStressData.tr[0][i] + 'h (degC)');
   }
@@ -165,6 +167,8 @@ exportButton.addEventListener('click', function () {
     for (var c = 0; c < isoStressData.T[r].length; c++) {
       excel.set(0, 1 + c, 6 + r, isoStressData.T[r][c]);
     }
+
+    codeRow = r;
   }
 
   excel.generate(isoStressData.material + '_IsoStress.xlsx');
