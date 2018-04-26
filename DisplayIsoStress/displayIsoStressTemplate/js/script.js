@@ -1,7 +1,6 @@
 const isoStressData = JSON.parse(data);
 const isoStressPlot = document.getElementById('isoStressPlot');
 const isoStressInversePlot = document.getElementById('isoStressInversePlot');
-const exportButton = document.getElementById('exportButton');
 
 setTitle( document.getElementById('pageTitle'), isoStressData.material + ' Iso-Stress with ' + isoStressData.tolerance + 'MPa tolerance');
 showIsoStressTable( document.getElementById('isoStressData') );
@@ -142,32 +141,3 @@ window.onresize = function() {
   Plotly.Plots.resize(isoStressInversePlot);
 }
 
-exportButton.addEventListener( 'click', function() {
-  const excel = $JExcel.new();
-  excel.set( { sheet: 0, value: isoStressData.material + " Iso-Stress Data"} );
-  excel.set(0,0,0, isoStressData.material + ' Iso-Stress');
-  excel.set(0,0,1, "Tolerance :");
-  excel.set(0,1,1, isoStressData.tolerance);
-  //excel.set( sheet, c, r)
-  excel.set(0,0,4, "Iso-Stress Code Data");
-
-  excel.set(0,0,5, "Stress (MPa)");
-
-  let codeRow = 0;  
-
-  for( let i = 0; i < isoStressData.tr[0].length ; i++) {
-    excel.set(0,1+i,5, isoStressData.tr[0][i] + 'h (degC)' );
-  }
-
-  for( let r = 0; r < isoStressData.stress.length; r++ ) {
-    excel.set(0,0,6+r, isoStressData.stress[r] );
-
-    for( let c = 0; c < isoStressData.T[r].length; c++) {
-      excel.set(0,1+c,6+r, isoStressData.T[r][c]);
-    }
-
-    codeRow = r;
-  }
-
-  excel.generate( isoStressData.material + '_IsoStress.xlsx');
-});
