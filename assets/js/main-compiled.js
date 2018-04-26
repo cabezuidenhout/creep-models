@@ -55,7 +55,111 @@ function createWarning(warningContent) {
   return warningElement;
 }
 
-function plotIsoStress(graphElement, isoStressData) {}
+function plotIsoStressInverse(graphElement, isoStressData) {
+  var data = [];
+
+  for (var i = 0; i < isoStressData.stress.length; i++) {
+    var x = [];
+    var y = [];
+    var xFit = [];
+    var yFit = [];
+
+    for (var j = 0; j < isoStressData.T[i].length; j++) {
+      x.push(1.0 / isoStressData.T[i][j]);
+      y.push(Math.log10(isoStressData.tr[i][j]));
+      xFit.push(isoStressData.fitInverse.T[i][j]);
+      yFit.push(isoStressData.fitInverse.tr[i][j]);
+    }
+
+    var trace = { x: x,
+      y: y,
+      mode: 'markers',
+      showlegend: false,
+      name: isoStressData.stress[i] + 'MPa',
+      legendgroup: i,
+      marker: { color: colors[i] }
+    };
+
+    data.push(trace);
+
+    trace = { x: xFit,
+      y: yFit,
+      mode: 'line',
+      name: isoStressData.stress[i] + 'MPa Fitted',
+      legendgroup: i,
+      line: { color: colors[i] }
+    };
+
+    data.push(trace);
+  }
+
+  var layout = {
+    xaxis: {
+      title: '1/Temperature (1/°C)'
+    },
+    yaxis: {
+      title: 'log(t) (h)'
+    },
+    margin: {
+      t: 20
+    }
+  };
+
+  Plotly.newPlot(graphElement, data, layout);
+}
+
+function plotIsoStress(graphElement, isoStressData) {
+  var data = [];
+
+  for (var i = 0; i < isoStressData.stress.length; i++) {
+    var x = [];
+    var y = [];
+    var xFit = [];
+    var yFit = [];
+
+    for (var j = 0; j < isoStressData.T[i].length; j++) {
+      x.push(isoStressData.T[i][j]);
+      y.push(Math.log10(isoStressData.tr[i][j]));
+      xFit.push(isoStressData.fit.T[i][j]);
+      yFit.push(isoStressData.fit.tr[i][j]);
+    }
+
+    var trace = { x: x,
+      y: y,
+      mode: 'markers',
+      showlegend: false,
+      name: isoStressData.stress[i] + 'MPa',
+      legendgroup: i,
+      marker: { color: colors[i] }
+    };
+
+    data.push(trace);
+
+    trace = { x: xFit,
+      y: yFit,
+      mode: 'line',
+      name: isoStressData.stress[i] + 'MPa Fitted',
+      legendgroup: i,
+      line: { color: colors[i] }
+    };
+
+    data.push(trace);
+  }
+
+  var layout = {
+    xaxis: {
+      title: 'Temperature (°C)'
+    },
+    yaxis: {
+      title: 'log(t) (h)'
+    },
+    margin: {
+      t: 20
+    }
+  };
+
+  Plotly.newPlot(graphElement, data, layout);
+}
 
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('cp')) {
