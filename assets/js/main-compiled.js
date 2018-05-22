@@ -161,6 +161,120 @@ function plotIsoStress(graphElement, isoStressData) {
   Plotly.newPlot(graphElement, data, layout);
 }
 
+function populateMasterCuveTable(tableElement, coefficients) {
+  if (coefficients) {
+    var head = createHead(tableElement);
+    var headRow = head.insertRow();
+
+    var body = tableElement.createTBody();
+    var bodyRow = body.insertRow();
+
+    for (var i = 65; i < 65 + coefficients.length; i++) {
+      headRow.appendChild(createHeadCell(String.fromCharCode(i)));
+      bodyRow.appendChild(createBodyCell(coefficients[i - 65]));
+    }
+  } else {
+    console.error('Cannot populate master curve table : Coefficients undefined');
+  }
+}
+
+function plotMasterCurve(graphElement, masterCurveData) {
+  var data = [];
+
+  var x = [];
+  var y = [];
+  var xFit = [];
+  var yFit = [];
+
+  for (var i = 0; i < masterCurveData.trainData.p.length; i++) {
+    x.push(masterCurveData.trainData.stress[i]);
+    y.push(masterCurveData.trainData.p[i]);
+  }
+
+  for (var _i = 0; _i < masterCurveData.testData.p.length; _i++) {
+    xFit.push(masterCurveData.testData.stress[_i]);
+    yFit.push(masterCurveData.testData.p[_i]);
+  }
+
+  var trace = {
+    x: x,
+    y: y,
+    mode: 'markers',
+    name: 'Parameters'
+  };
+
+  data.push(trace);
+
+  trace = {
+    x: xFit,
+    y: yFit,
+    mode: 'line',
+    name: 'Mastercuve'
+  };
+
+  data.push(trace);
+
+  var layout = {
+    xaxis: {
+      title: 'Stress (MPa)'
+    },
+    yaxis: {
+      title: 'Paramter'
+    },
+    margin: {
+      t: 20
+    }
+  };
+
+  Plotly.newPlot(graphElement, data, layout);
+}
+
+function populateStressPredictionTable(tableElement, test) {
+  var head = createHead(tableElement);
+
+  var headRow = head.insertRow();
+  var headCell = createHeadCell('Temperature (&deg;C)');
+  headCell.rowSpan = 2;
+  headRow.appendChild(headCell);
+
+  for (var i = 0; i < test.tr.length; i++) {
+    headCell = createHeadCell(test.tr[i] + ' h');
+    headCell.colSpan = 4;
+    headRow.appendChild(headCell);
+  }
+
+  headRow = head.insertRow();
+
+  for (var _i2 = 0; _i2 < test.tr.length; _i2++) {
+    headCell = createHeadCell('Stress (MPa)');
+    headRow.appendChild(headCell);
+
+    headCell = createHeadCell('Predicted Stress (MPa)');
+    headRow.appendChild(headCell);
+
+    headCell = createHeadCell('Error (MPa)');
+    headRow.appendChild(headCell);
+
+    headCell = createHeadCell('|Error| (%)');
+    headRow.appendChild(headCell);
+  }
+
+  var body = tableElement.createTBody();
+  var bodyRow = void 0;
+
+  for (var _i3 = 0; _i3 < test.T.length; _i3++) {
+    bodyRow = body.insertRow();
+    bodyRow.appendChild(createBodyCell(test.T[_i3]));
+
+    for (var j = 0; j < test.tr.length; j++) {
+      bodyRow.appendChild(createBodyCell(test.stressActual[_i3][j]));
+      bodyRow.appendChild(createBodyCell(test.stressPredicted[_i3][j]));
+      bodyRow.appendChild(createBodyCell(test.errors.Err[j][_i3].toFixed(3)));
+      bodyRow.appendChild(createBodyCell(test.errors.Abs[j][_i3].toFixed(3)));
+    }
+  }
+}
+
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('cp')) {
     var tempTextArea = document.createElement('textArea');

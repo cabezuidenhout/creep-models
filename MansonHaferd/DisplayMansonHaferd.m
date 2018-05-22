@@ -40,15 +40,8 @@ function DisplayMansonHaferd( mhModel , creepData )
   mhInfo.constT = ConstTMansonHaferd( mhModel, mean( creepData.T(:) ));
   mhInfo.constStress = ConstStressMansonHaferd( mhModel, mean( creepData.stress(:) ) );
 
-  dataFilePath = GetAbsolutePath('DisplayMansonHaferd.m');
-  dataFilePath = strcat(dataFilePath,'/template/data.js');
+  jsonFilePath = GetAbsolutePath('DisplayMansonHaferd.m');
+  jsonFilePath = strcat(jsonFilePath,'/displayMansonHaferdTemplate/data.js');
 
-  mhDataFile = fopen(dataFilePath, 'w');
-  fprintf(mhDataFile, 'data=`%s`;' , savejson('',mhInfo) );
-  fclose(mhDataFile);
-  
-  displayPath = GetAbsolutePath('DisplayMansonHaferd.m');
-  displayPath = strcat(displayPath,'/template/displayMansonHaferd.html');
-   
-  open(displayPath);
+  SaveJSON( mhInfo, jsonFilePath);
 endfunction
