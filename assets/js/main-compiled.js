@@ -47,6 +47,14 @@ function createBodyCell(cellContent) {
   return bodyCell;
 }
 
+function createBodyLabelCell(cellContent) {
+  var bodyCell = document.createElement('td');
+  bodyCell.addClass('text-center');
+  bodyCell.addClass('text-primary');
+  bodyCell.innerHTML = cellContent;
+  return bodyCell;
+}
+
 function createWarning(warningContent) {
   var warningElement = document.createElement('div');
   warningElement.addClass('alert');
@@ -273,6 +281,55 @@ function populateStressPredictionTable(tableElement, test) {
       bodyRow.appendChild(createBodyCell(test.errors.Abs[j][_i3].toFixed(3)));
     }
   }
+}
+
+function populateStressPredictionSummaryTable(tableElement, test) {
+  var head = createHead(tableElement);
+
+  var headRow = head.insertRow();
+  var headCell = createHeadCell('');
+  headRow.appendChild(headCell);
+
+  headCell = createHeadCell('Minimum');
+  headRow.appendChild(headCell);
+
+  headCell = createHeadCell('Average');
+  headRow.appendChild(headCell);
+
+  headCell = createHeadCell('Maximum');
+  headRow.appendChild(headCell);
+
+  headCell = createHeadCell('R<sup>2</sup>');
+  headRow.appendChild(headCell);
+
+  var body = tableElement.createTBody();
+  var bodyRow = body.insertRow();
+  bodyRow.appendChild(createBodyLabelCell('Error (MPa)'));
+  bodyRow.appendChild(createBodyCell(test.errors.Min));
+  bodyRow.appendChild(createBodyCell(test.errors.Average));
+  bodyRow.appendChild(createBodyCell(test.errors.Max));
+
+  var bodyCell = createBodyCell(test.errors.R.toFixed(3));
+  bodyCell.rowSpan = 3;
+  bodyRow.appendChild(bodyCell);
+
+  bodyRow = body.insertRow();
+  bodyRow.appendChild(createBodyLabelCell('Error (%)'));
+  bodyRow.appendChild(createBodyCell(test.errors.minPercentage.toFixed(3)));
+  bodyRow.appendChild(createBodyCell(test.errors.AveragePercentage.toFixed(3)));
+  bodyRow.appendChild(createBodyCell(test.errors.maxPercentage.toFixed(3)));
+
+  bodyRow = body.insertRow();
+  bodyRow.appendChild(createBodyLabelCell('|Error| (MPa)'));
+  bodyRow.appendChild(createBodyCell(test.errors.MinAbs));
+  bodyRow.appendChild(createBodyCell(test.errors.AverageAbs));
+  bodyRow.appendChild(createBodyCell(test.errors.MaxAbs));
+
+  bodyRow = body.insertRow();
+  bodyRow.appendChild(createBodyLabelCell('|Error| (%)'));
+  bodyRow.appendChild(createBodyCell(test.errors.minAbsPercentage.toFixed(3)));
+  bodyRow.appendChild(createBodyCell(test.errors.AverageAbsPercentage.toFixed(3)));
+  bodyRow.appendChild(createBodyCell(test.errors.maxAbsPercentage.toFixed(3)));
 }
 
 document.addEventListener('click', function (event) {

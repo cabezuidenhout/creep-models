@@ -6,6 +6,7 @@ populateMasterCuveTable( document.getElementById('mastercurveCoefficientTable') 
 plotIsoStress( document.getElementById('isoStressPlot') , mhData.isoStressData);
 plotMasterCurve( document.getElementById('masterCurvePlot'), mhData.masterCurve );
 populateStressPredictionTable( document.getElementById('stressPredictionTest'), mhData.stressTest);
+populateStressPredictionSummaryTable( document.getElementById('stressTestSummary'), mhData.stressTest );
 
 function populateMansonHaferdTable( tableElement ) {
   const head = createHead( tableElement );
