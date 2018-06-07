@@ -290,7 +290,7 @@ function populateStressPredictionTable( tableElement, test ) {
 
 }
 
-function populateStressPredictionSummaryTable( tableElement, test ) {
+function populateTestSummaryTable( tableElement, test, unit ) {
   const head = createHead(tableElement);
 
   let headRow = head.insertRow();
@@ -311,7 +311,7 @@ function populateStressPredictionSummaryTable( tableElement, test ) {
 
   const body = tableElement.createTBody();
   let bodyRow = body.insertRow();
-  bodyRow.appendChild( createBodyLabelCell('Error (MPa)') );
+  bodyRow.appendChild( createBodyLabelCell('Error (' + unit + ')') );
   bodyRow.appendChild( createBodyCell(test.errors.Min) );
   bodyRow.appendChild( createBodyCell(test.errors.Average) );
   bodyRow.appendChild( createBodyCell(test.errors.Max) );
@@ -327,7 +327,7 @@ function populateStressPredictionSummaryTable( tableElement, test ) {
   bodyRow.appendChild( createBodyCell(test.errors.maxPercentage.toFixed(3)) );
 
   bodyRow = body.insertRow();
-  bodyRow.appendChild( createBodyLabelCell('|Error| (MPa)') );
+  bodyRow.appendChild( createBodyLabelCell('|Error| (' + unit + ')') );
   bodyRow.appendChild( createBodyCell(test.errors.MinAbs) );
   bodyRow.appendChild( createBodyCell(test.errors.AverageAbs) );
   bodyRow.appendChild( createBodyCell(test.errors.MaxAbs) );
@@ -337,6 +337,104 @@ function populateStressPredictionSummaryTable( tableElement, test ) {
   bodyRow.appendChild( createBodyCell(test.errors.minAbsPercentage.toFixed(3)) );
   bodyRow.appendChild( createBodyCell(test.errors.AverageAbsPercentage.toFixed(3)) );
   bodyRow.appendChild( createBodyCell(test.errors.maxAbsPercentage.toFixed(3)) );  
+}
+
+function populateTrPredictionTable( tableElement, test ) {
+  const head = createHead( tableElement );
+
+  const headRow = head.insertRow();
+  
+  const headTitles = ['Temperature (&deg;C)', 'Stress (MPa)', 't<sub>r</sub> (h)', 't<sub>r</sub> Predicted (h)', 'Error (MPa)', '|Error| (%)'];
+
+  for( let i = 0; i < headTitles.length; i++ ) {
+    headRow.appendChild( createHeadCell( headTitles[i] ) );
+  }
+
+  const body = tableElement.createTBody();
+  let bodyRow;
+
+  for( let i = 0; i < test.T.length ; i++ ) {
+    bodyRow = body.insertRow();
+    bodyRow.appendChild( createBodyCell( test.T[i] ) );
+    bodyRow.appendChild( createBodyCell( test.stress[i] ) );
+    bodyRow.appendChild( createBodyCell( test.trActual[i] ) );
+    bodyRow.appendChild( createBodyCell( test.trPredicted[i].toFixed(0) ) );
+    bodyRow.appendChild( createBodyCell( test.errors.Err[i].toFixed(0) ) );
+    bodyRow.appendChild( createBodyCell( Math.abs(test.errors.Percentage[i]).toFixed(3) ) );
+  }
+}
+
+function plotConstantTemperature( graphElement, constT ) {
+  const data = [];
+
+  const x = [];
+  const y = [];
+
+  for( let i = 0; i < constT.stress.length ; i++ ) {
+    x.push( constT.stress[i] );
+    y.push( constT.tr[i][0] ); //TODO Fix this
+  }
+
+  const trace = {
+    x: x,
+    y: y,
+    mode: 'line',
+    name: constT.T + ' °C'
+  };
+
+  data.push( trace );
+ 
+  const layout = {
+    xaxis: {
+      title: 'Stress (MPa)'
+    },
+    yaxis: {
+      type: 'log',
+      title: 'log(t) (h)'
+    },
+    margin: {
+      t: 20
+    },
+    showlegend: true
+  };
+
+  Plotly.newPlot( graphElement, data, layout );
+}
+
+function plotConstantStress( graphElement, constStress ) {
+  const data = [];
+
+  const x = [];
+  const y = [];
+
+  for( let i = 0; i < constStress.T.length ; i++ ) {
+    x.push( constStress.T[i][0] ); //TODO Fix this
+    y.push( constStress.tr[i][0] ); 
+  }
+
+  const trace = {
+    x: x,
+    y: y,
+    mode: 'line',
+    name: constStress.stress + ' MPa'
+  };
+
+  data.push( trace );
+ 
+  const layout = {
+    xaxis: {
+      title: 'Temperature (°C)'
+    },
+    yaxis: {      
+      title: 'Time to Rupture (h)'
+    },
+    margin: {
+      t: 20
+    },
+    showlegend: true
+  };
+
+  Plotly.newPlot( graphElement, data, layout );
 }
 
 document.addEventListener( 'click', ( event ) => {

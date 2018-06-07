@@ -8,15 +8,15 @@
     "babel-preset-es2015": "^6.24.1"
   },
   "scripts": {
-    "test" : "live-server",
+    "test": "live-server",
     "build": "npm run compile-displayCreepData | npm run compile-main | npm run compile-displayIsoStress | npm run compile-mansonHaferd",
     "watch-displayCreepData": "npx babel DisplayCreepData/displayCreepDataTemplate/js/script.js --watch --out-file DisplayCreepData/displayCreepDataTemplate/compiled.js",
-    "watch-main" : "npx babel assets/js/main.js --watch --out-file assets/js/main-compiled.js",  
-    "watch-displayIsoStress" : "npx babel DisplayIsoStress/displayIsoStressTemplate/js/script.js --watch --out-file DisplayIsoStress/displayIsoStressTemplate/compiled.js",
-    "watch-mansonHaferd" : "npx babel MansonHaferd/displayMansonHaferdTemplate/js/script.js --watch --out-file MansonHaferd/displayMansonHaferdTemplate/compiled.js",
+    "watch-main": "npx babel assets/js/main.js --watch --out-file assets/js/main-compiled.js",
+    "watch-displayIsoStress": "npx babel DisplayIsoStress/displayIsoStressTemplate/js/script.js --watch --out-file DisplayIsoStress/displayIsoStressTemplate/compiled.js",
+    "watch-mansonHaferd": "npx babel MansonHaferd/displayMansonHaferdTemplate/js/script.js --watch --out-file MansonHaferd/displayMansonHaferdTemplate/compiled.js",
     "compile-displayCreepData": "npx babel DisplayCreepData/displayCreepDataTemplate/js/script.js --out-file DisplayCreepData/displayCreepDataTemplate/compiled.js",
-    "compile-main" : "npx babel assets/js/main.js --out-file assets/js/main-compiled.js",
-    "compile-displayIsoStress" : "npx babel DisplayIsoStress/displayIsoStressTemplate/js/script.js --out-file DisplayIsoStress/displayIsoStressTemplate/compiled.js",
-    "compile-mansonHaferd" : "npx babel MansonHaferd/displayMansonHaferdTemplate/js/script.js --out-file MansonHaferd/displayMansonHaferdTemplate/compiled.js"
-  } 
+    "compile-main": "npx babel assets/js/main.js --out-file assets/js/main-compiled.js",
+    "compile-displayIsoStress": "npx babel DisplayIsoStress/displayIsoStressTemplate/js/script.js --out-file DisplayIsoStress/displayIsoStressTemplate/compiled.js",
+    "compile-mansonHaferd": "npx babel MansonHaferd/displayMansonHaferdTemplate/js/script.js --out-file MansonHaferd/displayMansonHaferdTemplate/compiled.js"
+  }
 }

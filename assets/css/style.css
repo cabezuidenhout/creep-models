@@ -25,3 +25,11 @@
 .btn-info:hover {
   background: #204065;
 }
+
+.btn-excel , .btn-excel:focus {
+  background: #217345;
+}
+
+.btn-excel:hover {
+  background: #2ebb6b;
+}
