@@ -21,4 +21,5 @@ function DisplayIsoStress( isoStressData )
   jsonFilePath = strcat( jsonFilePath, '/displayIsoStressTemplate/data.js');
   
   SaveJSON( isoStressData, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayIsoStress.m'), '/displayIsoStressTemplate/index.html'));
 end

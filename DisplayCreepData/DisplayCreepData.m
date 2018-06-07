@@ -21,4 +21,5 @@ function DisplayCreepData( creepData )
   jsonFilePath = strcat( jsonFilePath, '/displayCreepDataTemplate/data.js');
 
   SaveJSON( creepData, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayCreepData.m'), '/displayCreepDataTemplate/index.html'));
 end
