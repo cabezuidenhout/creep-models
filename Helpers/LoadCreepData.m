@@ -47,7 +47,7 @@ function [creepData , loaded ] = LoadCreepData( filename )
       printf('Could not open %s. Please close any other open instance of the file\n')
     endif
   else
-    printf('%s not found in the Data folder (%s). Please ensure the file exists.\n', filename, GetAbsolutePath('Dummy.m'));
+    printf('%s not found. Please ensure the file exists.\n', filepath);    
   endif
 
 endfunction
