@@ -1,467 +1,448 @@
-const orange = '#f96332';
-const blue = '#2a5788';
-const randomColor = () => {
-  return `rgb(${Math.floor(256*Math.random())},${Math.floor(256*Math.random())},${Math.floor(256*Math.random())})`;
+const colors = [ 
+  '#2a5788', //Header blue
+  '#f96332', //Primary orange  
+  '#9b59b6', //Purple
+  '#2ecc71', //Green
+  '#1abc9c', //Turquoise
+  '#2c3e50' //Dark blue
+];
+
+Math.log10 = Math.log10 || function(x) {
+  return Math.log(x) * Math.LOG10E;
+};
+
+HTMLElement.prototype.hasClass = function( className ) {
+	if (this.classList)
+		return this.classList.contains(className)
+	else
+		return !!this.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
 }
 
-let parsedData;
+HTMLElement.prototype.addClass = function( className ) {
+	if (this.classList)
+		this.classList.add(className)
+	else if (!hasClass(this, className)) this.className += " " + className
+}
 
-function loadJSON( file, callback, doneCallback ) {
-  const xobj = new XMLHttpRequest();
-  xobj.overrideMimeType('application/json');
-  xobj.open('GET', file, true);
 
-  xobj.onreadystatechange = () => {
-    if (xobj.readyState == 4 && xobj.status == "200") {      
-      callback(xobj.responseText, doneCallback);
+function setTitle( titleElement, title ) {
+  document.getElementsByTagName('title')[0].innerText = title;
+  titleElement.innerText = title;
+}
+
+function createHead( tableElement ) {
+  const head = tableElement.createTHead();
+  head.addClass('text-primary');
+  return head;
+}
+
+function createHeadCell( cellContent ) {
+  const headCell = document.createElement('th');
+  headCell.addClass('text-center');
+  headCell.innerHTML = cellContent;
+  return headCell;
+}
+
+function createBodyCell( cellContent ) {
+  const bodyCell = document.createElement('td');
+  bodyCell.addClass('text-center');
+  bodyCell.addClass('cp');
+  bodyCell.title = 'Click to copy to Clipboard';
+  bodyCell.innerHTML = cellContent;
+  return bodyCell;
+}
+
+function createBodyLabelCell( cellContent ) {
+  const bodyCell = document.createElement('td');
+  bodyCell.addClass('text-center');
+  bodyCell.addClass('text-primary');
+  bodyCell.innerHTML = cellContent;
+  return bodyCell;
+}
+
+function createWarning( warningContent ) {
+  const warningElement = document.createElement('div');
+  warningElement.addClass('alert');
+  warningElement.addClass('alert-warning');
+  warningElement.innerHTML = '<b>Warning - </b> ' + warningContent;  
+  return warningElement;
+}
+
+function plotIsoStressInverse( graphElement, isoStressData ) {
+  const data = [];
+
+  for( let i = 0; i < isoStressData.stress.length; i++) {    
+    const x = [];
+    const y = [];
+    const xFit = [];
+    const yFit = [];
+
+    for( let j = 0; j < isoStressData.T[i].length ; j++) {
+      x.push( 1.0 / isoStressData.T[i][j] );
+      y.push( Math.log10(isoStressData.tr[i][j]) );
+      xFit.push( isoStressData.fitInverse.T[i][j] )
+      yFit.push( isoStressData.fitInverse.tr[i][j] )
+    }
+
+    let trace = { x: x, 
+                  y: y, 
+                  mode: 'markers',
+                  showlegend: false,
+                  name: isoStressData.stress[i] + 'MPa',
+                  legendgroup: i,
+                  marker: { color: colors[i] }
+                };
+    
+    data.push( trace );
+
+    trace = { x: xFit, 
+              y: yFit, 
+              mode: 'line',
+              name: isoStressData.stress[i] + 'MPa Fitted',
+              legendgroup: i,
+              line: { color: colors[i] }
+            };
+    
+    data.push( trace );
+  }
+
+  const layout = {    
+    xaxis: {
+      title: '1/Temperature (1/°C)'
+    },
+    yaxis: {
+      title: 'log(t) (h)'
+    },
+    margin: {
+      t: 20
     }
   };
 
-  xobj.send(null);
+  Plotly.newPlot(graphElement,data,layout);
 }
 
-function setData( jsonString , callback ) {
-  parsedData = JSON.parse(jsonString);
-  callback();
+function plotIsoStress( graphElement, isoStressData) {
+  const data = [];
+
+  for( let i = 0; i < isoStressData.stress.length; i++) {    
+    const x = [];
+    const y = [];
+    const xFit = [];
+    const yFit = [];
+
+    for( let j = 0; j < isoStressData.T[i].length ; j++) {
+      x.push( isoStressData.T[i][j] );
+      y.push( Math.log10(isoStressData.tr[i][j]) );
+      xFit.push( isoStressData.fit.T[i][j] )
+      yFit.push( isoStressData.fit.tr[i][j] )
+    }
+
+    let trace = { x: x, 
+                  y: y, 
+                  mode: 'markers',
+                  showlegend: false,
+                  name: isoStressData.stress[i] + 'MPa',
+                  legendgroup: i,
+                  marker: { color: colors[i] }
+                };
+    
+    data.push( trace );
+
+    trace = { x: xFit, 
+              y: yFit, 
+              mode: 'line',
+              name: isoStressData.stress[i] + 'MPa Fitted',
+              legendgroup: i,
+              line: { color: colors[i] }
+            };
+    
+    data.push( trace );
+  }
+
+  const layout = {    
+    xaxis: {
+      title: 'Temperature (°C)'
+    },
+    yaxis: {
+      title: 'log(t) (h)'
+    },
+    margin: {
+      t: 20
+    }
+  };
+
+  Plotly.newPlot(graphElement,data,layout);
 }
 
-function loadData( file , doneCallback ) {
-  loadJSON( file, setData, doneCallback );
+function populateMasterCuveTable( tableElement, coefficients) {
+  if( coefficients ) {
+    const head = createHead( tableElement );
+    const headRow = head.insertRow();
+
+    const body = tableElement.createTBody();
+    const bodyRow = body.insertRow();
+
+    for( let i = 65; i < (65 + coefficients.length ) ; i++) {
+      headRow.appendChild( createHeadCell( String.fromCharCode(i) ) );
+      bodyRow.appendChild( createBodyCell( coefficients[i-65]) );
+    }  
+  } else {
+    console.error('Cannot populate master curve table : Coefficients undefined');
+  }
 }
 
-function setTitle( titleElement, material, model) {
-  document.querySelector('title').innerText = material + ' ' + model + ' model';
-  titleElement.innerText = material + ' ' + model + ' Model';
-}
+function plotMasterCurve( graphElement, masterCurveData ) {
+  const data = [];
 
-function showValidRangesTable( tableElement, stressRange, temperatureRange) {
-  const table = tableElement;
+  const x = [];
+  const y = [];
+  const xFit = [];
+  const yFit = [];
+
+  for( let i = 0 ; i < masterCurveData.trainData.p.length; i++) {
+    x.push( masterCurveData.trainData.stress[i] );
+    y.push( masterCurveData.trainData.p[i] );
+  }  
+
+  for( let i = 0; i < masterCurveData.testData.p.length; i++ ) {
+    xFit.push( masterCurveData.testData.stress[i] );
+    yFit.push( masterCurveData.testData.p[i] );
+  }
+
+  let trace = {
+    x: x,
+    y: y,
+    mode: 'markers',
+    name: 'Parameters'
+  }
+
+  data.push(trace);
+
+  trace = {
+    x: xFit,
+    y: yFit,
+    mode: 'line',
+    name: 'Mastercuve'
+  }
+
+  data.push(trace);
   
-  const head = table.createTHead();
-  head.classList = 'text-primary';
 
-  const headRow = head.insertRow();
+  const layout = {    
+    xaxis: {
+      title: 'Stress (MPa)'
+    },
+    yaxis: {
+      title: 'Paramter'
+    },
+    margin: {
+      t: 20
+    }
+  };
 
-  let headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerText = '';
-  headRow.appendChild(headCell);
-
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerText = 'Stress (MPa)';
-  headRow.appendChild(headCell);
-
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'Temperature (&deg;C)';
-  headRow.appendChild(headCell);
-
-  const body = table.createTBody();
-  let bodyRow = body.insertRow();
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center text-primary';
-  bodyCell.innerHTML = 'Minimum<sup>*</sup>';
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.innerText = stressRange.min;
-  bodyCell.title = 'Click to copy to Clipboard';
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.innerText = temperatureRange.min;
-  bodyCell.title = 'Click to copy to Clipboard';
-
-  bodyRow = body.insertRow();
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center text-primary';
-  bodyCell.innerHTML = 'Maximum<sup>*</sup>';
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.innerText = stressRange.max;
-  bodyCell.title = 'Click to copy to Clipboard';
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.innerText = temperatureRange.max;
-  bodyCell.title = 'Click to copy to Clipboard';
-
-
-  const footnote = table.parentElement.appendChild( document.createElement('p') );
-  footnote.classList = 'text-danger';
-  footnote.innerHTML = '<small>* If additional data points were added manually some of the values might be incorrect</small>';
-  /*const foot = table.createTFoot();
-  foot.classList = 'text-danger';
-  foot.innerText = '*If additional points are added these ranges might not be correct';*/
+  Plotly.newPlot(graphElement,data,layout);
 }
 
-function showStressTestTable( tableElement , stressTest ) {
-  const table = tableElement;
+function populateStressPredictionTable( tableElement, test ) {
+  const head = createHead(tableElement);
 
-  const head = table.createTHead();
-  head.classList = 'text-primary';
-  
   let headRow = head.insertRow();
-
-  let headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-
-  headCell.innerHTML = 'Temperature (&deg;C)';
+  let headCell = createHeadCell('Temperature (&deg;C)');
   headCell.rowSpan = 2;
+  headRow.appendChild(headCell);
 
-  headRow.appendChild( headCell );
-
-  for( let i = 0; i < stressTest.tr.length; i++) {
-    headCell = document.createElement('th');
-    headCell.classList = 'text-center';
-    headCell.innerText = stressTest.tr[i] + ' h';
+  for( let i = 0; i < test.tr.length; i++) {
+    headCell = createHeadCell( test.tr[i] + ' h');
     headCell.colSpan = 4;
     headRow.appendChild(headCell);
   }
 
   headRow = head.insertRow();
-
-  for( let i = 0; i < stressTest.tr.length ; i++ ) {
-    headCell = document.createElement('th');
-    headCell.classList = 'text-center';
-    headCell.innerText = 'Code Stress (MPa)';    
+  
+  for( let i = 0; i < test.tr.length; i++) {
+    headCell = createHeadCell('Stress (MPa)');
     headRow.appendChild(headCell);
 
-    headCell = document.createElement('th');
-    headCell.classList = 'text-center';
-    headCell.innerText = 'Predicted Stress (MPa)';    
+    headCell = createHeadCell('Predicted Stress (MPa)');
     headRow.appendChild(headCell);
 
-    headCell = document.createElement('th');
-    headCell.classList = 'text-center';
-    headCell.innerText = 'Error (MPa)';    
+    headCell = createHeadCell('Error (MPa)');
     headRow.appendChild(headCell);
 
-    headCell = document.createElement('th');
-    headCell.classList = 'text-center';
-    headCell.innerHTML = '|Error| (&percnt;)';    
+    headCell = createHeadCell('|Error| (%)');
     headRow.appendChild(headCell);
   }
 
-  const body = table.createTBody();
-  let bodyRow, bodyCell;
+  const body = tableElement.createTBody();
+  let bodyRow;
 
-  for( let r = 0; r < stressTest.T.length ; r++ ) {
+  for( let i = 0 ; i < test.T.length ; i++) {
     bodyRow = body.insertRow();
+    bodyRow.appendChild( createBodyCell( test.T[i] ) );
 
-    bodyCell = bodyRow.insertCell();
-    bodyCell.classList = 'text-center cp';
-    bodyCell.title = 'Click to copy to Clipboard';
-    bodyCell.innerText = stressTest.T[r];
-
-    for( let c = 0; c < stressTest.tr.length; c++) {
-      bodyCell = bodyRow.insertCell();
-      bodyCell.classList = 'text-center cp';
-      bodyCell.title = 'Click to copy to Clipboard';
-      bodyCell.innerText = stressTest.stressActual[r][c];
-
-      bodyCell = bodyRow.insertCell();
-      bodyCell.classList = 'text-center cp';
-      bodyCell.title = 'Click to copy to Clipboard';
-      bodyCell.innerText = stressTest.stressPredicted[r][c];
-
-      bodyCell = bodyRow.insertCell();
-      bodyCell.classList = 'text-center cp';
-      bodyCell.title = 'Click to copy to Clipboard';
-      bodyCell.innerText = stressTest.errors.Err[r][c].toFixed(3);
-
-      bodyCell = bodyRow.insertCell();
-      bodyCell.classList = 'text-center cp';
-      bodyCell.title = 'Click to copy to Clipboard';
-      bodyCell.innerText = Math.abs(stressTest.errors.Percentage[r][c]).toFixed(3);
+    for( let j = 0; j < test.tr.length; j++ ) {
+      bodyRow.appendChild( createBodyCell( test.stressActual[i][j] ) );
+      bodyRow.appendChild( createBodyCell( test.stressPredicted[i][j] ) );
+      bodyRow.appendChild( createBodyCell( test.errors.Err[j][i].toFixed(3) ) );
+      bodyRow.appendChild( createBodyCell( test.errors.Abs[j][i].toFixed(3) ) );
     }
   }
+
 }
 
-function showTrTestTable( tableElement,  trTest ) {  
-  const table = tableElement;
+function populateTestSummaryTable( tableElement, test, unit ) {
+  const head = createHead(tableElement);
 
-  const head = table.createTHead();
-  head.classList = 'text-primary';
-
-  const headRow = head.insertRow();
-
-  let headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'Temperature (&deg;C)';
+  let headRow = head.insertRow();
+  let headCell = createHeadCell('');
   headRow.appendChild(headCell);
 
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'Code Time to Rupture (h)';
+  headCell = createHeadCell('Minimum');
   headRow.appendChild(headCell);
 
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'Predicted Time to Rupture (h)';
+  headCell = createHeadCell('Average');
   headRow.appendChild(headCell);
 
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'Error (h)';
+  headCell = createHeadCell('Maximum');
   headRow.appendChild(headCell);
 
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = '|Error| (%)';
+  headCell = createHeadCell('R<sup>2</sup>');
   headRow.appendChild(headCell);
 
-  const body = table.createTBody();
-
-  for( let i = 0; i < trTest.T.length; i++) {
-    const row = body.insertRow();
-    
-    let cell = row.insertCell();
-    cell.classList = 'text-center cp';
-    cell.title = 'Click to copy to Clipboard';
-    cell.innerText = trTest.T[i];
-
-    cell = row.insertCell();
-    cell.classList = 'text-center cp';
-    cell.title = 'Click to copy to Clipboard';
-    cell.innerText = trTest.trActual[i].toFixed(0);
-
-    cell = row.insertCell();
-    cell.classList = 'text-center cp';
-    cell.title = 'Click to copy to Clipboard';
-    cell.innerText = trTest.trPredicted[i].toFixed(0);
-
-    cell = row.insertCell();
-    cell.classList = 'text-center cp';
-    cell.title = 'Click to copy to Clipboard';
-    cell.innerText = trTest.errors.Err[i].toFixed(0);
-
-    cell = row.insertCell();
-    cell.classList = 'text-center cp';
-    cell.title = 'Click to copy to Clipboard';
-    cell.innerText = Math.abs(trTest.errors.Percentage[i]).toFixed(3);
-  }  
-}
-
-function showTestSummaryTable( tableElement, testErrors, unit, decimals = 3 ) {
-  const errorUnit = ( unit !== undefined ? '(' + unit + ')' : '');
-  const table = tableElement;  
-
-  const head = table.createTHead();
-  head.classList = 'text-primary';
-
-  const headRow = head.insertRow();
-
-  let headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = '';
-  headRow.appendChild(headCell);
-
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'Minimum';
-  headRow.appendChild(headCell);
-
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'Average';
-  headRow.appendChild(headCell);
-
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'Maximum';
-  headRow.appendChild(headCell);
-
-  headCell = document.createElement('th');
-  headCell.classList = 'text-center';
-  headCell.innerHTML = 'R<sup>2</sup>';
-  headRow.appendChild(headCell);
-
-  const body = table.createTBody();
-  let bodyRow, bodyCell;
-
-  bodyRow = body.insertRow();
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-primary text-center';
-  bodyCell.innerText = 'Error ' + errorUnit;
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.Min.toFixed(decimals);
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.Average.toFixed(decimals);
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.Max.toFixed(decimals);
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
+  const body = tableElement.createTBody();
+  let bodyRow = body.insertRow();
+  bodyRow.appendChild( createBodyLabelCell('Error (' + unit + ')') );
+  bodyRow.appendChild( createBodyCell(test.errors.Min) );
+  bodyRow.appendChild( createBodyCell(test.errors.Average) );
+  bodyRow.appendChild( createBodyCell(test.errors.Max) );
+  
+  let bodyCell = createBodyCell(test.errors.R.toFixed(3));
   bodyCell.rowSpan = 3;
-  bodyCell.innerText = testErrors.R.toFixed(3);
-
-
-  bodyRow = body.insertRow();
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-primary text-center';
-  bodyCell.innerText = '|Error| ' + errorUnit;
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.MinAbs.toFixed(decimals);
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.AverageAbs.toFixed(decimals);
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.MaxAbs.toFixed(decimals);
+  bodyRow.appendChild( bodyCell );  
 
   bodyRow = body.insertRow();
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-primary text-center';
-  bodyCell.innerHTML = '|Error| (&percnt;)'
+  bodyRow.appendChild( createBodyLabelCell('Error (%)') );
+  bodyRow.appendChild( createBodyCell(test.errors.minPercentage.toFixed(3)) );
+  bodyRow.appendChild( createBodyCell(test.errors.AveragePercentage.toFixed(3)) );
+  bodyRow.appendChild( createBodyCell(test.errors.maxPercentage.toFixed(3)) );
 
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.minAbsPercentage.toFixed(3);
+  bodyRow = body.insertRow();
+  bodyRow.appendChild( createBodyLabelCell('|Error| (' + unit + ')') );
+  bodyRow.appendChild( createBodyCell(test.errors.MinAbs) );
+  bodyRow.appendChild( createBodyCell(test.errors.AverageAbs) );
+  bodyRow.appendChild( createBodyCell(test.errors.MaxAbs) );
 
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.AverageAbsPercentage.toFixed(3);
-
-  bodyCell = bodyRow.insertCell();
-  bodyCell.classList = 'text-center cp';
-  bodyCell.title = 'Click to copy to Clipboard';
-  bodyCell.innerText = testErrors.maxAbsPercentage.toFixed(3);
+  bodyRow = body.insertRow();
+  bodyRow.appendChild( createBodyLabelCell('|Error| (%)') );
+  bodyRow.appendChild( createBodyCell(test.errors.minAbsPercentage.toFixed(3)) );
+  bodyRow.appendChild( createBodyCell(test.errors.AverageAbsPercentage.toFixed(3)) );
+  bodyRow.appendChild( createBodyCell(test.errors.maxAbsPercentage.toFixed(3)) );  
 }
 
-function plotConstantStress( graphCanvas, constStress ) {
-  const ctx = graphCanvas.getContext('2d');
+function populateTrPredictionTable( tableElement, test ) {
+  const head = createHead( tableElement );
 
-  const dataPoints = [];
-  for( let i = 0; i < constStress.tr.length; i++) {
-    dataPoints.push( { x: constStress.T[i][0] , y : constStress.tr[i][0] } );
+  const headRow = head.insertRow();
+  
+  const headTitles = ['Temperature (&deg;C)', 'Stress (MPa)', 't<sub>r</sub> (h)', 't<sub>r</sub> Predicted (h)', 'Error (MPa)', '|Error| (%)'];
+
+  for( let i = 0; i < headTitles.length; i++ ) {
+    headRow.appendChild( createHeadCell( headTitles[i] ) );
   }
 
-  const chart = new Chart( ctx, {
-    type: 'line',
-    data : {
-      datasets: [{
-        label: `${constStress.stress} MPa`,
-        backgroundColor: blue,
-        borderColor: blue,
-        data: dataPoints,
-        fill: false,
-        pointRadius: '0',
-      }]
-    },
-    options: {
-      responsive: true,
-      tooltips: {
-        mode: 'index',
-        intersect: false,
-      },
-      hover: {
-        mode: 'nearest',
-        intersect: true
-      },
-      scales: {
-        xAxes: [{
-          display: true,
-          scaleLabel: {
-            display: true,
-            labelString: 'Temperature (°C)'
-          },
-          type: 'linear'
-        }],
-        yAxes: [{
-          display: true,
-          scaleLabel: {
-            display: true,
-            labelString: 'Time to Rupture (h)'
-          },
-          type: 'logarithmic'
-        }]
-      }
-    }
-  });
+  const body = tableElement.createTBody();
+  let bodyRow;
+
+  for( let i = 0; i < test.T.length ; i++ ) {
+    bodyRow = body.insertRow();
+    bodyRow.appendChild( createBodyCell( test.T[i] ) );
+    bodyRow.appendChild( createBodyCell( test.stress[i] ) );
+    bodyRow.appendChild( createBodyCell( test.trActual[i] ) );
+    bodyRow.appendChild( createBodyCell( test.trPredicted[i].toFixed(0) ) );
+    bodyRow.appendChild( createBodyCell( test.errors.Err[i].toFixed(0) ) );
+    bodyRow.appendChild( createBodyCell( Math.abs(test.errors.Percentage[i]).toFixed(3) ) );
+  }
 }
 
-function plotConstantTemperature( graphCanvas, constT ) {
-  const ctx = graphCanvas.getContext('2d');
+function plotConstantTemperature( graphElement, constT ) {
+  const data = [];
 
-  const dataPoints = [];
-  for( let i = 0; i < constT.tr.length; i++) {
-    dataPoints.push( { x: constT.stress[i] , y : constT.tr[i][0] } );
+  const x = [];
+  const y = [];
+
+  for( let i = 0; i < constT.stress.length ; i++ ) {
+    x.push( constT.stress[i] );
+    y.push( constT.tr[i][0] ); //TODO Fix this
   }
 
-  const chart = new Chart( ctx, {
-    type: 'line',
-    data : {
-      datasets: [{
-        label: `${constT.T} (°C)`,
-        backgroundColor: blue,
-        borderColor: blue,
-        data: dataPoints,
-        fill: false,
-        pointRadius: '0',
-      }]
+  const trace = {
+    x: x,
+    y: y,
+    mode: 'line',
+    name: constT.T + ' °C'
+  };
+
+  data.push( trace );
+ 
+  const layout = {
+    xaxis: {
+      title: 'Stress (MPa)'
     },
-    options: {
-      responsive: true,
-      tooltips: {
-        mode: 'index',
-        intersect: false,
-      },
-      hover: {
-        mode: 'nearest',
-        intersect: true
-      },
-      scales: {
-        xAxes: [{
-          display: true,
-          scaleLabel: {
-            display: true,
-            labelString: 'Stress (MPa)'
-          },
-          type: 'linear'
-        }],
-        yAxes: [{
-          display: true,
-          scaleLabel: {
-            display: true,
-            labelString: 'Time to Rupture (h)'
-          },
-          type: 'logarithmic'
-        }]
-      }
-    }
-  });
+    yaxis: {
+      type: 'log',
+      title: 'log(t) (h)'
+    },
+    margin: {
+      t: 20
+    },
+    showlegend: true
+  };
+
+  Plotly.newPlot( graphElement, data, layout );
 }
 
-document.addEventListener( 'click', (event) => {
+function plotConstantStress( graphElement, constStress ) {
+  const data = [];
+
+  const x = [];
+  const y = [];
+
+  for( let i = 0; i < constStress.T.length ; i++ ) {
+    x.push( constStress.T[i][0] ); //TODO Fix this
+    y.push( constStress.tr[i][0] ); 
+  }
+
+  const trace = {
+    x: x,
+    y: y,
+    mode: 'line',
+    name: constStress.stress + ' MPa'
+  };
+
+  data.push( trace );
+ 
+  const layout = {
+    xaxis: {
+      title: 'Temperature (°C)'
+    },
+    yaxis: {      
+      title: 'Time to Rupture (h)'
+    },
+    margin: {
+      t: 20
+    },
+    showlegend: true
+  };
+
+  Plotly.newPlot( graphElement, data, layout );
+}
+
+document.addEventListener( 'click', ( event ) => {
   if( event.target.classList.contains('cp') ) {
     const tempTextArea = document.createElement('textArea');
     tempTextArea.value = event.target.innerText;
-    const valueCopied = event.target.innerText;
-    document.body.appendChild(tempTextArea);
+    const valueCopied = tempTextArea.value;
+    document.body.appendChild( tempTextArea );
     tempTextArea.select();
 
     try{
@@ -472,8 +453,7 @@ document.addEventListener( 'click', (event) => {
       } else {
         event.target.innerText = 'Could not copy';
       }
-      
-    } catch( error ) {
+    } catch ( error ) {
       console.error(error);
     }
 
@@ -482,6 +462,6 @@ document.addEventListener( 'click', (event) => {
   }
 });
 
-function resetElement( em , emContent ) {
-  em.innerText = emContent;  
+function resetElement( element, content ) {
+  element.innerText = content;
 }
