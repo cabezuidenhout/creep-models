@@ -43,7 +43,6 @@ function DisplayMansonHaferd( mhModel , creepData )
   jsonFilePath = GetAbsolutePath('DisplayMansonHaferd.m');
   jsonFilePath = strcat(jsonFilePath,'/displayMansonHaferdTemplate/data.js');
 
-  SaveJSON( mhInfo, jsonFilePath);
-  display(strcat(GetAbsolutePath('DisplayMansonHaferd.m'), '/displayMansonHaferdTemplate/index.html'));
+  SaveJSON( mhInfo, jsonFilePath);  
   open( strcat(GetAbsolutePath('DisplayMansonHaferd.m'), '/displayMansonHaferdTemplate/index.html'));
 endfunction
