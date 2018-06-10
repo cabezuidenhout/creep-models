@@ -5,5 +5,6 @@ addpath('Helpers');
 addpath('jsonlab');
 addpath('LarsonMiller');
 addpath('MansonHaferd');
+addpath('MansonSuccop');
 addpath('Regression');
 addpath('OrrSherbyDorn');
