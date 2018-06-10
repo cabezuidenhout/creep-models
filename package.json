@@ -9,18 +9,20 @@
   },
   "scripts": {
     "test": "live-server",
-    "build": "npm run compile-displayCreepData | npm run compile-main | npm run compile-displayIsoStress | npm run compile-mansonHaferd | npm run compile-larsonMiller | npm run compile-orrsherbydorn",
+    "build": "npm run compile-displayCreepData | npm run compile-main | npm run compile-displayIsoStress | npm run compile-mansonHaferd | npm run compile-larsonMiller | npm run compile-orrsherbydorn | npm run compile-mansonsuccop",
     "watch-displayCreepData": "npx babel DisplayCreepData/displayCreepDataTemplate/js/script.js --watch --out-file DisplayCreepData/displayCreepDataTemplate/compiled.js",
     "watch-main": "npx babel assets/js/main.js --watch --out-file assets/js/main-compiled.js",
     "watch-displayIsoStress": "npx babel DisplayIsoStress/displayIsoStressTemplate/js/script.js --watch --out-file DisplayIsoStress/displayIsoStressTemplate/compiled.js",
     "watch-mansonHaferd": "npx babel MansonHaferd/displayMansonHaferdTemplate/js/script.js --watch --out-file MansonHaferd/displayMansonHaferdTemplate/compiled.js",
     "watch-larsonMiller": "npx babel LarsonMiller/displayLarsonMillerTemplate/js/script.js --watch --out-file LarsonMiller/displayLarsonMillerTemplate/compiled.js",
     "watch-orrsherbydorm": "npx babel OrrSherbyDorn/displayOrrSherbyDornTemplate/js/script.js --watch --out-file OrrSherbyDorn/displayOrrSherbyDornTemplatenopm/compiled.js",
+    "watch-mansonsuccop": "npx babel MansonSuccop/displayMansonSuccopTemplate/js/script.js --watch --out-file MansonSuccop/displayMansonSuccopTemplate/compiled.js",
     "compile-displayCreepData": "npx babel DisplayCreepData/displayCreepDataTemplate/js/script.js --out-file DisplayCreepData/displayCreepDataTemplate/compiled.js",
     "compile-main": "npx babel assets/js/main.js --out-file assets/js/main-compiled.js",
     "compile-displayIsoStress": "npx babel DisplayIsoStress/displayIsoStressTemplate/js/script.js --out-file DisplayIsoStress/displayIsoStressTemplate/compiled.js",
     "compile-mansonHaferd": "npx babel MansonHaferd/displayMansonHaferdTemplate/js/script.js --out-file MansonHaferd/displayMansonHaferdTemplate/compiled.js",
     "compile-larsonMiller": "npx babel LarsonMiller/displayLarsonMillerTemplate/js/script.js --out-file LarsonMiller/displayLarsonMillerTemplate/compiled.js",
-    "compile-orrsherbydorn": "npx babel OrrSherbyDorn/displayOrrSherbyDornTemplate/js/script.js --out-file OrrSherbyDorn/displayOrrSherbyDornTemplate/compiled.js"
+    "compile-orrsherbydorn": "npx babel OrrSherbyDorn/displayOrrSherbyDornTemplate/js/script.js --out-file OrrSherbyDorn/displayOrrSherbyDornTemplate/compiled.js",
+    "compile-mansonsuccop": "npx babel MansonSuccop/displayMansonSuccopTemplate/js/script.js --out-file MansonSuccop/displayMansonSuccopTemplate/compiled.js"
   }
 }

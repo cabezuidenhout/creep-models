@@ -82,7 +82,7 @@ while( !done )
     end
   end
 
-  nSelections = 3;
+  nSelections = 4;
   validModelSelected = false;
   modelSelected = 0;
 
@@ -91,7 +91,8 @@ while( !done )
     printf("1 - Manson-Haferd\n");
     printf("2 - Larson-Miller\n");
     printf("3 - Orr-Sherby-Dorn\n");
-    modelSelected = input('Enter model number (1-3) : ');
+    printf("4 - Manson-Succop\n");
+    modelSelected = input('Enter model number (1-4) : ');
 
     if( (modelSelected > nSelections) || (modelSelected <= 0) )
       printf("! Invalid selection\n");
@@ -129,6 +130,10 @@ while( !done )
     osdModel = ModelOrrSherbyDorn( creepData, isoStress );
     DisplayOrrSherbyDorn( osdModel, creepData );
     printf("- Displaying Orr-Sherby-Dorn model in web browser\n");
+  elseif( modelSelected == 4 ) %Manson-Succop
+    msModel = ModelMansonSuccop( creepData, isoStress );
+    DisplayMansonSuccop( msModel, creepData );
+    printf("- Displaying Manson-Succop model in web browser\n");
   endif
 
   done = !YoN("Do you want to create another model?");
