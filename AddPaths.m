@@ -6,3 +6,4 @@ addpath('jsonlab');
 addpath('LarsonMiller');
 addpath('MansonHaferd');
 addpath('Regression');
+addpath('OrrSherbyDorn');
