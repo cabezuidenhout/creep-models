@@ -82,7 +82,7 @@ while( !done )
     end
   end
 
-  nSelections = 2;
+  nSelections = 3;
   validModelSelected = false;
   modelSelected = 0;
 
@@ -90,7 +90,8 @@ while( !done )
     printf("Select a Creep Model :\n");
     printf("1 - Manson-Haferd\n");
     printf("2 - Larson-Miller\n");
-    modelSelected = input('Enter model number (1-2) : ');
+    printf("3 - Orr-Sherby-Dorn\n");
+    modelSelected = input('Enter model number (1-3) : ');
 
     if( (modelSelected > nSelections) || (modelSelected <= 0) )
       printf("! Invalid selection\n");
@@ -124,6 +125,10 @@ while( !done )
     lmModel = ModelLarsonMiller( creepData, isoStress );
     DisplayLarsonMiller(lmModel, creepData);
     printf("- Displaying Larson-Miller model in web browser\n");
+  elseif( modelSelected == 3 ) %Orr-Sherby-Dorn
+    osdModel = ModelOrrSherbyDorn( creepData, isoStress );
+    DisplayOrrSherbyDorn( osdModel, creepData );
+    printf("- Displaying Orr-Sherby-Dorn model in web browser\n");
   endif
 
   done = !YoN("Do you want to create another model?");
