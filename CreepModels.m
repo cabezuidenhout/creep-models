@@ -70,6 +70,7 @@ while( !done )
 
     if( validData )
       DisplayCreepData(creepData);
+      printf("- Displaying creep data in web browser\n");
       correctDataFile = YoN("Is this the correct data file?");
 
       if( !correctDataFile)
@@ -92,7 +93,7 @@ while( !done )
     modelSelected = input('Enter model number (1-2) : ');
 
     if( (modelSelected > nSelections) || (modelSelected <= 0) )
-      printf("!!! Invalid selection\n");
+      printf("! Invalid selection\n");
     else
       validModelSelected = true;
     end
@@ -105,11 +106,12 @@ while( !done )
     tolerance = input("Enter iso-stress tolerance (MPa) : ");
 
     if( isempty(tolerance) ) 
-      printf("!!! No selection made\n");
+      printf("! No selection made\n");
     else
       tolerance = abs(tolerance);
       isoStress = GetIsoStress(creepData, tolerance);
       DisplayIsoStress(isoStress);
+      printf("- Displaying iso-stress data in web browser\n");
       correctTolerance = YoN("Do you want to use these iso-stress lines?");
     endif
   end
@@ -117,11 +119,11 @@ while( !done )
   if( modelSelected == 1) %Manson-Haferd
     mhModel = ModelMansonHaferd( creepData, isoStress );
     DisplayMansonHaferd(mhModel, creepData);
-    printf("Displaying Manson-Haferd model\n");
+    printf("- Displaying Manson-Haferd model in web browser\n");
   elseif( modelSelected == 2) %Larson-Miller
     lmModel = ModelLarsonMiller( creepData, isoStress );
     DisplayLarsonMiller(lmModel, creepData);
-    printf("Displaying Larson-Miller model\n");
+    printf("- Displaying Larson-Miller model in web browser\n");
   endif
 
   done = !YoN("Do you want to create another model?");
