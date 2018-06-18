@@ -1,0 +1,8 @@
+.main-panel {
+  width: calc(100%);
+  background-color: #f4f3ef;
+}
+
+.table>thead>tr>th {
+  text-transform: initial;
+}

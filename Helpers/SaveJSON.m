@@ -14,6 +14,11 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DataDummy()
-  printf('This is just a dummy file\n');
+function SaveJSON( data , filepath )
+  jsonFile = fopen(filepath, 'w');
+  jsonString = savejson('',data);
+  jsonString = strrep(jsonString, "\t", "");
+  jsonString = strrep(jsonString, "\n", "");
+  fprintf(jsonFile, "var data='%s';", jsonString);
+  fclose(jsonFile);
 endfunction

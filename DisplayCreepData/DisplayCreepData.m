@@ -14,6 +14,12 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DataDummy()
-  printf('This is just a dummy file\n');
-endfunction
+function DisplayCreepData( creepData ) 
+  creepData.T = creepData.T';
+
+  jsonFilePath = GetAbsolutePath('DisplayCreepData.m');
+  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
+
+  SaveJSON( creepData, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayCreepData.m'), '/template/index.html'));
+end

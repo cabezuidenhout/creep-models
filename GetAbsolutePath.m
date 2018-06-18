@@ -14,6 +14,16 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DataDummy()
-  printf('This is just a dummy file\n');
+function absPath = GetAbsolutePath( mfilename )
+  fileExtension = strsplit(mfilename, '.');
+
+  if( ( length(fileExtension) == 2 ) && ( fileExtension{2} == 'm') )
+    absPath = file_in_loadpath( mfilename );
+    absPath = substr( absPath, 1, strfind(absPath, mfilename)-2);
+  else
+    absPath = -1;
+    printf('!!! Invalid m-file name\n');
+  endif
+
+  
 endfunction

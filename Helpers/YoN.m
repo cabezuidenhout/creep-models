@@ -14,6 +14,13 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DataDummy()
-  printf('This is just a dummy file\n');
+function result = YoN( userPrompt ) 
+  response = tolower( input( [userPrompt, ' (yes or no) : '], 's' ) );
+  result = false;
+
+  while( !strcmp( response, 'yes' ) && !strcmp( response, 'no' ) )
+    response = input('Invalid awnser. Please awnser yes or no : ', 's');
+  end
+
+  result = strcmp( response, 'yes' );
 endfunction

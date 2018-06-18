@@ -14,6 +14,18 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DataDummy()
-  printf('This is just a dummy file\n');
+function convertedValues = ConvTemp( valuesToConvert , inputTemperatureUnit, outputTemperatureUnit )
+  inputTemperatureUnit = tolower( inputTemperatureUnit );
+  outputTemperatureUnit = tolower( outputTemperatureUnit );
+
+  if( abs( inputTemperatureUnit - outputTemperatureUnit ) == 8 )
+    if( inputTemperatureUnit == 'k' )
+      convertedValues = valuesToConvert - 273.15;
+    elseif( inputTemperatureUnit == 'c' )
+      convertedValues = valuesToConvert + 273.15;
+    end
+  else
+    printf('!!! Invalid input or output temperature unit\n');
+  endif
+
 endfunction
