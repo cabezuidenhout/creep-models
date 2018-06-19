@@ -29,6 +29,12 @@ function creepMatrix = GetCreepMatrix( creepData )
       creepMatrix.stress = [ creepMatrix.stress ; creepData.stress(:,i) ];
       creepMatrix.tr = [ creepMatrix.tr ; ones( size(creepData.T) )*creepData.tr(i) ];
     end
+
+    %Remove all zero stress values (TEST THIS)
+    invalidIndices = find( creepMatrix.stress == 0);
+    creepMatrix.stress(invalidIndices) = [];
+    creepMatrix.T(invalidIndices) = [];
+    creepMatrix.tr(invalidIndices) = [];
   else
     printf('Invalid creep data. Dimension mismatch\n');
   end
