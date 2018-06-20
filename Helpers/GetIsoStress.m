@@ -51,81 +51,81 @@ function isoStress = GetIsoStress( creepData, tolerance = 0)
 
               if( sum(stressMatches(:)) == 0 )
                 isoStress.stress = vertcat( isoStress.stress, averageStress);
-                isoStress.stressData.(num2str(averageStress)) = stressData;
-                isoStress.trData.(num2str(averageStress)) = trData;
-                isoStress.TData.(num2str(averageStress)) = TData;
-                isoStress.TDataK.(num2str(averageStress)) = ConvTemp(TData,'c','k');
+                isoStress.stressData.(num2str(averageStress, "%.2f")) = stressData;
+                isoStress.trData.(num2str(averageStress, "%.2f")) = trData;
+                isoStress.TData.(num2str(averageStress, "%.2f")) = TData;
+                isoStress.TDataK.(num2str(averageStress, "%.2f")) = ConvTemp(TData,'c','k');
 
                 currentFit = FitRegression( nOrderX( TData',1) , log10(trData') );
-                isoStress.fit.m.(num2str(averageStress)) = currentFit(2);
-                isoStress.fit.c.(num2str(averageStress)) = currentFit(1);
-                isoStress.fit.T.(num2str(averageStress)) = [ min(TData), max(TData) ];
+                isoStress.fit.m.(num2str(averageStress, "%.2f")) = currentFit(2);
+                isoStress.fit.c.(num2str(averageStress, "%.2f")) = currentFit(1);
+                isoStress.fit.T.(num2str(averageStress, "%.2f")) = [ min(TData), max(TData) ];
                 x1 = nOrderX( min(TData) , 1 );
                 x2 = nOrderX( max(TData) , 1 );
-                isoStress.fit.tr.(num2str(averageStress)) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];
+                isoStress.fit.tr.(num2str(averageStress, "%.2f")) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];
 
                 currentFit = FitRegression( nOrderX( ConvTemp(TData,'c','k')',1) , log10(trData') );
-                isoStress.fitK.m.(num2str(averageStress)) = currentFit(2);
-                isoStress.fitK.c.(num2str(averageStress)) = currentFit(1);
-                isoStress.fitK.T.(num2str(averageStress)) = [ min(ConvTemp(TData,'c','k')), max(ConvTemp(TData,'c','k')) ];
+                isoStress.fitK.m.(num2str(averageStress, "%.2f")) = currentFit(2);
+                isoStress.fitK.c.(num2str(averageStress, "%.2f")) = currentFit(1);
+                isoStress.fitK.T.(num2str(averageStress, "%.2f")) = [ min(ConvTemp(TData,'c','k')), max(ConvTemp(TData,'c','k')) ];
                 x1 = nOrderX( min(ConvTemp(TData,'c','k')) , 1 );
                 x2 = nOrderX( max(ConvTemp(TData,'c','k')) , 1 );
-                isoStress.fitK.tr.(num2str(averageStress)) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];
+                isoStress.fitK.tr.(num2str(averageStress, "%.2f")) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];
 
                 currentFit = FitRegression( nOrderX( (1./TData)',1) , log10(trData') );
-                isoStress.fitInverse.m.(num2str(averageStress)) = currentFit(2);
-                isoStress.fitInverse.c.(num2str(averageStress)) = currentFit(1);
-                isoStress.fitInverse.T.(num2str(averageStress)) = [ min((1./TData)), max((1./TData)) ];
+                isoStress.fitInverse.m.(num2str(averageStress, "%.2f")) = currentFit(2);
+                isoStress.fitInverse.c.(num2str(averageStress, "%.2f")) = currentFit(1);
+                isoStress.fitInverse.T.(num2str(averageStress, "%.2f")) = [ min((1./TData)), max((1./TData)) ];
                 x1 = nOrderX( min((1./TData)) , 1 );
                 x2 = nOrderX( max((1./TData)) , 1 );
-                isoStress.fitInverse.tr.(num2str(averageStress)) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];              
+                isoStress.fitInverse.tr.(num2str(averageStress, "%.2f")) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];              
 
                 currentFit = FitRegression( nOrderX( (1./ConvTemp(TData,'c','k'))',1) , log10(trData') );
-                isoStress.fitInverseK.m.(num2str(averageStress)) = currentFit(2);
-                isoStress.fitInverseK.c.(num2str(averageStress)) = currentFit(1);
-                isoStress.fitInverseK.T.(num2str(averageStress)) = [ min((1./ConvTemp(TData,'c','k'))), max((1./ConvTemp(TData,'c','k'))) ];
+                isoStress.fitInverseK.m.(num2str(averageStress, "%.2f")) = currentFit(2);
+                isoStress.fitInverseK.c.(num2str(averageStress, "%.2f")) = currentFit(1);
+                isoStress.fitInverseK.T.(num2str(averageStress, "%.2f")) = [ min((1./ConvTemp(TData,'c','k'))), max((1./ConvTemp(TData,'c','k'))) ];
                 x1 = nOrderX( min((1./ConvTemp(TData,'c','k'))) , 1 );
                 x2 = nOrderX( max((1./ConvTemp(TData,'c','k'))) , 1 );
-                isoStress.fitInverseK.tr.(num2str(averageStress)) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ]; 
+                isoStress.fitInverseK.tr.(num2str(averageStress, "%.2f")) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ]; 
               end 
             else
               isoStress.stress = averageStress;
-              isoStress.stressData.(num2str(averageStress)) = stressData;
-              isoStress.trData.(num2str(averageStress)) = trData;
-              isoStress.TData.(num2str(averageStress)) = TData;
-              isoStress.TDataK.(num2str(averageStress)) = ConvTemp(TData,'c','k');
+              isoStress.stressData.(num2str(averageStress, "%.2f")) = stressData;
+              isoStress.trData.(num2str(averageStress, "%.2f")) = trData;
+              isoStress.TData.(num2str(averageStress, "%.2f")) = TData;
+              isoStress.TDataK.(num2str(averageStress, "%.2f")) = ConvTemp(TData,'c','k');
 
               currentFit = FitRegression( nOrderX( TData',1) , log10(trData') );
-              isoStress.fit.m.(num2str(averageStress)) = currentFit(2);
-              isoStress.fit.c.(num2str(averageStress)) = currentFit(1);
-              isoStress.fit.T.(num2str(averageStress)) = [ min(TData), max(TData) ];
+              isoStress.fit.m.(num2str(averageStress, "%.2f")) = currentFit(2);
+              isoStress.fit.c.(num2str(averageStress, "%.2f")) = currentFit(1);
+              isoStress.fit.T.(num2str(averageStress, "%.2f")) = [ min(TData), max(TData) ];
               x1 = nOrderX( min(TData) , 1 );
               x2 = nOrderX( max(TData) , 1 );
-              isoStress.fit.tr.(num2str(averageStress)) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];
+              isoStress.fit.tr.(num2str(averageStress, "%.2f")) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];
 
               currentFit = FitRegression( nOrderX( ConvTemp(TData,'c','k')',1) , log10(trData') );
-              isoStress.fitK.m.(num2str(averageStress)) = currentFit(2);
-              isoStress.fitK.c.(num2str(averageStress)) = currentFit(1);
-              isoStress.fitK.T.(num2str(averageStress)) = [ min(ConvTemp(TData,'c','k')), max(ConvTemp(TData,'c','k')) ];
+              isoStress.fitK.m.(num2str(averageStress, "%.2f")) = currentFit(2);
+              isoStress.fitK.c.(num2str(averageStress, "%.2f")) = currentFit(1);
+              isoStress.fitK.T.(num2str(averageStress, "%.2f")) = [ min(ConvTemp(TData,'c','k')), max(ConvTemp(TData,'c','k')) ];
               x1 = nOrderX( min(ConvTemp(TData,'c','k')) , 1 );
               x2 = nOrderX( max(ConvTemp(TData,'c','k')) , 1 );
-              isoStress.fitK.tr.(num2str(averageStress)) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];
+              isoStress.fitK.tr.(num2str(averageStress, "%.2f")) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];
 
               currentFit = FitRegression( nOrderX( (1./TData)',1) , log10(trData') );
-              isoStress.fitInverse.m.(num2str(averageStress)) = currentFit(2);
-              isoStress.fitInverse.c.(num2str(averageStress)) = currentFit(1);
-              isoStress.fitInverse.T.(num2str(averageStress)) = [ min((1./TData)), max((1./TData)) ];
+              isoStress.fitInverse.m.(num2str(averageStress, "%.2f")) = currentFit(2);
+              isoStress.fitInverse.c.(num2str(averageStress, "%.2f")) = currentFit(1);
+              isoStress.fitInverse.T.(num2str(averageStress, "%.2f")) = [ min((1./TData)), max((1./TData)) ];
               x1 = nOrderX( min((1./TData)) , 1 );
               x2 = nOrderX( max((1./TData)) , 1 );
-              isoStress.fitInverse.tr.(num2str(averageStress)) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];              
+              isoStress.fitInverse.tr.(num2str(averageStress, "%.2f")) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ];              
 
               currentFit = FitRegression( nOrderX( (1./ConvTemp(TData,'c','k'))',1) , log10(trData') );
-              isoStress.fitInverseK.m.(num2str(averageStress)) = currentFit(2);
-              isoStress.fitInverseK.c.(num2str(averageStress)) = currentFit(1);
-              isoStress.fitInverseK.T.(num2str(averageStress)) = [ min((1./ConvTemp(TData,'c','k'))), max((1./ConvTemp(TData,'c','k'))) ];
+              isoStress.fitInverseK.m.(num2str(averageStress, "%.2f")) = currentFit(2);
+              isoStress.fitInverseK.c.(num2str(averageStress, "%.2f")) = currentFit(1);
+              isoStress.fitInverseK.T.(num2str(averageStress, "%.2f")) = [ min((1./ConvTemp(TData,'c','k'))), max((1./ConvTemp(TData,'c','k'))) ];
               x1 = nOrderX( min((1./ConvTemp(TData,'c','k'))) , 1 );
               x2 = nOrderX( max((1./ConvTemp(TData,'c','k'))) , 1 );
-              isoStress.fitInverseK.tr.(num2str(averageStress)) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ]; 
+              isoStress.fitInverseK.tr.(num2str(averageStress, "%.2f")) = [ PredictRegression(currentFit,x1), PredictRegression(currentFit,x2) ]; 
             end
           end
         end
@@ -137,7 +137,8 @@ function isoStress = GetIsoStress( creepData, tolerance = 0)
   isoStress.tolerance = tolerance;
 
   if( isfield(isoStress, 'stress') )
-    isoStress.stress = sort(isoStress.stress);
+    isoStress.stress = isoStress.stress';
+    isoStress.stressSorted = sort(isoStress.stress);
   end
   
 endfunction

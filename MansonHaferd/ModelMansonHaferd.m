@@ -31,7 +31,7 @@ function mhModel = ModelMansonHaferd( creepData, isoStressData, fitAll = false )
   else
     pMhTrain = m;
     trainData.T = [struct2cell(isoStressData.TData){:}];
-    trainData.stress = isoStressData.stress;
+    trainData.stress = isoStressData.stress';
   end
 
   masterCurveCoeff = FitRegression( nOrderX( log10( trainData.stress), 4), pMhTrain );

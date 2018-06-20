@@ -133,10 +133,10 @@ function plotIsoStress( graphElement, isoStressData, chartTitle ) {
     var x = [];
     var y = [];
     
-    var currentStress = isoStressData.stress[s];
+    var currentStress = isoStressData.stressSorted[s].toFixed(2);
     
     if( isoStressData.TData[currentStress] == undefined ) {
-      currentStress = Object.keys(isoStressData.TData)[s];
+      console.error("Invalid Key : " + s.toFixed(2) );
     }
 
     var currentColor = getColor(s);
@@ -196,10 +196,10 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
     var x = [];
     var y = [];
 
-    var currentStress = isoStressData.stress[s];
-
+    var currentStress = isoStressData.stressSorted[s].toFixed(2);
+    
     if( isoStressData.TData[currentStress] == undefined ) {
-      currentStress = Object.keys(isoStressData.TData)[s];
+      console.error("Invalid Key : " + s.toFixed(2) );
     }
 
     var currentColor = getColor(s);
