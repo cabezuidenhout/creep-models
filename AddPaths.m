@@ -1,10 +1,7 @@
 addpath('Data');
 addpath('DisplayCreepData');
-addpath('DisplayIsoStress');
 addpath('Helpers');
 addpath('jsonlab');
-addpath('LarsonMiller');
-addpath('MansonHaferd');
-addpath('MansonSuccop');
+addpath('DisplayIsoStressData');
 addpath('Regression');
-addpath('OrrSherbyDorn');
+addpath('MansonHaferd');

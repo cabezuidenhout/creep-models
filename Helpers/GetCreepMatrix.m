@@ -1,18 +1,18 @@
 % Copyright © 2018 CA Bezuidenhout
-% This file is part of creep-models.
+% This file is part of Creep Models.
 %
-% creep-models is free software: you can redistribute it and/or modify
+% Creep Models is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
 % the Free Software Foundation, either version 3 of the License, or
 % (at your option) any later version.
 %
-% creep-models is distributed in the hope that it will be useful,
+% Creep Models is distributed in the hope that it will be useful,
 % but WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 % GNU General Public License for more details.
 %
 % You should have received a copy of the GNU General Public License
-% along with creep-models.  If not, see <http://www.gnu.org/licenses/>.
+% along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
 function creepMatrix = GetCreepMatrix( creepData )
   
@@ -29,6 +29,12 @@ function creepMatrix = GetCreepMatrix( creepData )
       creepMatrix.stress = [ creepMatrix.stress ; creepData.stress(:,i) ];
       creepMatrix.tr = [ creepMatrix.tr ; ones( size(creepData.T) )*creepData.tr(i) ];
     end
+
+    %Remove all zero stress values (TEST THIS)
+    invalidIndices = find( creepMatrix.stress == 0);
+    creepMatrix.stress(invalidIndices) = [];
+    creepMatrix.T(invalidIndices) = [];
+    creepMatrix.tr(invalidIndices) = [];
   else
     printf('Invalid creep data. Dimension mismatch\n');
   end

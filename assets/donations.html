@@ -3,80 +3,81 @@
 
 <head>
   <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="img/apple-icon.png">
+  <link rel="icon" type="image/png" href="img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>Creep Models - Donations</title>
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport'
-  />
+  <title>
+    Donations
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport'/>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <link href="css/fontawesome-all.min.css" rel="stylesheet" />  
   <!-- CSS Files -->
   <link href="css/bootstrap.min.css" rel="stylesheet" />
-  <link href="css/theme.css" rel="stylesheet" />
+  <link href="css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
+  <!-- Custom CSS File -->
   <link href="css/style.css" rel="stylesheet" />
 </head>
 
 <body class="">
-  <div class="wrapper ">
+  <div class="wrapper">
     <div class="main-panel">
-      <div class="panel-header">
-      </div>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="#">Donations</a>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
       <div class="content">
-
-        <!-- Model Parameters -->
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
-              <div class="card-header">
-                <h2 class="card-title text-center">Donations</h2>
-              </div>
-              <div class="card-body">
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <p class="text-center">
-                        If you found this software usefull please consider making a donation
-                      </p>
-                    </div>
+              <div class="card-body text-center">
+                <div class="row">
+                  <div class="col-12">
+                    <h5>If you found this software usefull, please consider making a donation</h5>
                   </div>
-                  <div class="row justify-content-center">
-                    <div class="col-md-6">
-                      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                        <input type="hidden" name="cmd" value="_s-xclick">
-                        <input type="hidden" name="hosted_button_id" value="GFBKFRHAKW6X8">
-                        <input type="hidden" name="on0" value="Message">
-
-                        <div class="form-group">
-                          <label for="donationMessage">Donation Message :</label>
-                          <input type="text" name="os0" maxlength="200" class="form-control" id="donationMessage">
-                          <small class="form-text text-muted">Maximum 200 characters in donation message</small>
-                        </div>
-                        <div class="form-group text-center">
-                          <input type="image" src="img/button_donate.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-                          <small class="form-text text-info">Makes donation through
-                            <a class="text-info" href="https://www.paypal.com/" target="_blank">PayPal</a>
-                          </small>
-                        </div>
-                      </form>
-                    </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-6">
+                    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                      <input type="hidden" name="cmd" value="_s-xclick">
+                      <input type="hidden" name="hosted_button_id" value="GFBKFRHAKW6X8">
+                      <input type="hidden" name="on0" value="Message">
+              
+                      <div class="form-group">
+                        <label for="donationMessage">Donation Message :</label>
+                        <input type="text" name="os0" maxlength="200" class="form-control" id="donationMessage">
+                        <small class="form-text text-muted">Maximum 200 characters in donation message</small>
+                      </div>
+                      <div class="form-group text-center">
+                        <input type="image" src="img/button_donate.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                        <small class="form-text text-info">Makes donation through
+                          <a class="text-info" href="https://www.paypal.com/" target="_blank">PayPal</a>
+                        </small>
+                      </div>
+                    </form>
                   </div>
-
-                  <div class="row justify-content-center">
-                    <div class="col-md-12 text-center">
-                      <br>
-                      <br>
-                      <h5>
-                        <img src="img/BTC.png" width="20px" height="20px"> Bitcoin : 1CvMMtryz72Gbq4RPp2gJwWeRsC7nkhq3S</h5>
-                    </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-md-12 text-center">
+                    <br>
+                    <br>
+                    <h5>
+                      <img src="img/BTC.png" width="30px" height="30px"> Bitcoin : 1CvMMtryz72Gbq4RPp2gJwWeRsC7nkhq3S</h5>
                   </div>
-                  <div class="row justify-content-center">
-                    <div class="col-md-12 text-center">
-                      <h5>
-                        <img src="img/ETH.png" width="20px" height="20px"> Etherium : 0xb0ab6133A873e6951F80163BF77f2281A41E867c
-                      </h5>
-                      <br>
-                      <br>
-                    </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-md-12 text-center">
+                    <h5>
+                      <img src="img/ETH.png" width="30px" height="30px"> Etherium : 0xb0ab6133A873e6951F80163BF77f2281A41E867c
+                    </h5>
+                    <br>
+                    <br>
                   </div>
                 </div>
               </div>
@@ -85,48 +86,52 @@
         </div>
       </div>
 
-      <footer class="footer">
+      <footer class="footer footer-black  footer-white ">
         <div class="container-fluid">
-          <nav>
-            <ul>
-              <li>
-                <a href="liscense.html">
-                  Liscense
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/ingeneric/creep-models">
-                  Github Page
-                </a>
-              </li>
-              <li>
-                <a href="donations.html">
-                  Donations
-                </a>
-              </li>
-            </ul>
-          </nav>
-          <div class="copyright">
-            &copy;
-            <script>
-              document.write(new Date().getFullYear())
-            </script>, Created by
-            <a href="" target="_blank">CA Bezuidenhout</a>.
+          <div class="row">
+            <nav class="footer-nav">
+              <ul>
+                <li>
+                  <a href="#GITHUB" target="_blank" title="Github Page" class="btn btn-info">
+                    <i class="fab fa-github"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#"title="Donations" class="btn btn-info">
+                    <i class="far fa-smile"></i>
+                  </a>
+                </li>
+                <li>
+                  <a href="#Lic" target="_blank" title="Licenses" class="btn btn-info">
+                    <span class="fa fa-balance-scale"></span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="credits ml-auto btn btn-default">
+              <span class="copyright">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script> CA Bezuidenhout
+              </span>
+            </div>
           </div>
         </div>
       </footer>
     </div>
   </div>
-</body>
-<!--   Core JS Files   -->
-<script src="js/core/jquery.min.js"></script>
-<script src="js/core/popper.min.js"></script>
-<script src="js/core/bootstrap.min.js"></script>
-<script src="js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!--   Core JS Files   -->
+  <script src="js/core/jquery.min.js"></script>
+  <script src="js/core/popper.min.js"></script>
+  <script src="js/core/bootstrap.min.js"></script>
+  <script src="js/plugins/perfect-scrollbar.jquery.min.js"></script>  
+  <!--  Notifications Plugin    -->
+  <script src="js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
 
-<!-- Chart JS -->
-<script src="js/plugins/chartjs.min.js"></script>
-<!--  Notifications Plugin    -->
-<script src="js/plugins/bootstrap-notify.js"></script>
+  
+</body>
 
 </html>

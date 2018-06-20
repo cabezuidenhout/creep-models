@@ -1,18 +1,18 @@
 % Copyright © 2018 CA Bezuidenhout
-% This file is part of creep-models.
+% This file is part of Creep Models.
 %
-% creep-models is free software: you can redistribute it and/or modify
+% Creep Models is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
 % the Free Software Foundation, either version 3 of the License, or
 % (at your option) any later version.
 %
-% creep-models is distributed in the hope that it will be useful,
+% Creep Models is distributed in the hope that it will be useful,
 % but WITHOUT ANY WARRANTY; without even the implied warranty of
 % MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 % GNU General Public License for more details.
 %
 % You should have received a copy of the GNU General Public License
-% along with creep-models.  If not, see <http://www.gnu.org/licenses/>.
+% along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
 
 clear all;
@@ -82,7 +82,7 @@ while( !done )
     end
   end
 
-  nSelections = 4;
+  nSelections = 1;
   validModelSelected = false;
   modelSelected = 0;
 
@@ -112,14 +112,16 @@ while( !done )
     else
       tolerance = abs(tolerance);
       isoStress = GetIsoStress(creepData, tolerance);
-      DisplayIsoStress(isoStress);
+      DisplayIsoStressData(isoStress);
       printf("- Displaying iso-stress data in web browser\n");
       correctTolerance = YoN("Do you want to use these iso-stress lines?");
     endif
   end
 
+  useAllData = !YoN("Do you want to fit the mastercurve to only iso-stress data?");
+
   if( modelSelected == 1) %Manson-Haferd
-    mhModel = ModelMansonHaferd( creepData, isoStress );
+    mhModel = ModelMansonHaferd( creepData, isoStress , useAllData);
     DisplayMansonHaferd(mhModel, creepData);
     printf("- Displaying Manson-Haferd model in web browser\n");
   elseif( modelSelected == 2) %Larson-Miller
@@ -141,5 +143,3 @@ end
 
 printf("Thank you for using Creep Models\n");
 exit();
-
-
