@@ -485,7 +485,7 @@ function plotConstantTemperature(graphElement, constT, title) {
 
   for (var i = 0; i < constT.stress.length; i++) {
     x.push(constT.stress[i]);
-    y.push(constT.tr[i][0]); //TODO Fix this
+    y.push(constT.tr[i][0]);
   }
 
   var trace = {
@@ -506,6 +506,9 @@ function plotConstantTemperature(graphElement, constT, title) {
       type: 'log',
       title: 'Time to Rupture (h)'
     },
+    line: { 
+      color: getColor(0)
+    },
     showlegend: true
   };
 
@@ -523,7 +526,7 @@ function plotConstantStress(graphElement, constStress, title) {
   var y = [];
 
   for (var i = 0; i < constStress.T.length; i++) {
-    x.push(constStress.T[i][0]); //TODO Fix this
+    x.push(constStress.T[i][0]);
     y.push(constStress.tr[i][0]);
   }
 
@@ -544,6 +547,9 @@ function plotConstantStress(graphElement, constStress, title) {
     yaxis: {
       title: 'Time to Rupture (h)'
     },
+    line: { 
+      color: getColor(0)
+    },
     showlegend: true
   };
 
@@ -551,7 +557,50 @@ function plotConstantStress(graphElement, constStress, title) {
 }
 // -- END Constant Variable Plots
 
+// -- Excel Export
+function excelAddStressTest( excel, stressTest, currentSheet , headStyle, bodyStyle ) {
+  excel.addSheet('Stress Test');
+  excel.set(1, 0, 0, 'tr (h)', headStyle);
+  excel.set(1, 1, 0, 'Temperature (°C)', headStyle);
+  excel.set(1, 2, 0, 'Stress (MPa)', headStyle);
+  excel.set(1, 3, 0, 'Stress Predicted (MPa)', headStyle);
+  excel.set(1, 4, 0, 'Error (h)', headStyle);
+  excel.set(1, 5, 0, '|Error| (%)', headStyle);
 
+  var nTr = stressTest.tr.length;
+  var nT = stressTest.T.length;
+
+  for (var a = 0; a < nTr; a++) {
+    for (var b = 0; b < nT; b++) {
+      excel.set(currentSheet+1, 0, 1 + a * nT + b, stressTest.tr[a], bodyStyle);
+      excel.set(currentSheet+1, 1, 1 + a * nT + b, stressTest.T[b], bodyStyle);
+      excel.set(currentSheet+1, 2, 1 + a * nT + b, stressTest.stressActual[b][a], bodyStyle);
+      excel.set(currentSheet+1, 3, 1 + a * nT + b, stressTest.stressPredicted[b][a], bodyStyle);
+      excel.set(currentSheet+1, 4, 1 + a * nT + b, stressTest.errors.difference[b][a], bodyStyle);
+      excel.set(currentSheet+1, 5, 1 + a * nT + b, stressTest.errors.percentage[b][a], bodyStyle);
+    }
+  }
+}
+
+function excelAddTrTest( excel, trTest, currentSheet, headStyle, bodyStyle ) {
+  excel.addSheet('tr Test', headStyle);
+  excel.set(2, 0, 0, 'Temperature (°C)', headStyle);
+  excel.set(2, 1, 0, 'Stress (MPa)', headStyle);
+  excel.set(2, 2, 0, 'tr (h)', headStyle);
+  excel.set(2, 3, 0, 'tr Predicted (h)', headStyle);
+  excel.set(2, 4, 0, 'Error (h)', headStyle);
+  excel.set(2, 5, 0, '|Error| (%)', headStyle);
+
+  for (var k = 0; k < trTest.T.length; k++) {
+    excel.set(currentSheet+1, 0, 1 + k, trTest.T[k], bodyStyle);
+    excel.set(currentSheet+1, 1, 1 + k, trTest.stress[k], bodyStyle);
+    excel.set(currentSheet+1, 2, 1 + k, trTest.trActual[k], bodyStyle);
+    excel.set(currentSheet+1, 3, 1 + k, trTest.trPredicted[k], bodyStyle);
+    excel.set(currentSheet+1, 4, 1 + k, trTest.errors.difference[k], bodyStyle);
+    excel.set(currentSheet+1, 5, 1 + k, Math.abs(trTest.errors.percentage[k]), bodyStyle);
+  }
+}
+// -- END Excel Export
 
 document.addEventListener('click', function (event) {
   if (event.target.classList.contains('cp')) {

@@ -1,9 +1,9 @@
 var mhInfo = JSON.parse(data);
 
-setTitle(document.getElementById('pageTitle'), mhInfo.material + ' Manson-Haferd Model');
+setTitle(document.getElementById('pageTitle'), mhInfo.material + ' ' + mhInfo.model + ' Model');
 showMHParametersTable(document.getElementById('mhParametersTable'));
 showMasterCuveTable(document.getElementById('mastercurveTable'), mhInfo.masterCurve.coefficients);
-plotMasterCurve(document.getElementById('masterCurvePlot'), mhInfo.masterCurve, mhInfo.material + " Manson-Haferd Mastercuve");
+plotMasterCurve(document.getElementById('masterCurvePlot'), mhInfo.masterCurve, mhInfo.material + ' ' + mhInfo.model +" Mastercuve");
 plotIsoStress(document.getElementById('isoStressPlot'), mhInfo.isoStress, mhInfo.material + " Iso-Stress (±" + mhInfo.isoStress.tolerance + "MPa)");
 
 showStressTestTable(document.getElementById('stressTest'), mhInfo.stressTest, document.getElementById('stressTestWarning'));
@@ -82,46 +82,8 @@ function exportToExcel() {
     excel.set(0, 1, 4 + i, mhInfo.masterCurve.coefficients[i], defaultStyle);
   }
 
-  //---------- Stress Sheet ---------------------------
-  excel.addSheet('Stress Test');
-  excel.set(1, 0, 0, 'tr (h)', headStyle);
-  excel.set(1, 1, 0, 'Temperature (°C)', headStyle);
-  excel.set(1, 2, 0, 'Stress (MPa)', headStyle);
-  excel.set(1, 3, 0, 'Stress Predicted (MPa)', headStyle);
-  excel.set(1, 4, 0, 'Error (h)', headStyle);
-  excel.set(1, 5, 0, '|Error| (%)', headStyle);
-
-  var nTr = mhInfo.stressTest.tr.length;
-  var nT = mhInfo.stressTest.T.length;
-
-  for (var a = 0; a < nTr; a++) {
-    for (var b = 0; b < nT; b++) {
-      excel.set(1, 0, 1 + a * nT + b, mhInfo.stressTest.tr[a], defaultStyle);
-      excel.set(1, 1, 1 + a * nT + b, mhInfo.stressTest.T[b], defaultStyle);
-      excel.set(1, 2, 1 + a * nT + b, mhInfo.stressTest.stressActual[b][a], defaultStyle);
-      excel.set(1, 3, 1 + a * nT + b, mhInfo.stressTest.stressPredicted[b][a], defaultStyle);
-      excel.set(1, 4, 1 + a * nT + b, mhInfo.stressTest.errors.difference[b][a], defaultStyle);
-      excel.set(1, 5, 1 + a * nT + b, mhInfo.stressTest.errors.percentage[b][a], defaultStyle);
-    }
-  }
-
-  //---------- Tr Sheet ---------------------------
-  excel.addSheet('tr Test', headStyle);
-  excel.set(2, 0, 0, 'Temperature (°C)', headStyle);
-  excel.set(2, 1, 0, 'Stress (MPa)', headStyle);
-  excel.set(2, 2, 0, 'tr (h)', headStyle);
-  excel.set(2, 3, 0, 'tr Predicted (h)', headStyle);
-  excel.set(2, 4, 0, 'Error (h)', headStyle);
-  excel.set(2, 5, 0, '|Error| (%)', headStyle);
-
-  for (var k = 0; k < mhInfo.trTest.T.length; k++) {
-    excel.set(2, 0, 1 + k, mhInfo.trTest.T[k], defaultStyle);
-    excel.set(2, 1, 1 + k, mhInfo.trTest.stress[k], defaultStyle);
-    excel.set(2, 2, 1 + k, mhInfo.trTest.trActual[k], defaultStyle);
-    excel.set(2, 3, 1 + k, mhInfo.trTest.trPredicted[k], defaultStyle);
-    excel.set(2, 4, 1 + k, mhInfo.trTest.errors.difference[k], defaultStyle);
-    excel.set(2, 5, 1 + k, Math.abs(mhInfo.trTest.errors.percentage[k]), defaultStyle);
-  }
+  excelAddStressTest( excel, mhInfo.stressTest, 0, headStyle, defaultStyle );
+  excelAddTrTest( excel, mhInfo.trTest, 1, headStyle, defaultStyle );
 
   excel.generate(mhInfo.material + '_' + new Date().toISOString().substring(0, 10) + '_MH.xlsx');
 }
