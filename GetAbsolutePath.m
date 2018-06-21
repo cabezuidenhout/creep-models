@@ -24,6 +24,4 @@ function absPath = GetAbsolutePath( mfilename )
     absPath = -1;
     printf('!!! Invalid m-file name\n');
   endif
-
-  
 endfunction
