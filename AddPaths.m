@@ -1,5 +1,5 @@
 addpath('Data');
-% addpath('DisplayCreepData');
+addpath('DisplayCreepData');
 addpath('Helpers');
 addpath('IsoStress');
 addpath('jsonlab');

@@ -142,7 +142,7 @@ function plotIsoStress( graphElement, isoStressData, chartTitle ) {
     //Plot Data Points
     for( var i = 0; i < isoStress.trData.length; i++) {
       x.push( isoStress.TData[i] );
-      y.push( Math.log10( isoStress.trData[i] ) );
+      y.push( isoStress.trData[i] );
     }
 
     var trace = {
@@ -160,7 +160,7 @@ function plotIsoStress( graphElement, isoStressData, chartTitle ) {
     //Plot Fit
     trace = {
       x: isoStress.fit.T,
-      y: isoStress.fit.logtr,
+      y: isoStress.fit.tr,
       mode: 'lines',
       name: currentStress + 'MPa Fit',
       legendgroup: s,
@@ -176,7 +176,8 @@ function plotIsoStress( graphElement, isoStressData, chartTitle ) {
       title: 'Temperature (°C)'
     },
     yaxis: {
-      title: 'log(t) (h)'
+      title: 'Time to Rupture (h)',
+      type: 'log'
     }
   };
 
@@ -202,7 +203,7 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
 
     for( var i = 0; i < isoStress.TData.length; i++) {
       x.push( 1/isoStress.TData[i]);
-      y.push( Math.log10( isoStress.trData[i] ) );
+      y.push( isoStress.trData[i] );
     }
 
     //var currentMarker = Plotly.PlotSchema.get().traces.scatter.attributes.marker.symbol.values[ 5+s*8 ];
@@ -225,7 +226,7 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
 
     trace = {
       x: isoStress.fitInverse.T,
-      y: isoStress.fitInverse.logtr,
+      y: isoStress.fitInverse.tr,
       mode: 'lines',
       name: currentStress + 'MPa Fit',
       legendgroup: s,
@@ -243,7 +244,8 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
       title: '1/Temperature (1/°C)'
     },
     yaxis: {
-      title: 'log(t) (h)'
+      title: 'Time to Rupture (h)',
+      type: 'log'
     }
   };
 
