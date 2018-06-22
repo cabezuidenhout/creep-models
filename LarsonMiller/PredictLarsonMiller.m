@@ -14,18 +14,7 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function convertedValues = ConvTemp( valuesToConvert , inputTemperatureUnit, outputTemperatureUnit )
-  inputTemperatureUnit = tolower( inputTemperatureUnit );
-  outputTemperatureUnit = tolower( outputTemperatureUnit );
-
-  if( abs( inputTemperatureUnit - outputTemperatureUnit ) == 8 )
-    if( inputTemperatureUnit == 'k' )
-      convertedValues = valuesToConvert - 273.15;
-    elseif( inputTemperatureUnit == 'c' )
-      convertedValues = valuesToConvert + 273.15;
-    end
-  else
-    printf('!!! Invalid input or output temperature unit\n');
-  endif
-
+function tr = PredictLarsonMiller( lmModel, T, stress )
+  tr = (PredictRegression( lmModel.masterCurve.coefficients, nOrderX( log10(stress), 4 ))./T ) - lmModel.Clm;  
+  tr = 10.^tr; 
 endfunction

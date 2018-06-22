@@ -7,14 +7,14 @@ showMasterCuveTable( document.getElementById('mastercurveTable') , lmInfo.master
 plotIsoStress(document.getElementById('isoStressPlot'), lmInfo.isoStress, lmInfo.material + " Iso-Stress (±" + lmInfo.isoStress.tolerance + "MPa)");
 plotMasterCurve(document.getElementById('masterCurvePlot'), lmInfo.masterCurve, lmInfo.material + " Manson-Haferd Mastercuve");
 
-/*showStressTestTable(document.getElementById('stressTest'), lmInfo.stressTest, document.getElementById('stressTestWarning'));
+showStressTestTable(document.getElementById('stressTest'), lmInfo.stressTest, document.getElementById('stressTestWarning'));
 showTestSummaryTable(document.getElementById('stressTestSummary'), lmInfo.stressTest, 'MPa');
 
 showTrTestTable(document.getElementById('trTest'), lmInfo.trTest, document.getElementById('trTestWarning'));
 showTestSummaryTable(document.getElementById('trTestSummary'), lmInfo.trTest, 'h');
 
 plotConstantStress(document.getElementById('constStressPlot'), lmInfo.constStress);
-plotConstantTemperature(document.getElementById('constTPlot'), lmInfo.constT);*/
+plotConstantTemperature(document.getElementById('constTPlot'), lmInfo.constT);
 
 function showParametersTable( tableElement ) {
   var head = createHead(tableElement);
@@ -40,7 +40,7 @@ document.getElementById('calculateButton').onclick = function (e) {
     p += lmInfo.masterCurve.coefficients[i] * Math.pow(Math.log10(stress), i);
   }
 
-  var t = Math.pow(10, p * (T - lmInfo.Ta) + lmInfo.logta);
+  var t = Math.pow(10, (p/T)-lmInfo.Clm);
 
   document.getElementById('calculatedTr').innerText = t.toFixed(0);
 }
@@ -64,26 +64,25 @@ function exportToExcel() {
   excel.set(0, 0, 0, lmInfo.material + " Manson-Haferd Model", headStyle);
   
 
-  excel.set(0, 0, 1, 'log(ta)', defaultStyle);
-  excel.set(0, 1, 1, lmInfo.logta, defaultStyle);
+  excel.set(0, 0, 1, 'Clm', defaultStyle);
+  excel.set(0, 1, 1, lmInfo.Clm, defaultStyle);
 
-  excel.set(0, 0, 2, 'Ta', defaultStyle);
-  excel.set(0, 1, 2, lmInfo.Ta, defaultStyle);
+  excel.set(0, 0, 2, 'Mastercuve Coefficients', headStyle);
+  excel.set(0, 0, 3, 'A', defaultStyle);
+  excel.set(0, 0, 4, 'B', defaultStyle);
+  excel.set(0, 0, 5, 'C', defaultStyle);
+  excel.set(0, 0, 6, 'D', defaultStyle);
+  excel.set(0, 0, 7, 'E', defaultStyle);
 
-  excel.set(0, 0, 3, 'Mastercuve Coefficients', headStyle);
-  excel.set(0, 0, 4, 'A', defaultStyle);
-  excel.set(0, 0, 5, 'B', defaultStyle);
-  excel.set(0, 0, 6, 'C', defaultStyle);
-  excel.set(0, 0, 7, 'D', defaultStyle);
-  excel.set(0, 0, 8, 'E', defaultStyle);
+  var offset = 3;
 
   for (var i = 0; i < lmInfo.masterCurve.coefficients.length; i++) {
-    excel.set(0, 1, 4 + i, lmInfo.masterCurve.coefficients[i], defaultStyle);
+    excel.set(0, 1, offset + i, lmInfo.masterCurve.coefficients[i], defaultStyle);
   }
 
   excelAddStressTest( excel, lmInfo.stressTest, 0, headStyle, defaultStyle );
   excelAddTrTest( excel, lmInfo.trTest, 1, headStyle, defaultStyle );
-  excel.generate(lmInfo.material + '_' + new Date().toISOString().substring(0, 10) + '_MH.xlsx');
+  excel.generate(lmInfo.material + '_' + new Date().toISOString().substring(0, 10) + '_LM.xlsx');
 }
 
 window.onresize = function () {

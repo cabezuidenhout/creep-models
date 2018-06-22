@@ -14,16 +14,12 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DisplayLarsonMiller( lmModel, creepData )
-  lmInfo = lmModel;
-  lmInfo.stressTest = StressTestLarsonMiller( lmModel, creepData );
-  lmInfo.trTest = TrTestLarsonMiller( lmModel, creepData );
-  lmInfo.constT = ConstTLarsonMiller( lmModel , mean( lmInfo.stressTest.T(:) ) );
-  lmInfo.constStress = ConstStressLarsonMiller( lmModel, mean( lmModel.masterCurve.trainData.stress(:) ) );
-
-  jsonFilePath = GetAbsolutePath('DisplayLarsonMiller.m');
-  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
-
-  SaveJSON( lmInfo, jsonFilePath);
-  open( strcat(GetAbsolutePath('DisplayLarsonMiller.m'), '/template/index.html'));
+function testResult = TrTestLarsonMiller( lmModel, creepData )
+  creepMatrix = GetCreepMatrix( creepData );
+  
+  testResult.T = creepMatrix.T;
+  testResult.stress = creepMatrix.stress;
+  testResult.trActual = creepMatrix.tr;
+  testResult.trPredicted = PredictLarsonMiller( lmModel, ToK(testResult.T), testResult.stress );
+  testResult.errors = Errors(testResult.trPredicted, testResult.trActual );
 endfunction
