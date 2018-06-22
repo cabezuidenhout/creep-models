@@ -14,31 +14,17 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function mhModel = ModelMansonHaferd( creepData, isoStressData, fitAll = false ) 
-  c = isoStressData.cK;
-  m = isoStressData.mK;
+function DisplayMansonHaferd( mhModel, creepData ) 
 
-  A = [ -m, ones( size(m) ) ];
+  mhInfo = mhModel;
+  mhInfo.stressTest = StressTestMansonHaferd( mhModel, creepData );
+  mhInfo.trTest = TrTestMansonHaferd( mhModel, creepData );
+  mhInfo.constT = ConstTMansonHaferd( mhModel , mean( mhInfo.stressTest.T(:) ) );
+  mhInfo.constStress = ConstStressMansonHaferd( mhModel, mean( mhInfo.masterCurve.trainData.stress(:) ) );
 
-  params = FitRegression(A,c);
+  jsonFilePath = GetAbsolutePath('DisplayMansonHaferd.m');
+  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
 
-  logta = params(2);
-  Ta = params(1);
-
-  mhModel.model = 'Manson-Haferd';
-  mhModel.material = creepData.material;
-  mhModel.logta = logta;
-  mhModel.Ta = Ta;
-
-  if( fitAll)
-    trainData = GetCreepMatrix(creepData);
-    trainData.p = (log10( trainData.tr ) - logta) ./ ( ToK(trainData.T) - Ta);
-  else
-    trainData.p = m;
-    trainData.stress = isoStressData.stress;
-    trainData.T = GetIsoStressT( isoStressData );
-  end
-
-  mhModel.masterCurve = FitMasterCurve(trainData);
-  mhModel.isoStress = isoStressData;
-endfunction
+  SaveJSON( mhInfo, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayMansonHaferd.m'), '/template/index.html'));
+end

@@ -14,31 +14,8 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function mhModel = ModelMansonHaferd( creepData, isoStressData, fitAll = false ) 
-  c = isoStressData.cK;
-  m = isoStressData.mK;
-
-  A = [ -m, ones( size(m) ) ];
-
-  params = FitRegression(A,c);
-
-  logta = params(2);
-  Ta = params(1);
-
-  mhModel.model = 'Manson-Haferd';
-  mhModel.material = creepData.material;
-  mhModel.logta = logta;
-  mhModel.Ta = Ta;
-
-  if( fitAll)
-    trainData = GetCreepMatrix(creepData);
-    trainData.p = (log10( trainData.tr ) - logta) ./ ( ToK(trainData.T) - Ta);
-  else
-    trainData.p = m;
-    trainData.stress = isoStressData.stress;
-    trainData.T = GetIsoStressT( isoStressData );
-  end
-
-  mhModel.masterCurve = FitMasterCurve(trainData);
-  mhModel.isoStress = isoStressData;
+function constT = ConstStressMansonHaferd( mhModel, stress, minT = 400, maxT = 750, n=200)
+  constT.stress = stress;
+  constT.T = linspace( minT, maxT, n)';
+  constT.tr = PredictMansonHaferd( mhModel, ToK(constT.T), stress );
 endfunction

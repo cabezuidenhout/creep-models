@@ -254,17 +254,17 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
 // -- END Iso-Stress Plots
 
 // -- Master Curve
-function showMasterCuveTable(tableElement, coefficients) {
-  if (coefficients) {
+function showMasterCuveTable(tableElement, masterCurveData) {
+  if (masterCurveData.coefficients) {
     var head = createHead(tableElement);
     var headRow = head.insertRow();
 
     var body = tableElement.createTBody();
     var bodyRow = body.insertRow();
 
-    for (var i = 65; i < 65 + coefficients.length; i++) {
+    for (var i = 65; i < 65 + masterCurveData.coefficients.length; i++) {
       headRow.appendChild(createHeadCell(String.fromCharCode(i)));
-      bodyRow.appendChild(createBodyCell(coefficients[i - 65]));
+      bodyRow.appendChild(createBodyCell(masterCurveData.coefficients[i - 65]));
     }
   } else {
     console.error('Cannot populate master curve table : Coefficients undefined');
@@ -510,7 +510,7 @@ function plotConstantTemperature(graphElement, constT, title) {
 
   for (var i = 0; i < constT.stress.length; i++) {
     x.push(constT.stress[i]);
-    y.push(constT.tr[i][0]); //TODO Fix this
+    y.push(constT.tr[i]); //TODO Fix this
   }
 
   var trace = {
@@ -551,8 +551,8 @@ function plotConstantStress(graphElement, constStress, title) {
   var y = [];
 
   for (var i = 0; i < constStress.T.length; i++) {
-    x.push(constStress.T[i][0]);
-    y.push(constStress.tr[i][0]);
+    x.push(constStress.T[i]);
+    y.push(constStress.tr[i]);
   }
 
   var trace = {
