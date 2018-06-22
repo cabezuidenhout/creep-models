@@ -14,18 +14,22 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function convertedValues = ConvTemp( valuesToConvert , inputTemperatureUnit, outputTemperatureUnit )
-  inputTemperatureUnit = tolower( inputTemperatureUnit );
-  outputTemperatureUnit = tolower( outputTemperatureUnit );
+function lmModel = ModelLarsonMiller( creepData, isoStressData, fitAll = false )
+  Clm = -1*mean( isoStressData.cKInverse );
 
-  if( abs( inputTemperatureUnit - outputTemperatureUnit ) == 8 )
-    if( inputTemperatureUnit == 'k' )
-      convertedValues = valuesToConvert - 273.15;
-    elseif( inputTemperatureUnit == 'c' )
-      convertedValues = valuesToConvert + 273.15;
-    end
+  lmModel.model = "Manson-Haferd";
+  lmModel.material = creepData.material;
+  lmModel.Clm = Clm;
+
+  if( fitAll)
+    trainData = GetCreepMatrix(creepData);
+    trainData.p = ToK( trainData.T).*(Clm + log10(trainData.tr));
   else
-    printf('!!! Invalid input or output temperature unit\n');
-  endif
+    trainData.p = isoStressData.mKInverse;
+    trainData.stress = isoStressData.stress;
+    trainData.T = GetIsoStressT( isoStressData );
+  end
 
+  lmModel.masterCurve = FitMasterCurve(trainData);
+  lmModel.isoStress = isoStressData;
 endfunction
