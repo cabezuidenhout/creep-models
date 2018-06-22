@@ -5,7 +5,7 @@ addpath('IsoStress');
 addpath('jsonlab');
 % addpath('DisplayIsoStressData');
 addpath('Regression');
-% addpath('MansonHaferd');
+addpath('MansonHaferd');
 % addpath('LarsonMiller');
 % addpath('OrrSherbyDorn');
 % addpath('MansonSuccop');
