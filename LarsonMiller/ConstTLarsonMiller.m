@@ -14,7 +14,7 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function constT = ConstTMansonHaferd( lmModel, T, minStress = 10, maxStress = 250, n=200)
+function constT = ConstTLarsonMiller( lmModel, T, minStress = 10, maxStress = 250, n=200)
   constT.T = T;
   constT.stress = linspace( minStress, maxStress, n)';
   constT.tr = PredictLarsonMiller( lmModel, ToK(T), constT.stress);
