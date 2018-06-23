@@ -14,11 +14,10 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function SaveJSON( data , filepath )
-  jsonFile = fopen(filepath, 'w');
-  jsonString = savejson('', StructRowsToCols(data) );
-  jsonString = strrep(jsonString, "\t", "");
-  jsonString = strrep(jsonString, "\n", "");
-  fprintf(jsonFile, "var data='%s';", jsonString);
-  fclose(jsonFile);
-endfunction
+function DisplayIsoStress( isoStressData ) 
+  jsonFilePath = GetAbsolutePath('DisplayIsoStress.m');
+  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
+
+  SaveJSON( isoStressData, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayIsoStress.m'), '/template/index.html'));
+end

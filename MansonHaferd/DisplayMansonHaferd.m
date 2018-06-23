@@ -14,31 +14,17 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DisplayMansonHaferd( mhModel , creepData ) 
+function DisplayMansonHaferd( mhModel, creepData ) 
+
   mhInfo = mhModel;
-
-  mhInfo.masterCurve.coefficients = mhInfo.masterCurve.coefficients';
-  mhInfo.masterCurve.testData.p = mhInfo.masterCurve.testData.p';
-  mhInfo.masterCurve.trainData.p = mhInfo.masterCurve.trainData.p';
-  mhInfo.masterCurve.trainData.stress = mhInfo.masterCurve.trainData.stress';  
-
   mhInfo.stressTest = StressTestMansonHaferd( mhModel, creepData );
-  mhInfo.stressTest.T = mhInfo.stressTest.T';
-
   mhInfo.trTest = TrTestMansonHaferd( mhModel, creepData );
-  mhInfo.trTest.T = mhInfo.trTest.T';
-  mhInfo.trTest.stress = mhInfo.trTest.stress';
-  mhInfo.trTest.trActual = mhInfo.trTest.trActual';
-  mhInfo.trTest.trPredicted = mhInfo.trTest.trPredicted';
-  mhInfo.trTest.errors.difference = mhInfo.trTest.errors.difference';
-  mhInfo.trTest.errors.percentage = mhInfo.trTest.errors.percentage';
-
-  mhInfo.constT = ConstTMansonHaferd( mhModel, mean( mhInfo.stressTest.T(:) ));
+  mhInfo.constT = ConstTMansonHaferd( mhModel , mean( mhInfo.stressTest.T(:) ) );
   mhInfo.constStress = ConstStressMansonHaferd( mhModel, mean( mhInfo.masterCurve.trainData.stress(:) ) );
 
   jsonFilePath = GetAbsolutePath('DisplayMansonHaferd.m');
-  jsonFilePath = strcat(jsonFilePath,'/template/data.js');
+  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
 
-  SaveJSON( mhInfo, jsonFilePath);  
+  SaveJSON( mhInfo, jsonFilePath);
   open( strcat(GetAbsolutePath('DisplayMansonHaferd.m'), '/template/index.html'));
-endfunction
+end

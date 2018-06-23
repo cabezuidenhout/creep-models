@@ -14,18 +14,34 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function convertedValues = ConvTemp( valuesToConvert , inputTemperatureUnit, outputTemperatureUnit )
-  inputTemperatureUnit = tolower( inputTemperatureUnit );
-  outputTemperatureUnit = tolower( outputTemperatureUnit );
+function msModel = ModelMansonSuccop( creepData, isoStressData, fitAll = false )
+  
+  Cms = -1*mean(isoStressData.mK);
+  
+  msModel.model = "Manson-Succop";
+  msModel.material = creepData.material;
+  msModel.Cms = Cms;
 
-  if( abs( inputTemperatureUnit - outputTemperatureUnit ) == 8 )
-    if( inputTemperatureUnit == 'k' )
-      convertedValues = valuesToConvert - 273.15;
-    elseif( inputTemperatureUnit == 'c' )
-      convertedValues = valuesToConvert + 273.15;
-    end
+  creepMatrix = GetCreepMatrix( creepData );
+  allP = ToK( creepMatrix.T).*Cms + log10( creepMatrix.tr );
+
+  if( fitAll )
+    trainData = creepMatrix;
+    trainData.p = allP;
   else
-    printf('!!! Invalid input or output temperature unit\n');
-  endif
+    trainData.p = isoStressData.cK;
+    trainData.stress = isoStressData.stress;
+    trainData.T = GetIsoStressT( isoStressData );
+  end
 
+  msModel.masterCurve = FitMasterCurve(trainData , max(creepMatrix.stress*1.1) );
+
+
+  if( !fitAll )
+    msModel.masterCurve.allParameters = allP;
+    msModel.masterCurve.allStress = creepMatrix.stress;
+  end
+
+  msModel.isoStress = isoStressData;
+  
 endfunction

@@ -14,7 +14,7 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function [creepData , loaded ] = LoadCreepData( filename )
+function [ creepData, loaded ] = LoadCreepData( filename )
   filepath = GetAbsolutePath('DataDummy.m');
   creepData = NaN;
   loaded = false;
@@ -49,5 +49,4 @@ function [creepData , loaded ] = LoadCreepData( filename )
   else
     printf('%s not found. Please ensure the file exists.\n', filepath);    
   endif
-
 endfunction
