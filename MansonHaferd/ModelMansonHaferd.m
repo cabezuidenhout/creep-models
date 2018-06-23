@@ -30,15 +30,24 @@ function mhModel = ModelMansonHaferd( creepData, isoStressData, fitAll = false )
   mhModel.logta = logta;
   mhModel.Ta = Ta;
 
+  creepMatrix = GetCreepMatrix( creepData );
+  allP = (log10( creepMatrix.tr ) - logta) ./ ( ToK(creepMatrix.T) - Ta);
+
   if( fitAll)
-    trainData = GetCreepMatrix(creepData);
-    trainData.p = (log10( trainData.tr ) - logta) ./ ( ToK(trainData.T) - Ta);
+    trainData = creepMatrix;
+    trainData.p = allP;
   else
     trainData.p = m;
     trainData.stress = isoStressData.stress;
     trainData.T = GetIsoStressT( isoStressData );
   end
 
-  mhModel.masterCurve = FitMasterCurve(trainData);
+  mhModel.masterCurve = FitMasterCurve(trainData, max(creepMatrix.stress*1.1));
+
+  if( !fitAll )
+    mhModel.masterCurve.allParameters = allP;
+    mhModel.masterCurve.allStress = creepMatrix.stress;
+  end
+
   mhModel.isoStress = isoStressData;
 endfunction

@@ -28,7 +28,7 @@ function testResult = StressTestMansonHaferd( mhModel, creepData)
         tr = testResult.tr(c);
         T = testResult.T(r);
 
-        pMH = ( log10( tr ) - mhModel.logta ) / ( ConvTemp(T,'c','k') - mhModel.Ta );
+        pMH = ( log10( tr ) - mhModel.logta ) / ( ToK(T,'c','k') - mhModel.Ta );
         pMHmc = fliplr( mhModel.masterCurve.coefficients' );
         pMHmc( length(pMHmc) ) = pMHmc( length(pMHmc) ) - pMH;
             
