@@ -21,15 +21,24 @@ function lmModel = ModelLarsonMiller( creepData, isoStressData, fitAll = false )
   lmModel.material = creepData.material;
   lmModel.Clm = Clm;
 
+  creepMatrix = GetCreepMatrix( creepData );
+  allP = ToK( creepMatrix.T).*(Clm + log10(creepMatrix.tr));
+
   if( fitAll)
-    trainData = GetCreepMatrix(creepData);
-    trainData.p = ToK( trainData.T).*(Clm + log10(trainData.tr));
+    trainData = creepMatrix;
+    trainData.p = allP;
   else
     trainData.p = isoStressData.mKInverse;
     trainData.stress = isoStressData.stress;
     trainData.T = GetIsoStressT( isoStressData );
   end
 
-  lmModel.masterCurve = FitMasterCurve(trainData);
+  lmModel.masterCurve = FitMasterCurve(trainData, max(creepMatrix.stress*1.1));
+
+  if( !fitAll )
+    lmModel.masterCurve.allParameters = allP;
+    lmModel.masterCurve.allStress = creepMatrix.stress;
+  end
+
   lmModel.isoStress = isoStressData;
 endfunction
