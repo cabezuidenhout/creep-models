@@ -37,14 +37,17 @@ function testResult = StressTestMansonHaferd( mhModel, creepData)
         smallestError = Inf;      
 
         for( i=1:length(awnsers) ) 
-          currentAwnser = 10^awnsers(i);
-          currentAwnser = real(currentAwnser);
-          currentError = abs(expectedAwnser-currentAwnser);
+          currentAwnser = awnsers(i);
 
-          if( currentError < smallestError )
-            smallestError = currentError;
-            closestAwnser = currentAwnser;
-          end
+          if( imag( currentAwnser ) == 0 ) 
+            currentAwnser = 10^currentAwnser;
+            currentError = abs(expectedAwnser-currentAwnser);
+
+            if( currentError < smallestError )
+              smallestError = currentError;
+              closestAwnser = currentAwnser;
+            end
+          end 
         end
         
         testResult.stressPredicted(r,c) = closestAwnser;    
@@ -53,4 +56,5 @@ function testResult = StressTestMansonHaferd( mhModel, creepData)
   end
 
   testResult.errors = Errors( testResult.stressPredicted, testResult.stressActual );
+
 endfunction

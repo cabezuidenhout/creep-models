@@ -17,5 +17,11 @@
 function constT = ConstStressMansonHaferd( mhModel, stress, minT = 400, maxT = 750, n=200)
   constT.stress = stress;
   constT.T = linspace( minT, maxT, n)';
-  constT.tr = PredictMansonHaferd( mhModel, ToK(constT.T), stress );
+  constT.tr = zeros( length(constT.T), length(constT.stress));
+
+  for i=1:length(stress)
+    constT.tr(:,i) = PredictMansonHaferd( mhModel, ConvTemp(constT.T,'c','k'), stress(i));
+  end
+
+  constT.stress = constT.stress';
 endfunction

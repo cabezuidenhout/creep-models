@@ -14,12 +14,10 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DisplayMansonSuccop( msModel, creepData )
-  lmInfo = msModel;
-  
-  jsonFilePath = GetAbsolutePath('DisplayMansonSuccop.m');
+function DisplayIsoStressData( isoStressData ) 
+  jsonFilePath = GetAbsolutePath('DisplayIsoStressData.m');
   jsonFilePath = strcat( jsonFilePath, '/template/data.js');
 
-  SaveJSON( lmInfo, jsonFilePath);
-  open( strcat(GetAbsolutePath('DisplayMansonSuccop.m'), '/template/index.html'));
-endfunction
+  SaveJSON( isoStressData, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayIsoStressData.m'), '/template/index.html'));
+end

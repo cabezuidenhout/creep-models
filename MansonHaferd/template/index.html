@@ -7,13 +7,12 @@
   <link rel="icon" type="image/png" href="../../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Loading..
+    Material + Manson-Haferd Model
   </title>
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport'
-  />
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport'/>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-  <link href="../../assets/css/fontawesome-all.min.css" rel="stylesheet" />
+  <link href="../../assets/css/fontawesome-all.min.css" rel="stylesheet" />  
   <!-- CSS Files -->
   <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
   <link href="../../assets/css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
@@ -24,69 +23,67 @@
 <body class="">
   <div class="wrapper">
     <div class="main-panel">
-
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#" id="pageTitle">Loading..</a>
+            <a class="navbar-brand" href="#" id="pageTitle">Material + Manson-Haferd Model</a>
           </div>
         </div>
       </nav>
-
+      <!-- End Navbar -->
       <div class="content">
 
         <!-- Model Parameters -->
         <div class="row">
-          <div class="col-12">
+          <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body text-center">
                 <div class="container-fluid">
-                  
-                  <!-- Model Equation -->
-                  <div class="row justify-content-center text-center">
+
+                  <!-- Manson-Hafer Equation -->
+                  <div class="row">
                     <div class="col-12">
-                      <h5>Manson-Haferd Parameter</h5>
+                      <h5>Manson-Haferd Parameters</h5>
                       <p>
                         <img src="img/mhParamter.gif" alt="Manson-Haferd Paramter Equation">
                       </p>
                     </div>
                   </div>
 
-                  <!-- Model Constants -->
+                  <!-- Manson-Haferd Parameters -->
                   <div class="row justify-content-center">
                     <div class="col-12">
-                      <table class="table table-hover" id="paramaterTable"></table>
+                      <table class="table table-hover" id="mhParametersTable"></table>
                     </div>
                   </div>
 
                   <!-- Mastercurve Equation -->
-                  <div class="row justify-content-center text-center">
+                  <div class="row">
                     <div class="col-12">
-                      <h5>Mastercurve</h5>
+                      <h5>Mastercurve Coefficients</h5>
                       <p>
                         <img src="../../assets/img/mastercurve.gif" alt="Manson-Haferd Paramter Equation">
                       </p>
                     </div>
                   </div>
 
-                  <!-- Mastercurve Coefficients -->
+                  <!-- Mastercurve Coeficients -->
                   <div class="row justify-content-center">
                     <div class="col-12">
                       <table class="table table-hover" id="mastercurveTable"></table>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Mastercurve and Iso-Stress Plot -->
+        <!-- Mastercurve and IsoStress-->
         <div class="row">
-
-          <div class="col-6">
+          <!-- Mastercurve Fit Plot -->
+          <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="card">
               <div class="content">
                 <div id="masterCurvePlot"></div>
@@ -94,7 +91,8 @@
             </div>
           </div>
 
-          <div class="col-6">
+          <!-- Iso-Stress Plot -->
+          <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="card">
               <div class="content">
                 <div id="isoStressPlot"></div>
@@ -105,7 +103,7 @@
 
         <!-- Stress Test -->
         <div class="row">
-          <div class="col-12">
+          <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
               <div class="card-header">
                 <h5>Stress Prediction Test</h5>
@@ -114,14 +112,15 @@
                 <table class="table table-hover" id="stressTest"></table>
               </div>
               <div class="card-footer" id="stressTestWarning">
+
               </div>
             </div>
           </div>
         </div>
-
+        
         <!-- Stress Test Summary -->
-        <div class="row">
-          <div class="col-12">
+        <div class="row">  
+          <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
               <div class="card-header">
                 <h5>Stress Prediction Test Summary</h5>
@@ -132,10 +131,10 @@
             </div>
           </div>
         </div>
-
-        <!-- Tr Test -->
+        
+        <!-- Time to Rupture Test -->
         <div class="row">
-          <div class="col-12">
+          <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
               <div class="card-header">
                 <h5>Time to Rupture Test</h5>
@@ -144,14 +143,15 @@
                 <table class="table table-hover" id="trTest"></table>
               </div>
               <div class="card-footer" id="trTestWarning">
+
               </div>
             </div>
           </div>
         </div>
-  
-        <!-- Tr Test Summary -->
-        <div class="row">
-          <div class="col-12">
+        
+        <!-- Time to Rupture Test Summary -->
+        <div class="row">  
+          <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
               <div class="card-header">
                 <h5>Time to Rupture Test Summary</h5>
@@ -173,7 +173,7 @@
               </div>
             </div>
           </div>
-        
+
           <!-- Constant Stress Plot -->
           <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="card">
@@ -184,6 +184,7 @@
           </div>
         </div>
 
+        <!-- tr Calculator -->
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
@@ -208,21 +209,15 @@
                   </div>
                   <div class="row justify-content-center">
                     <div class="col-10">
-                      <p class="text-danger">
-                        <strong>Note :</strong> &sigma; is the stress in MPa and T the temperature in degrees kelvin</p>
-                    </div>
-                  </div>
-                  <div class="row justify-content-center">
-                    <div class="col-10">
                       <form>
                         <div class="form-row">
                           <div class="col-md-6">
                             <label for="stressInput">Stress (MPa)</label>
-                            <input type="number" class="form-control" id="stressInput" value="20" step="0.1">
+                            <input type="number" class="form-control" id="stressInput" value="20" step="0.1">                            
                           </div>
                           <div class="col-md-6">
                             <label for="temperatureInput">Temperature (&deg;C)</label>
-                            <input type="number" class="form-control" id="temperatureInput" value="500">
+                            <input type="number" class="form-control" id="temperatureInput" value="500">                            
                           </div>
                         </div>
                         <button class="btn btn-primary btn-block" id="calculateButton">Calculate</button>
@@ -246,19 +241,18 @@
                     </div>
                   </div>
                 </div>
-        
+                
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Excel export button -->
         <div class="row justify-content-center">
           <div class="col-12">
-            <button class="btn btn-success btn-lg btn-block" id="excelExportButton">
-              <span class="fa fa-file-excel"></span> Export to Excel</button>
+            <button class="btn btn-success btn-lg btn-block" id="excelExportButton"><span class="fa fa-file-excel"></span> Export to Excel</button>
           </div>
         </div>
-        
       </div>
 
       <footer class="footer footer-black  footer-white ">
@@ -272,7 +266,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="#Lic" target="_blank" title="Licenses" class="btn btn-info">
+                  <a href="../../assets/donations.html" target="_blank" title="Donations" class="btn btn-info">
                     <i class="far fa-smile"></i>
                   </a>
                 </li>
@@ -301,10 +295,6 @@
   <script src="../../assets/js/core/popper.min.js"></script>
   <script src="../../assets/js/core/bootstrap.min.js"></script>
   <script src="../../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Notifications Plugin    
-  <script src="../../assets/js/plugins/bootstrap-notify.js"></script>-->
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc 
-  <script src="../../assets/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>-->
   
   <!-- Plots -->
   <script src="../../assets/js/plugins/plotly.min.js" type="text/javascript"></script>
