@@ -20,6 +20,6 @@ function testResult = TrTestMansonHaferd( mhModel, creepData )
   testResult.T = creepMatrix.T;
   testResult.stress = creepMatrix.stress;
   testResult.trActual = creepMatrix.tr;
-  testResult.trPredicted = PredictMansonHaferd( mhModel, ConvTemp(testResult.T,'c','k'), testResult.stress );
+  testResult.trPredicted = PredictMansonHaferd( mhModel, ToK(testResult.T), testResult.stress );
   testResult.errors = Errors(testResult.trPredicted, testResult.trActual );
 endfunction

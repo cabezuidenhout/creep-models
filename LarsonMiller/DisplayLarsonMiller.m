@@ -14,18 +14,16 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function convertedValues = ConvTemp( valuesToConvert , inputTemperatureUnit, outputTemperatureUnit )
-  inputTemperatureUnit = tolower( inputTemperatureUnit );
-  outputTemperatureUnit = tolower( outputTemperatureUnit );
+function DisplayLarsonMiller( lmModel, creepData )
+  lmInfo = lmModel;
+  lmInfo.stressTest = StressTestLarsonMiller( lmModel, creepData );
+  lmInfo.trTest = TrTestLarsonMiller( lmModel, creepData );
+  lmInfo.constT = ConstTLarsonMiller( lmModel , mean( lmInfo.stressTest.T(:) ) );
+  lmInfo.constStress = ConstStressLarsonMiller( lmModel, mean( lmModel.masterCurve.trainData.stress(:) ) );
 
-  if( abs( inputTemperatureUnit - outputTemperatureUnit ) == 8 )
-    if( inputTemperatureUnit == 'k' )
-      convertedValues = valuesToConvert - 273.15;
-    elseif( inputTemperatureUnit == 'c' )
-      convertedValues = valuesToConvert + 273.15;
-    end
-  else
-    printf('!!! Invalid input or output temperature unit\n');
-  endif
+  jsonFilePath = GetAbsolutePath('DisplayLarsonMiller.m');
+  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
 
+  SaveJSON( lmInfo, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayLarsonMiller.m'), '/template/index.html'));
 endfunction
