@@ -1,11 +1,10 @@
 var mhInfo = JSON.parse(data);
 
-setTitle( document.getElementById('pageTitle'), mhInfo.material + ' ' + mhInfo.model + ' Model');
-showParametersTable( document.getElementById('paramaterTable') );
-showMasterCuveTable( document.getElementById('mastercurveTable') , mhInfo.masterCurve ); 
-
+setTitle(document.getElementById('pageTitle'), mhInfo.material + ' ' + mhInfo.model + ' Model');
+showMHParametersTable(document.getElementById('mhParametersTable'));
+showMasterCuveTable(document.getElementById('mastercurveTable'), mhInfo.masterCurve.coefficients);
+plotMasterCurve(document.getElementById('masterCurvePlot'), mhInfo.masterCurve, mhInfo.material + ' ' + mhInfo.model +" Mastercuve");
 plotIsoStress(document.getElementById('isoStressPlot'), mhInfo.isoStress, mhInfo.material + " Iso-Stress (±" + mhInfo.isoStress.tolerance + "MPa)");
-plotMasterCurve(document.getElementById('masterCurvePlot'), mhInfo.masterCurve, mhInfo.material + " Manson-Haferd Mastercuve");
 
 showStressTestTable(document.getElementById('stressTest'), mhInfo.stressTest, document.getElementById('stressTestWarning'));
 showTestSummaryTable(document.getElementById('stressTestSummary'), mhInfo.stressTest, 'MPa');
@@ -16,7 +15,7 @@ showTestSummaryTable(document.getElementById('trTestSummary'), mhInfo.trTest, 'h
 plotConstantStress(document.getElementById('constStressPlot'), mhInfo.constStress);
 plotConstantTemperature(document.getElementById('constTPlot'), mhInfo.constT);
 
-function showParametersTable( tableElement ) {
+function showMHParametersTable(tableElement) {
   var head = createHead(tableElement);
   var headRow = head.insertRow();
 
@@ -85,6 +84,7 @@ function exportToExcel() {
 
   excelAddStressTest( excel, mhInfo.stressTest, 0, headStyle, defaultStyle );
   excelAddTrTest( excel, mhInfo.trTest, 1, headStyle, defaultStyle );
+
   excel.generate(mhInfo.material + '_' + new Date().toISOString().substring(0, 10) + '_MH.xlsx');
 }
 
