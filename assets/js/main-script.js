@@ -304,8 +304,7 @@ function plotMasterCurve(graphElement, masterCurveData, title ) {
     x: x,
     y: y,
     mode: 'markers',
-    name: 'Parameters',
-    test: ['Test'],
+    name: 'Train Parameters',    
     line: { 
       color: getColor(0)
     }
@@ -337,6 +336,31 @@ function plotMasterCurve(graphElement, masterCurveData, title ) {
   };
 
   data.push(trace);
+
+  if( masterCurveData.allParameters != undefined ) {
+    var xAll = [];
+    var yAll = [];
+
+    for( var s = 0; s < masterCurveData.allParameters.length ; s++) {
+      xAll.push( masterCurveData.allStress[s] );
+      yAll.push( masterCurveData.allParameters[s] );
+    }
+
+    trace = {
+      x: xAll,
+      y: yAll,
+      mode: 'markers',
+      name: 'All Parameters',
+      line: { 
+        color: "#F80210"
+      },
+      marker: {
+        symbol: 'x-thin-open'
+      }
+    };
+
+    data.push(trace);
+  }
 
   var layout = {
     title: title,

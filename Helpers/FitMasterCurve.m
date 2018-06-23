@@ -14,7 +14,7 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function masterCurve = FitMasterCurve( trainData )
+function masterCurve = FitMasterCurve( trainData , maxStress = 0 )
   masterCurve.coefficients = FitRegression( nOrderX( log10(trainData.stress),4) , trainData.p );
   
   masterCurve.stressRange.min = min( trainData.stress );
@@ -28,7 +28,11 @@ function masterCurve = FitMasterCurve( trainData )
 
   masterCurve.testData.stress = linspace(masterCurve.stressRange.min,masterCurve.stressRange.max,100)';
   masterCurve.testData.p = PredictRegression(masterCurve.coefficients, nOrderX( log10(masterCurve.testData.stress), 4) );
+
+  if( maxStress == 0 )
+    maxStress = masterCurve.stressRange.max*1.3;
+  end
   
-  masterCurve.testDataExtended.stress =  linspace(10, masterCurve.stressRange.max*1.3 ,200)';
+  masterCurve.testDataExtended.stress =  linspace(10, maxStress ,400)';
   masterCurve.testDataExtended.p = PredictRegression( masterCurve.coefficients, nOrderX( log10(masterCurve.testDataExtended.stress), 4) );
 endfunction
