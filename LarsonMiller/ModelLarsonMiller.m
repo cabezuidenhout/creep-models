@@ -17,7 +17,7 @@
 function lmModel = ModelLarsonMiller( creepData, isoStressData, fitAll = false )
   Clm = -1*mean( isoStressData.cKInverse );
 
-  lmModel.model = "Manson-Haferd";
+  lmModel.model = "Larson-Miller";
   lmModel.material = creepData.material;
   lmModel.Clm = Clm;
 

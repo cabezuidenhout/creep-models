@@ -5,7 +5,7 @@ showParametersTable( document.getElementById('paramaterTable') );
 showMasterCuveTable( document.getElementById('mastercurveTable') , lmInfo.masterCurve ); 
 
 plotIsoStress(document.getElementById('isoStressPlot'), lmInfo.isoStress, lmInfo.material + " Iso-Stress (±" + lmInfo.isoStress.tolerance + "MPa)");
-plotMasterCurve(document.getElementById('masterCurvePlot'), lmInfo.masterCurve, lmInfo.material + " Manson-Haferd Mastercuve");
+plotMasterCurve(document.getElementById('masterCurvePlot'), lmInfo.masterCurve, lmInfo.material + " " + lmInfo.model + " Mastercuve");
 
 showStressTestTable(document.getElementById('stressTest'), lmInfo.stressTest, document.getElementById('stressTestWarning'));
 showTestSummaryTable(document.getElementById('stressTestSummary'), lmInfo.stressTest, 'MPa');
