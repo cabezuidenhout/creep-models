@@ -7,20 +7,20 @@ showMasterCuveTable( document.getElementById('mastercurveTable') , msInfo.master
 plotIsoStress(document.getElementById('isoStressPlot'), msInfo.isoStress, msInfo.material + " Iso-Stress (±" + msInfo.isoStress.tolerance + "MPa)");
 plotMasterCurve(document.getElementById('masterCurvePlot'), msInfo.masterCurve, msInfo.material + " " + msInfo.model + " Mastercurve");
 
-// showStressTestTable(document.getElementById('stressTest'), msInfo.stressTest, document.getElementById('stressTestWarning'));
-// showTestSummaryTable(document.getElementById('stressTestSummary'), msInfo.stressTest, 'MPa');
+showStressTestTable(document.getElementById('stressTest'), msInfo.stressTest, document.getElementById('stressTestWarning'));
+showTestSummaryTable(document.getElementById('stressTestSummary'), msInfo.stressTest, 'MPa');
 
-// showTrTestTable(document.getElementById('trTest'), msInfo.trTest, document.getElementById('trTestWarning'));
-// showTestSummaryTable(document.getElementById('trTestSummary'), msInfo.trTest, 'h');
+showTrTestTable(document.getElementById('trTest'), msInfo.trTest, document.getElementById('trTestWarning'));
+showTestSummaryTable(document.getElementById('trTestSummary'), msInfo.trTest, 'h');
 
-// plotConstantStress(document.getElementById('constStressPlot'), msInfo.constStress);
-// plotConstantTemperature(document.getElementById('constTPlot'), msInfo.constT);
+plotConstantStress(document.getElementById('constStressPlot'), msInfo.constStress);
+plotConstantTemperature(document.getElementById('constTPlot'), msInfo.constT);
 
 function showParametersTable( tableElement ) {
   var head = createHead(tableElement);
   var headRow = head.insertRow();
 
-  headRow.appendChild(createHeadCell('C(t<sub>MS</sub>)'));  
+  headRow.appendChild(createHeadCell('C<sub>MS</sub>'));  
 
   var body = tableElement.createTBody();
   var bodyRow = body.insertRow();
@@ -40,7 +40,7 @@ document.getElementById('calculateButton').onclick = function (e) {
     p += msInfo.masterCurve.coefficients[i] * Math.pow(Math.log10(stress), i);
   }
 
-  var t = Math.pow(10, (p/T)-msInfo.Clm);
+  var t = Math.pow(10, (p-msInfo.Cms*T));
 
   document.getElementById('calculatedTr').innerText = t.toFixed(0);
 }
@@ -60,12 +60,12 @@ function exportToExcel() {
 
 
   //---------- Model Parammeters Sheet ---------------------------
-  excel.set({ sheet: 0, value: "Manson-Haferd" });
-  excel.set(0, 0, 0, msInfo.material + " Manson-Haferd Model", headStyle);
+  excel.set({ sheet: 0, value: "Manson-Succop" });
+  excel.set(0, 0, 0, msInfo.material + " Manson-Succop Model", headStyle);
   
 
-  excel.set(0, 0, 1, 'Clm', defaultStyle);
-  excel.set(0, 1, 1, msInfo.Clm, defaultStyle);
+  excel.set(0, 0, 1, 'Cms', defaultStyle);
+  excel.set(0, 1, 1, msInfo.Cms, defaultStyle);
 
   excel.set(0, 0, 2, 'Mastercuve Coefficients', headStyle);
   excel.set(0, 0, 3, 'A', defaultStyle);
