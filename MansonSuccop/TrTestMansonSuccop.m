@@ -14,16 +14,12 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function DisplayMansonSuccop( msModel, creepData )
-  msInfo = msModel;
-  msInfo.stressTest = StressTestMansonSuccop( msModel, creepData );
-  msInfo.trTest = TrTestMansonSuccop( msModel, creepData );
-  msInfo.constT = ConstTMansonSuccop( msModel , mean( msInfo.stressTest.T(:) ) );
-  msInfo.constStress = ConstStressMansonSuccop( msModel, mean( msModel.masterCurve.trainData.stress(:) ) );
-
-  jsonFilePath = GetAbsolutePath('DisplayMansonSuccop.m');
-  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
-
-  SaveJSON( msInfo, jsonFilePath);
-  open( strcat(GetAbsolutePath('DisplayMansonSuccop.m'), '/template/index.html'));
+function testResult = TrTestMansonSuccop( msModel, creepData )
+  creepMatrix = GetCreepMatrix( creepData );
+  
+  testResult.T = creepMatrix.T;
+  testResult.stress = creepMatrix.stress;
+  testResult.trActual = creepMatrix.tr;
+  testResult.trPredicted = PredictMansonSuccop( msModel, ToK(testResult.T), testResult.stress );
+  testResult.errors = Errors(testResult.trPredicted, testResult.trActual );
 endfunction
