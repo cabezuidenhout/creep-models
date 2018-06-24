@@ -7,6 +7,6 @@ addpath('Regression');
 addpath('MansonHaferd');
 addpath('MansonSuccop');
 addpath('LarsonMiller');
-% addpath('OrrSherbyDorn');
+addpath('OrrSherbyDorn');
 % addpath('GoldhoffSherby');
 % addpath('MinimumCommitment');
