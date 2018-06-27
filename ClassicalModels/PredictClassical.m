@@ -14,6 +14,25 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function theta = FitRegression(X,y)
-  theta = pinv(X'*X)*X'*y;
-end
+function tr = PredictClassical( model, T, stress )
+  
+  tr = 0;
+
+  p = PredictRegression( model.masterCurve.coefficients, nOrderX( log10(stress), 4 ));
+
+  if( strcmp( model.name, "Manson-Haferd") )
+    tr = ( T - model.constants.Ta).*p + model.constants.logta;
+  elseif( strcmp( model.name, "Goldhoff-Sherby") )
+    tr = ( 1./T - model.constants.TaInverse).*p + model.constants.logta;
+  elseif( strcmp( model.name, "Larson-Miller") )
+    tr = p./T - model.constants.Clm;
+  elseif( strcmp( model.name, 'Orr-Sherby-Dorn') )
+    tr = p + model.constants.Cosd./T;
+  elseif( strcmp( model.name, 'Manson-Succop') )
+    tr = p - model.constants.Cms.*T;
+  else
+    printf('! Unknown model : PredictClassical\n');
+  end
+  
+  tr = 10.^tr; 
+endfunction

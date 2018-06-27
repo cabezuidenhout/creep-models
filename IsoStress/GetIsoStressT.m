@@ -22,4 +22,4 @@ function T = GetIsoStressT( isoStressData )
       T = vertcat( T, val.TData );
     end
   end
-endfunction
+end

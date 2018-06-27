@@ -1,12 +1,7 @@
-addpath('Data');
+addpath('#Data');
+addpath('ClassicalModels');
 addpath('DisplayCreepData');
 addpath('Helpers');
 addpath('IsoStress');
 addpath('jsonlab');
 addpath('Regression');
-addpath('MansonHaferd');
-addpath('MansonSuccop');
-addpath('LarsonMiller');
-addpath('OrrSherbyDorn');
-% addpath('GoldhoffSherby');
-% addpath('MinimumCommitment');

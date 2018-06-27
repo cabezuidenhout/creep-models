@@ -16,4 +16,4 @@
 %=====================================================================
 function y = PredictRegression(theta,X)
   y = X*theta;
-endfunction
+end

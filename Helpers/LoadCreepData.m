@@ -49,4 +49,4 @@ function [ creepData, loaded ] = LoadCreepData( filename )
   else
     printf('%s not found. Please ensure the file exists.\n', filepath);    
   endif
-endfunction
+end

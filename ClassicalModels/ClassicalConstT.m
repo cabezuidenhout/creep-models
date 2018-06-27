@@ -14,6 +14,8 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function theta = FitRegression(X,y)
-  theta = pinv(X'*X)*X'*y;
-end
+function constT = ClassicalConstT( model, T, minStress = 10, maxStress = 250, n=200)
+  constT.T = T;
+  constT.stress = linspace( minStress, maxStress, n)';
+  constT.tr = PredictClassical( model, ToK(T), constT.stress);
+endfunction

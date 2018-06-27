@@ -14,6 +14,12 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function theta = FitRegression(X,y)
-  theta = pinv(X'*X)*X'*y;
-end
+function testResult = ClassicalTrTest( model, creepData )
+  creepMatrix = GetCreepMatrix( creepData );
+  
+  testResult.T = creepMatrix.T;
+  testResult.stress = creepMatrix.stress;
+  testResult.trActual = creepMatrix.tr;
+  testResult.trPredicted = PredictClassical( model, ToK(testResult.T), testResult.stress );
+  testResult.errors = Errors(testResult.trPredicted, testResult.trActual );
+endfunction

@@ -91,4 +91,4 @@ function isoStress = GetIsoStress( creepData, tolerance = 0)
   end
 
   isoStress.stressSorted = sort( isoStress.stress );
-endfunction
+end

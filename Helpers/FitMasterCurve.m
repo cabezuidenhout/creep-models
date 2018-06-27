@@ -35,4 +35,4 @@ function masterCurve = FitMasterCurve( trainData , maxStress = 0 )
   
   masterCurve.testDataExtended.stress =  linspace(10, maxStress ,400)';
   masterCurve.testDataExtended.p = PredictRegression( masterCurve.coefficients, nOrderX( log10(masterCurve.testDataExtended.stress), 4) );
-endfunction
+end

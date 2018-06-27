@@ -5,4 +5,4 @@ function r = StructRowsToCols( a )
   else
     r = ToColumnVector(a);
   end
-endfunction
+end

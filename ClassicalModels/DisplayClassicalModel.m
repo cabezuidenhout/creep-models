@@ -14,6 +14,16 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function theta = FitRegression(X,y)
-  theta = pinv(X'*X)*X'*y;
+function DisplayClassicalModel( model, creepData ) 
+  modelData = model;
+  modelData.stressTest = ClassicalStressTest( model, creepData);
+  modelData.trTest = ClassicalTrTest( model, creepData );
+  modelData.constT = ClassicalConstT( model , mean( creepData.T(:) ) );
+  modelData.constStress = ClassicalConstStress( model, mean( creepData.stress(:) ) );
+
+  jsonFilePath = GetAbsolutePath('DisplayClassicalModel.m');
+  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
+
+  SaveJSON( modelData, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayClassicalModel.m'), '/template/index.html'));
 end

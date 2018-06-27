@@ -21,4 +21,4 @@ function SaveJSON( data , filepath )
   jsonString = strrep(jsonString, "\n", "");
   fprintf(jsonFile, "var data='%s';", jsonString);
   fclose(jsonFile);
-endfunction
+end

@@ -37,4 +37,4 @@ function fit = FitIsoStress( isoData, kelvin = false, invertTemp = false )
   fit.T = [ min(T) ; max(T) ];
   fit.logtr = PredictRegression( isoLine , nOrderX( fit.T, 1) ); 
   fit.tr = 10.^fit.logtr; 
-endfunction
+end

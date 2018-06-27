@@ -7,4 +7,4 @@ function result = ToColumnVector( v )
       result = v';
     end  
   end
-endfunction
+end

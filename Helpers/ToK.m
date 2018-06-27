@@ -16,4 +16,4 @@
 %=====================================================================
 function convertedValues = ToK( valuesToConvert )
   convertedValues = valuesToConvert + 273.15;
-endfunction
+end

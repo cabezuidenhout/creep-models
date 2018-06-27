@@ -16,4 +16,4 @@
 %=====================================================================
 function convertedValues = ToC( valuesToConvert )
   convertedValues = valuesToConvert - 273.15;
-endfunction
+end

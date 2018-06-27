@@ -14,6 +14,18 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function theta = FitRegression(X,y)
-  theta = pinv(X'*X)*X'*y;
+function p = GetParameterFromIsoStress( modelName , isoStressData )
+  if( strcmp( modelName, 'Manson-Haferd') )
+    p = isoStressData.mK;
+  elseif( strcmp( modelName, 'Goldhoff-Sherby') )
+    p = isoStressData.mKInverse;
+  elseif( strcmp( modelName, 'Larson-Miller') )
+    p = isoStressData.mKInverse;
+  elseif( strcmp( modelName, 'Orr-Sherby-Dorn') )
+    p = isoStressData.cKInverse;
+  elseif( strcmp( modelName, 'Manson-Succop') )
+    p = isoStressData.cK;
+  else
+    printf('! Unknown model : GetParameterFromIsoStress\n');
+  end
 end
