@@ -142,6 +142,8 @@ function showConstantsTable( tableElement, modelName, constants ) {
   var body = tableElement.createTBody();
   var bodyRow = body.insertRow();
 
+  var constantNames = ['a','b','c','d','f','g'];
+
   if( modelName === "Manson-Haferd" ) {
     headRow.appendChild(createHeadCell('log(t<sub>a</sub>)'));
     headRow.appendChild(createHeadCell('T<sub>a</sub>'));
@@ -161,6 +163,11 @@ function showConstantsTable( tableElement, modelName, constants ) {
   } else if( modelName === "Manson-Succop") {
     headRow.appendChild(createHeadCell('C(t<sub>MS</sub>)'));
     bodyRow.appendChild(createBodyCell(constants.Cms));    
+  } else if( modelName === "Minimum Commitment" || modelName === "Soviet A" || modelName === "Soviet B") {
+    for( var i = 0; i < constants.length ; i++) {
+      headRow.appendChild(createHeadCell( constantNames[i] ) );
+      bodyRow.appendChild( createBodyCell( constants[i] ) );
+    }
   }
 }
 // -- END Classical Model
@@ -188,6 +195,31 @@ function calculateTr( model , s, T) {
     return Math.pow(10, p + model.constants.Cosd/T);
   } else if( model.name === "Manson-Succop" ) {
     return Math.pow(10, p - model.constants.Cms*T);
+  } else if( model.name === "Minimum Commitment") {
+    p = model.coefficients[0] +
+        model.coefficients[1]*Math.log10(s) +
+        model.coefficients[2]*s +
+        model.coefficients[3]*Math.pow(s,2) + 
+        model.coefficients[4]*T +
+        model.coefficients[5]/T;
+    console.log(p);
+    return Math.pow(10,p);
+  } else if( model.name === "Soviet A") {
+    p = model.coefficients[0] +
+        model.coefficients[1]*Math.log10(T) +
+        model.coefficients[2]*Math.log10(s) +
+        model.coefficients[3]/T + 
+        model.coefficients[4]*(s/T);
+
+    return Math.pow(10,p);
+  } else if( model.name === "Soviet B") {
+    p = model.coefficients[0] +
+        model.coefficients[1]*Math.log10(T) +
+        model.coefficients[2]*(Math.log10(s)/T) +
+        model.coefficients[3]/T + 
+        model.coefficients[4]*(s/T);
+
+    return Math.pow(10,p);
   }
 
   return -1;
@@ -776,6 +808,17 @@ function excelAddModel( excel, model, headStyle, bodyStyle) {
       excel.set(0,0,offset + coeffLabels.length, 'Fitted to whole dataset', headStyle);
     } else {
       excel.set(0,0,offset + coeffLabels.length, 'Fitted only to iso-stress parameters', headStyle );
+    }
+  }
+
+  if( model.coefficients !== undefined ) {
+    var coeffLabels = ['a','b','c','d','f','g'];
+
+    offset = 1;
+
+    for( var i = 0; i < model.coefficients.length ; i++ ) {
+      excel.set(0, 0, offset + i, coeffLabels[i] );
+      excel.set(0, 1, offset + i, model.coefficients[i] );
     }
   }
 }
