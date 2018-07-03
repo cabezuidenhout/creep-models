@@ -121,6 +121,113 @@ function createWarning(warningContent) {
 }
 // -- END Table Functions
 
+// -- Classical Models
+function showParameterEquation( eqElement, modelName ) {
+  eqElement.src = 'img/' + modelName + '/parameter.gif';
+}
+
+function showTrSimplifiedEquation( eqElement, modelName ) {
+  eqElement.src = 'img/' + modelName + '/trSimplified.gif';
+}
+
+function showTrEquation( eqElement, modelName ) {
+  eqElement.src = 'img/' + modelName + '/tr.gif';
+}
+
+
+function showConstantsTable( tableElement, modelName, constants ) {
+
+  var head = createHead(tableElement);
+  var headRow = head.insertRow();
+  var body = tableElement.createTBody();
+  var bodyRow = body.insertRow();
+
+  var constantNames = ['a','b','c','d','f','g'];
+
+  if( modelName === "Manson-Haferd" ) {
+    headRow.appendChild(createHeadCell('log(t<sub>a</sub>)'));
+    headRow.appendChild(createHeadCell('T<sub>a</sub>'));
+    bodyRow.appendChild(createBodyCell(constants.logta));
+    bodyRow.appendChild(createBodyCell(constants.Ta));
+  } else if( modelName === "Goldhoff-Sherby") {
+    headRow.appendChild(createHeadCell('log(t<sub>a</sub>)'));
+    headRow.appendChild(createHeadCell('1/T<sub>a</sub>'));
+    bodyRow.appendChild(createBodyCell(constants.logta));
+    bodyRow.appendChild(createBodyCell(constants.TaInverse));
+  } else if( modelName === "Larson-Miller") {
+    headRow.appendChild(createHeadCell('C(t<sub>LM</sub>)'));
+    bodyRow.appendChild(createBodyCell(constants.Clm));    
+  } else if( modelName === "Orr-Sherby-Dorn") {
+    headRow.appendChild(createHeadCell('C(t<sub>OSD</sub>)'));
+    bodyRow.appendChild(createBodyCell(constants.Cosd));    
+  } else if( modelName === "Manson-Succop") {
+    headRow.appendChild(createHeadCell('C(t<sub>MS</sub>)'));
+    bodyRow.appendChild(createBodyCell(constants.Cms));    
+  } else if( modelName === "Minimum Commitment" || modelName === "Soviet A" || modelName === "Soviet B") {
+    for( var i = 0; i < constants.length ; i++) {
+      headRow.appendChild(createHeadCell( constantNames[i] ) );
+      bodyRow.appendChild( createBodyCell( constants[i] ) );
+    }
+  }
+}
+// -- END Classical Model
+
+//-- tr Calculations
+function calculateTr( model , s, T) {
+
+  var p = 0;
+
+  if( model.masterCurve !== undefined ) {
+    p = model.masterCurve.coefficients[0];
+
+    for (var i = 1; i < model.masterCurve.coefficients.length; i++) {
+      p += model.masterCurve.coefficients[i] * Math.pow(Math.log10(s), i);
+    }
+  }
+
+  if( model.name === "Manson-Haferd" ) {
+    return Math.pow(10, p * (T - model.constants.Ta) + model.constants.logta);
+  }else if( model.name === "Goldhoff-Sherby" ) {
+    return Math.pow(10, p * (1/T - model.constants.TaInverse) + model.constants.logta);
+  } else if( model.name === "Larson-Miller" ) {
+    return Math.pow(10, p/T - model.constants.Clm);
+  } else if( model.name === "Orr-Sherby-Dorn" ) {
+    return Math.pow(10, p + model.constants.Cosd/T);
+  } else if( model.name === "Manson-Succop" ) {
+    return Math.pow(10, p - model.constants.Cms*T);
+  } else if( model.name === "Minimum Commitment") {
+    p = model.coefficients[0] +
+        model.coefficients[1]*Math.log10(s) +
+        model.coefficients[2]*s +
+        model.coefficients[3]*Math.pow(s,2) + 
+        model.coefficients[4]*T +
+        model.coefficients[5]/T;
+    console.log(p);
+    return Math.pow(10,p);
+  } else if( model.name === "Soviet A") {
+    p = model.coefficients[0] +
+        model.coefficients[1]*Math.log10(T) +
+        model.coefficients[2]*Math.log10(s) +
+        model.coefficients[3]/T + 
+        model.coefficients[4]*(s/T);
+
+    return Math.pow(10,p);
+  } else if( model.name === "Soviet B") {
+    p = model.coefficients[0] +
+        model.coefficients[1]*Math.log10(T) +
+        model.coefficients[2]*(Math.log10(s)/T) +
+        model.coefficients[3]/T + 
+        model.coefficients[4]*(s/T);
+
+    return Math.pow(10,p);
+  }
+
+  return -1;
+}
+//-- END tr calculations
+
+
+
 // -- Iso-Stress Plots
 function plotIsoStress( graphElement, isoStressData, chartTitle ) {
   var data = [];
@@ -256,8 +363,8 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
 // -- END Iso-Stress Plots
 
 // -- Master Curve
-function showMasterCuveTable(tableElement, coefficients) {
-  if (coefficients) {
+function showMasterCurveTable(tableElement, masterCurveData) {
+  if (masterCurveData.coefficients) {
     var head = createHead(tableElement);
     var headRow = head.insertRow();
 
@@ -308,7 +415,23 @@ function plotMasterCurve(graphElement, masterCurveData, title ) {
     x: xFit,
     y: yFit,
     mode: 'line',
-    name: 'Mastercuve'
+    name: 'MasterCurve Fit',
+    line: { 
+      color: getColor(1)
+    }
+  };
+
+  data.push(trace);
+
+  trace = {
+    x: xExtended,
+    y: yExtended,
+    mode: 'line',
+    name: 'MasterCurve',
+    line: { 
+      color: getColor(2),
+      dash: 'dot'
+    }
   };
 
   data.push(trace);
@@ -598,6 +721,72 @@ function excelAddTrTest( excel, trTest, currentSheet, headStyle, bodyStyle ) {
     excel.set(currentSheet+1, 3, 1 + k, trTest.trPredicted[k], bodyStyle);
     excel.set(currentSheet+1, 4, 1 + k, trTest.errors.difference[k], bodyStyle);
     excel.set(currentSheet+1, 5, 1 + k, Math.abs(trTest.errors.percentage[k]), bodyStyle);
+  }
+}
+
+function excelAddModel( excel, model, headStyle, bodyStyle) {
+  excel.set({ sheet: 0, value: model.name });
+  excel.set(0,0,0, model.material + ' ' + model.name + ' Model', headStyle);
+
+  var offset = 0;
+
+  if( model.name === "Manson-Haferd" ) {
+    excel.set(0, 0, 1, 'log(ta)', bodyStyle);
+    excel.set(0, 1, 1, model.constants.logta, bodyStyle);
+
+    excel.set(0, 0, 2, 'Ta', bodyStyle);
+    excel.set(0, 1, 2, model.constants.Ta, bodyStyle);    
+    offset = 3;
+  } else if( model.name === "Goldhoff-Sherby") {
+    excel.set(0, 0, 1, 'log(ta)', bodyStyle);
+    excel.set(0, 1, 1, model.constants.logta, bodyStyle);
+
+    excel.set(0, 0, 2, '1/Ta', bodyStyle);
+    excel.set(0, 1, 2, model.constants.TaInverse, bodyStyle);    
+    offset = 3;
+  } else if( model.name === "Larson-Miller" ) {
+    excel.set(0, 0, 1, 'Clm', bodyStyle);
+    excel.set(0, 1, 1, model.constants.Clm, bodyStyle);
+
+    offset = 2;
+  } else if( model.name === "Orr-Sherby-Dorn" ) {
+    excel.set(0, 0, 1, 'Cosd', bodyStyle);
+    excel.set(0, 1, 1, model.constants.Cosd, bodyStyle);
+
+    offset = 2;
+  } else if( model.name === "Manson-Succop" ) {
+    excel.set(0, 0, 1, 'Cms', bodyStyle);
+    excel.set(0, 1, 1, model.constants.Cms, bodyStyle);
+
+    offset = 2;
+  }
+
+  if( model.masterCurve !== undefined ) {
+    var coeffLabels = [ 'A','B','C','D','E' ];
+
+    excel.set(0,0,offset++, 'MasterCurve Coefficients', headStyle);
+
+    for( var i = 0; i < model.masterCurve.coefficients.length; i++ ) {
+      excel.set(0,0,offset + i, coeffLabels[i], bodyStyle );
+      excel.set(0,1,offset + i, model.masterCurve.coefficients[i], bodyStyle );
+    }
+
+    if( model.masterCurve.allParameters === undefined ) {
+      excel.set(0,0,offset + coeffLabels.length, 'Fitted to whole dataset', headStyle);
+    } else {
+      excel.set(0,0,offset + coeffLabels.length, 'Fitted only to iso-stress parameters', headStyle );
+    }
+  }
+
+  if( model.coefficients !== undefined ) {
+    var coeffLabels = ['a','b','c','d','f','g'];
+
+    offset = 1;
+
+    for( var i = 0; i < model.coefficients.length ; i++ ) {
+      excel.set(0, 0, offset + i, coeffLabels[i] );
+      excel.set(0, 1, offset + i, model.coefficients[i] );
+    }
   }
 }
 // -- END Excel Export

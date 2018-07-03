@@ -16,9 +16,9 @@
 %=====================================================================
 function SaveJSON( data , filepath )
   jsonFile = fopen(filepath, 'w');
-  jsonString = savejson('',data);
+  jsonString = savejson('', StructRowsToCols(data) );
   jsonString = strrep(jsonString, "\t", "");
   jsonString = strrep(jsonString, "\n", "");
   fprintf(jsonFile, "var data='%s';", jsonString);
   fclose(jsonFile);
-endfunction
+end

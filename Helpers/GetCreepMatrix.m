@@ -38,4 +38,4 @@ function creepMatrix = GetCreepMatrix( creepData )
   else
     printf('Invalid creep data. Dimension mismatch\n');
   end
-endfunction
+end

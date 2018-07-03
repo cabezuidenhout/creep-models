@@ -14,14 +14,9 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function constT = ConstTMansonHaferd( mhModel, T, minStress = 10, maxStress = 250, n=200)
-  constT.T = T;
-  constT.stress = linspace( minStress, maxStress, n)';
-  constT.tr = zeros( length(constT.stress), length(T));
-
-  for i=1:length(T)
-    constT.tr(:,i) = PredictMansonHaferd( mhModel, ConvTemp(T(i),'c','k'), constT.stress);
-  end
-
-  constT.stress = constT.stress';
-endfunction
+function model = ModernModel( modelName, creepData )
+  model.material = creepData.material;
+  model.name = modelName;
+  creepMatrix = GetCreepMatrix( creepData );
+  model.coefficients = GetModernCoefficients( modelName, creepMatrix );
+end

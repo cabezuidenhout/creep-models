@@ -39,4 +39,4 @@ function errors = Errors( predicted, actual )
   else
     printf('Perdicted and Actual must have same size\n');
   end
-endfunction
+end

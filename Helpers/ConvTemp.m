@@ -14,18 +14,27 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function convertedValues = ConvTemp( valuesToConvert , inputTemperatureUnit, outputTemperatureUnit )
-  inputTemperatureUnit = tolower( inputTemperatureUnit );
-  outputTemperatureUnit = tolower( outputTemperatureUnit );
-
-  if( abs( inputTemperatureUnit - outputTemperatureUnit ) == 8 )
-    if( inputTemperatureUnit == 'k' )
-      convertedValues = valuesToConvert - 273.15;
-    elseif( inputTemperatureUnit == 'c' )
-      convertedValues = valuesToConvert + 273.15;
-    end
+function fit = FitIsoStress( isoData, kelvin = false, invertTemp = false )
+  fit = struct;
+  
+  if( kelvin )
+    T = ToK( isoData.TData );
   else
-    printf('!!! Invalid input or output temperature unit\n');
-  endif
+    T = isoData.TData;
+  end
 
-endfunction
+  if( invertTemp )
+    T = 1./T;
+  end
+
+  X = nOrderX( T , 1);
+  y = log10( isoData.trData );
+
+  isoLine = FitRegression( X, y );
+
+  fit.m = isoLine(2);
+  fit.c = isoLine(1);
+  fit.T = [ min(T) ; max(T) ];
+  fit.logtr = PredictRegression( isoLine , nOrderX( fit.T, 1) ); 
+  fit.tr = 10.^fit.logtr; 
+end

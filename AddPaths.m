@@ -1,7 +1,8 @@
-addpath('Data');
+addpath('CLI');
+addpath('#Data');
 addpath('DisplayCreepData');
 addpath('Helpers');
+addpath('IsoStress');
 addpath('jsonlab');
-addpath('DisplayIsoStressData');
+addpath('ModernModels');
 addpath('Regression');
-addpath('MansonHaferd');

@@ -23,4 +23,4 @@ function result = YoN( userPrompt )
   end
 
   result = strcmp( response, 'yes' );
-endfunction
+end

@@ -32,4 +32,4 @@ function X = nOrderX( x, n)
   else
     printf('Column or row vector expected. %dx%d Matrix received\n', size(x,1), size(x,2) );
   end
-endfunction
+end

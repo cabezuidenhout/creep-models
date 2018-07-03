@@ -19,4 +19,4 @@ function R = RSquare( predicted, actual )
   SSTot = sum( (actual - yBar).^2 );
   SSRes = sum( (actual - predicted).^2 );
   R = 1 - (SSRes/SSTot);
-endfunction
+end

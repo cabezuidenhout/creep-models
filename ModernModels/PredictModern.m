@@ -14,7 +14,11 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function tr = PredictMansonHaferd( mhModel, T, stress )
-  tr = ( T - mhModel.Ta).*PredictRegression( mhModel.masterCurve.coefficients, nOrderX( log10(stress), 4 )) + mhModel.logta;
-  tr = 10.^tr; 
-endfunction
+function tr = PredictModern( model, T, s )
+  tr = 0;
+
+  X = GetModernX( model.name , T, s);
+
+  tr = PredictRegression( model.coefficients, X);
+  tr = 10.^tr;
+end

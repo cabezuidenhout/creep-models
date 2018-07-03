@@ -14,14 +14,18 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function constT = ConstStressMansonHaferd( mhModel, stress, minT = 400, maxT = 750, n=200)
-  constT.stress = stress;
-  constT.T = linspace( minT, maxT, n)';
-  constT.tr = zeros( length(constT.T), length(constT.stress));
-
-  for i=1:length(stress)
-    constT.tr(:,i) = PredictMansonHaferd( mhModel, ConvTemp(constT.T,'c','k'), stress(i));
+function p = GetParameterFromIsoStress( modelName , isoStressData )
+  if( strcmp( modelName, 'Manson-Haferd') )
+    p = isoStressData.mK;
+  elseif( strcmp( modelName, 'Goldhoff-Sherby') )
+    p = isoStressData.mKInverse;
+  elseif( strcmp( modelName, 'Larson-Miller') )
+    p = isoStressData.mKInverse;
+  elseif( strcmp( modelName, 'Orr-Sherby-Dorn') )
+    p = isoStressData.cKInverse;
+  elseif( strcmp( modelName, 'Manson-Succop') )
+    p = isoStressData.cK;
+  else
+    printf('! Unknown model : GetParameterFromIsoStress\n');
   end
-
-  constT.stress = constT.stress';
-endfunction
+end

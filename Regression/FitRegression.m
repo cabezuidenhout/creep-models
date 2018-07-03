@@ -16,4 +16,4 @@
 %=====================================================================
 function theta = FitRegression(X,y)
   theta = pinv(X'*X)*X'*y;
-endfunction
+end
