@@ -1,4 +1,3 @@
-addpath('ClassicalModels');
 addpath('CLI');
 addpath('#Data');
 addpath('DisplayCreepData');

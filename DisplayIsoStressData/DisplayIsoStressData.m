@@ -14,9 +14,10 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function model = ModernModel( modelName, creepData )
-  model.material = creepData.material;
-  model.name = modelName;
-  creepMatrix = GetCreepMatrix( creepData );
-  model.coefficients = GetModernCoefficients( modelName, creepMatrix );
+function DisplayIsoStressData( isoStressData ) 
+  jsonFilePath = GetAbsolutePath('DisplayIsoStressData.m');
+  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
+
+  SaveJSON( isoStressData, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayIsoStressData.m'), '/template/index.html'));
 end
