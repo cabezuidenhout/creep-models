@@ -14,12 +14,10 @@
 % You should have received a copy of the GNU General Public License
 % along with Creep Models.  If not, see <http://www.gnu.org/licenses/>.
 %=====================================================================
-function testResult = ModernTrTest( model, creepData )
-  creepMatrix = GetCreepMatrix( creepData );
+function DisplayIsoStress( isoStressData ) 
+  jsonFilePath = GetAbsolutePath('DisplayIsoStress.m');
+  jsonFilePath = strcat( jsonFilePath, '/template/data.js');
 
-  testResult.T = creepMatrix.T;
-  testResult.stress = creepMatrix.stress;
-  testResult.trActual = creepMatrix.tr;
-  testResult.trPredicted = PredictModern( model, ToK(testResult.T), testResult.stress );
-  testResult.errors = Errors(testResult.trPredicted, testResult.trActual );
+  SaveJSON( isoStressData, jsonFilePath);
+  open( strcat(GetAbsolutePath('DisplayIsoStress.m'), '/template/index.html'));
 end

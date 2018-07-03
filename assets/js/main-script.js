@@ -11,7 +11,7 @@ Math.log10 = Math.log10 || function (x) {
 };
 
 // -- Colors
-var colors = ["#2a5788", 
+var colors = ["#51bcda", 
 "#f96332", 
 "#9b59b6", 
 "#2ecc71", 
@@ -240,18 +240,16 @@ function plotIsoStress( graphElement, isoStressData, chartTitle ) {
     var x = [];
     var y = [];
     
-    var currentStress = isoStressData.stressSorted[s].toFixed(2);
-    
-    if( isoStressData.TData[currentStress] == undefined ) {
-      console.error("Invalid Key : " + s.toFixed(2) );
-    }
+    var currentStress = isoStressData.stressSorted[s].toFixed(2);    
+
+    var isoStress = isoStressData[currentStress];
 
     var currentColor = getColor(s);
 
     //Plot Data Points
-    for( var i = 0; i < isoStressData.TData[currentStress].length; i++) {
-      x.push( isoStressData.TData[currentStress][i]);
-      y.push( Math.log10(isoStressData.trData[currentStress][i]) );
+    for( var i = 0; i < isoStress.trData.length; i++) {
+      x.push( isoStress.TData[i] );
+      y.push( isoStress.trData[i] );
     }
 
     var trace = {
@@ -268,8 +266,8 @@ function plotIsoStress( graphElement, isoStressData, chartTitle ) {
 
     //Plot Fit
     trace = {
-      x: isoStressData.fit.T[currentStress],
-      y: isoStressData.fit.tr[currentStress],
+      x: isoStress.fit.T,
+      y: isoStress.fit.tr,
       mode: 'lines',
       name: currentStress + 'MPa Fit',
       legendgroup: s,
@@ -285,7 +283,8 @@ function plotIsoStress( graphElement, isoStressData, chartTitle ) {
       title: 'Temperature (°C)'
     },
     yaxis: {
-      title: 'log(t) (h)'
+      title: 'Time to Rupture (h)',
+      type: 'log'
     }
   };
 
@@ -304,16 +303,14 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
     var y = [];
 
     var currentStress = isoStressData.stressSorted[s].toFixed(2);
-    
-    if( isoStressData.TData[currentStress] == undefined ) {
-      console.error("Invalid Key : " + s.toFixed(2) );
-    }
+
+    var isoStress = isoStressData[currentStress];
 
     var currentColor = getColor(s);
 
-    for( var i = 0; i < isoStressData.TData[currentStress].length; i++) {
-      x.push( 1/isoStressData.TData[currentStress][i]);
-      y.push( Math.log10(isoStressData.trData[currentStress][i]) );
+    for( var i = 0; i < isoStress.TData.length; i++) {
+      x.push( 1/isoStress.TData[i]);
+      y.push( isoStress.trData[i] );
     }
 
     //var currentMarker = Plotly.PlotSchema.get().traces.scatter.attributes.marker.symbol.values[ 5+s*8 ];
@@ -335,8 +332,8 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
     data.push(trace);  
 
     trace = {
-      x: isoStressData.fitInverse.T[currentStress],
-      y: isoStressData.fitInverse.tr[currentStress],
+      x: isoStress.fitInverse.T,
+      y: isoStress.fitInverse.tr,
       mode: 'lines',
       name: currentStress + 'MPa Fit',
       legendgroup: s,
@@ -354,7 +351,8 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
       title: '1/Temperature (1/°C)'
     },
     yaxis: {
-      title: 'log(t) (h)'
+      title: 'Time to Rupture (h)',
+      type: 'log'
     }
   };
 
@@ -371,9 +369,9 @@ function showMasterCurveTable(tableElement, masterCurveData) {
     var body = tableElement.createTBody();
     var bodyRow = body.insertRow();
 
-    for (var i = 65; i < 65 + coefficients.length; i++) {
+    for (var i = 65; i < 65 + masterCurveData.coefficients.length; i++) {
       headRow.appendChild(createHeadCell(String.fromCharCode(i)));
-      bodyRow.appendChild(createBodyCell(coefficients[i - 65]));
+      bodyRow.appendChild(createBodyCell(masterCurveData.coefficients[i - 65]));
     }
   } else {
     console.error('Cannot populate master curve table : Coefficients undefined');
@@ -391,22 +389,32 @@ function plotMasterCurve(graphElement, masterCurveData, title ) {
   var y = [];
   var xFit = [];
   var yFit = [];
+  var xExtended = [];
+  var yExtended = [];
 
   for (var i = 0; i < masterCurveData.trainData.p.length; i++) {
     x.push(masterCurveData.trainData.stress[i]);
     y.push(masterCurveData.trainData.p[i]);
   }
 
-  for (var _i = 0; _i < masterCurveData.testData.p.length; _i++) {
-    xFit.push(masterCurveData.testData.stress[_i]);
-    yFit.push(masterCurveData.testData.p[_i]);
+  for (var j = 0; j < masterCurveData.testData.p.length; j++) {
+    xFit.push(masterCurveData.testData.stress[j]);
+    yFit.push(masterCurveData.testData.p[j]);
+  }
+
+  for( var k = 0; k < masterCurveData.testDataExtended.p.length ; k++) {
+    xExtended.push(masterCurveData.testDataExtended.stress[k]);
+    yExtended.push(masterCurveData.testDataExtended.p[k]);
   }
 
   var trace = {
     x: x,
     y: y,
     mode: 'markers',
-    name: 'Parameters'
+    name: 'Train Parameters',    
+    line: { 
+      color: getColor(0)
+    }
   };
 
   data.push(trace);
@@ -435,6 +443,31 @@ function plotMasterCurve(graphElement, masterCurveData, title ) {
   };
 
   data.push(trace);
+
+  if( masterCurveData.allParameters != undefined ) {
+    var xAll = [];
+    var yAll = [];
+
+    for( var s = 0; s < masterCurveData.allParameters.length ; s++) {
+      xAll.push( masterCurveData.allStress[s] );
+      yAll.push( masterCurveData.allParameters[s] );
+    }
+
+    trace = {
+      x: xAll,
+      y: yAll,
+      mode: 'markers',
+      name: 'All Parameters',
+      line: { 
+        color: "#F80210"
+      },
+      marker: {
+        symbol: 'x-thin-open'
+      }
+    };
+
+    data.push(trace);
+  }
 
   var layout = {
     title: title,
@@ -608,14 +641,17 @@ function plotConstantTemperature(graphElement, constT, title) {
 
   for (var i = 0; i < constT.stress.length; i++) {
     x.push(constT.stress[i]);
-    y.push(constT.tr[i][0]);
+    y.push(constT.tr[i]); //TODO Fix this
   }
 
   var trace = {
     x: x,
     y: y,
     mode: 'line',
-    name: constT.T + ' °C'
+    name: constT.T + ' °C',
+    line: { 
+      color: getColor(0)
+    }
   };
 
   data.push(trace);
@@ -628,9 +664,6 @@ function plotConstantTemperature(graphElement, constT, title) {
     yaxis: {
       type: 'log',
       title: 'Time to Rupture (h)'
-    },
-    line: { 
-      color: getColor(0)
     },
     showlegend: true
   };
@@ -649,15 +682,18 @@ function plotConstantStress(graphElement, constStress, title) {
   var y = [];
 
   for (var i = 0; i < constStress.T.length; i++) {
-    x.push(constStress.T[i][0]);
-    y.push(constStress.tr[i][0]);
+    x.push(constStress.T[i]);
+    y.push(constStress.tr[i]);
   }
 
   var trace = {
     x: x,
     y: y,
     mode: 'line',
-    name: constStress.stress + ' MPa'
+    name: constStress.stress + ' MPa',
+    line: { 
+      color: getColor(0)
+    }
   };
 
   data.push(trace);
@@ -670,9 +706,6 @@ function plotConstantStress(graphElement, constStress, title) {
     yaxis: {
       title: 'Time to Rupture (h)'
     },
-    line: { 
-      color: getColor(0)
-    },
     showlegend: true
   };
 
@@ -683,12 +716,12 @@ function plotConstantStress(graphElement, constStress, title) {
 // -- Excel Export
 function excelAddStressTest( excel, stressTest, currentSheet , headStyle, bodyStyle ) {
   excel.addSheet('Stress Test');
-  excel.set(1, 0, 0, 'tr (h)', headStyle);
-  excel.set(1, 1, 0, 'Temperature (°C)', headStyle);
-  excel.set(1, 2, 0, 'Stress (MPa)', headStyle);
-  excel.set(1, 3, 0, 'Stress Predicted (MPa)', headStyle);
-  excel.set(1, 4, 0, 'Error (h)', headStyle);
-  excel.set(1, 5, 0, '|Error| (%)', headStyle);
+  excel.set(currentSheet+1, 0, 0, 'tr (h)', headStyle);
+  excel.set(currentSheet+1, 1, 0, 'Temperature (°C)', headStyle);
+  excel.set(currentSheet+1, 2, 0, 'Stress (MPa)', headStyle);
+  excel.set(currentSheet+1, 3, 0, 'Stress Predicted (MPa)', headStyle);
+  excel.set(currentSheet+1, 4, 0, 'Error (h)', headStyle);
+  excel.set(currentSheet+1, 5, 0, '|Error| (%)', headStyle);
 
   var nTr = stressTest.tr.length;
   var nT = stressTest.T.length;
@@ -707,12 +740,12 @@ function excelAddStressTest( excel, stressTest, currentSheet , headStyle, bodySt
 
 function excelAddTrTest( excel, trTest, currentSheet, headStyle, bodyStyle ) {
   excel.addSheet('tr Test', headStyle);
-  excel.set(2, 0, 0, 'Temperature (°C)', headStyle);
-  excel.set(2, 1, 0, 'Stress (MPa)', headStyle);
-  excel.set(2, 2, 0, 'tr (h)', headStyle);
-  excel.set(2, 3, 0, 'tr Predicted (h)', headStyle);
-  excel.set(2, 4, 0, 'Error (h)', headStyle);
-  excel.set(2, 5, 0, '|Error| (%)', headStyle);
+  excel.set(currentSheet+1, 0, 0, 'Temperature (°C)', headStyle);
+  excel.set(currentSheet+1, 1, 0, 'Stress (MPa)', headStyle);
+  excel.set(currentSheet+1, 2, 0, 'tr (h)', headStyle);
+  excel.set(currentSheet+1, 3, 0, 'tr Predicted (h)', headStyle);
+  excel.set(currentSheet+1, 4, 0, 'Error (h)', headStyle);
+  excel.set(currentSheet+1, 5, 0, '|Error| (%)', headStyle);
 
   for (var k = 0; k < trTest.T.length; k++) {
     excel.set(currentSheet+1, 0, 1 + k, trTest.T[k], bodyStyle);

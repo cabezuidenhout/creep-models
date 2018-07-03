@@ -31,11 +31,19 @@ AddPaths;
 started = false;
 
 while( !started )
+  userInput = input("Type 'model' to begin : ", 's');
 
   if( strcmp(tolower(userInput), 'warranty' ) )
     printf('--------------------------------------------------------------------\n');
     printf("Creep Models v%.1f\n", cmVersion);
     printf("Copyright (C) 2018 CA Bezuidenhout.\n\n");
+
+    printf("Creep Models is free software; you can redistribute it and/or modify\n");
+    printf("it under the terms of the GNU General Public License as published by\n");
+    printf("the Free Software Foundation; either version 3 of the License, or\n");
+    printf("(at your option) any later version.\n\n");
+
+    printf("Creep Models is distributed in the hope that it will be useful,\n");
     printf("but WITHOUT ANY WARRANTY; without even the implied warranty of\n");
     printf("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n");
     printf("GNU General Public License for more details.\n\n");
