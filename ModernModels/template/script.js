@@ -71,7 +71,7 @@ function exportToExcel() {
   excel.set(0, 0, 1, 'Clm', defaultStyle);
   excel.set(0, 1, 1, lmInfo.Clm, defaultStyle);
 
-  excel.set(0, 0, 2, 'Mastercuve Coefficients', headStyle);
+  excel.set(0, 0, 2, 'MasterCurve Coefficients', headStyle);
   excel.set(0, 0, 3, 'A', defaultStyle);
   excel.set(0, 0, 4, 'B', defaultStyle);
   excel.set(0, 0, 5, 'C', defaultStyle);

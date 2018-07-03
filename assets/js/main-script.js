@@ -361,7 +361,7 @@ function plotIsoStressInverse( graphElement, isoStressData, chartTitle ) {
 // -- END Iso-Stress Plots
 
 // -- Master Curve
-function showMasterCuveTable(tableElement, masterCurveData) {
+function showMasterCurveTable(tableElement, masterCurveData) {
   if (masterCurveData.coefficients) {
     var head = createHead(tableElement);
     var headRow = head.insertRow();
@@ -423,7 +423,7 @@ function plotMasterCurve(graphElement, masterCurveData, title ) {
     x: xFit,
     y: yFit,
     mode: 'line',
-    name: 'Mastercuve Fit',
+    name: 'MasterCurve Fit',
     line: { 
       color: getColor(1)
     }
@@ -435,7 +435,7 @@ function plotMasterCurve(graphElement, masterCurveData, title ) {
     x: xExtended,
     y: yExtended,
     mode: 'line',
-    name: 'Mastercuve',
+    name: 'MasterCurve',
     line: { 
       color: getColor(2),
       dash: 'dot'
@@ -797,7 +797,7 @@ function excelAddModel( excel, model, headStyle, bodyStyle) {
   if( model.masterCurve !== undefined ) {
     var coeffLabels = [ 'A','B','C','D','E' ];
 
-    excel.set(0,0,offset++, 'Mastercuve Coefficients', headStyle);
+    excel.set(0,0,offset++, 'MasterCurve Coefficients', headStyle);
 
     for( var i = 0; i < model.masterCurve.coefficients.length; i++ ) {
       excel.set(0,0,offset + i, coeffLabels[i], bodyStyle );

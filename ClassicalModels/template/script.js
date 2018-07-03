@@ -6,7 +6,7 @@ document.getElementById('modelName').innerText = modelData.name;
 
 showParameterEquation( document.getElementById('parameterEq') , modelData.name );
 showConstantsTable( document.getElementById('constantsTable') , modelData.name , modelData.constants );
-showMasterCuveTable( document.getElementById('mastercurveTable') , modelData.masterCurve ); 
+showMasterCurveTable( document.getElementById('mastercurveTable') , modelData.masterCurve ); 
 
 if( modelData.constants.TInverted ) {
   plotIsoStressInverse(document.getElementById('isoStressPlot'), modelData.isoStress, modelData.material + " Iso-Stress (±" + modelData.isoStress.tolerance + "MPa)");  
@@ -14,7 +14,7 @@ if( modelData.constants.TInverted ) {
   plotIsoStress(document.getElementById('isoStressPlot'), modelData.isoStress, modelData.material + " Iso-Stress (±" + modelData.isoStress.tolerance + "MPa)");
 }
 
-plotMasterCurve(document.getElementById('masterCurvePlot'), modelData.masterCurve, modelData.material + " " + modelData.name + " Mastercuve");
+plotMasterCurve(document.getElementById('masterCurvePlot'), modelData.masterCurve, modelData.material + " " + modelData.name + " MasterCurve");
 
 showStressTestTable(document.getElementById('stressTest'), modelData.stressTest, document.getElementById('stressTestWarning'));
 showTestSummaryTable(document.getElementById('stressTestSummary'), modelData.stressTest, 'MPa');
@@ -88,7 +88,7 @@ function exportToExcel() {
   excel.set(0, 0, 1, 'Clm', defaultStyle);
   excel.set(0, 1, 1, lmInfo.Clm, defaultStyle);
 
-  excel.set(0, 0, 2, 'Mastercuve Coefficients', headStyle);
+  excel.set(0, 0, 2, 'MasterCurve Coefficients', headStyle);
   excel.set(0, 0, 3, 'A', defaultStyle);
   excel.set(0, 0, 4, 'B', defaultStyle);
   excel.set(0, 0, 5, 'C', defaultStyle);
