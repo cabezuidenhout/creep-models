@@ -804,10 +804,12 @@ function excelAddModel( excel, model, headStyle, bodyStyle) {
       excel.set(0,1,offset + i, model.masterCurve.coefficients[i], bodyStyle );
     }
 
+    offset += coeffLabels.length;
+
     if( model.masterCurve.allParameters === undefined ) {
-      excel.set(0,0,offset + coeffLabels.length, 'Fitted to whole dataset', headStyle);
+      excel.set(0,0,offset, 'Fitted to whole dataset', headStyle);
     } else {
-      excel.set(0,0,offset + coeffLabels.length, 'Fitted only to iso-stress parameters', headStyle );
+      excel.set(0,0,offset, 'Fitted only to iso-stress parameters', headStyle );
     }
   }
 
@@ -820,6 +822,67 @@ function excelAddModel( excel, model, headStyle, bodyStyle) {
       excel.set(0, 0, offset + i, coeffLabels[i] );
       excel.set(0, 1, offset + i, model.coefficients[i] );
     }
+
+    offset += model.coefficients.length-1;
+  }
+  
+  var modelEquations = { 
+    'Manson-Haferd': {
+      p: '=$B$5+$B$6*(LOG10(A14))+$B$7*(LOG10(A14))^2+$B$8*(LOG10(A14))^3+$B$9*(LOG10(A14))^4',
+      tr: '=10^(D14*(C14-$B$3)+$B$2)'
+    },
+    'Goldhoff-Sherby': {
+      p: '=$B$5+$B$6*(LOG10(A14))+$B$7*(LOG10(A14))^2+$B$8*(LOG10(A14))^3+$B$9*(LOG10(A14))^4',
+      tr: '=10^(D14*(1/C14-$B$3)+$B$2)'
+    },
+    'Larson-Miller': {
+      p: '=$B$4+$B$5*(LOG10(A13))+$B$6*(LOG10(A13))^2+$B$7*(LOG10(A13))^3+$B$8*(LOG10(A13))^4',
+      tr: '=10^(D13/C13-$B$2)'
+    },
+    'Orr-Sherby-Dorn': {
+      p: '=$B$4+$B$5*(LOG10(A13))+$B$6*(LOG10(A13))^2+$B$7*(LOG10(A13))^3+$B$8*(LOG10(A13))^4',
+      tr: '=10^(D13+$B$2/C13)'
+    },
+    'Manson-Succop': {
+      p: '=$B$4+$B$5*(LOG10(A13))+$B$6*(LOG10(A13))^2+$B$7*(LOG10(A13))^3+$B$8*(LOG10(A13))^4',
+      tr: '=10^(D13-$B$2*C13)'
+    },
+    'Minimum Commitment': {
+      tr: '=10^($B$2+$B$3*LOG10(A11)+$B$4*A11+$B$5*(A11^2)+$B$6*C11+$B$7/C11)'
+    },
+    'Soviet A': {
+      tr: '=10^($B$2+$B$3*LOG10(C10)+$B$4*LOG10(A10)+$B$5/C10+$B$6*(A10/C10))'
+    },
+    'Soviet B': {
+      tr: '=10^($B$2+$B$3*LOG10(C10)+$B$4*(LOG10(A10)/C10)+$B$5/C10+$B$6*(A10/C10))'
+    }
+  }
+
+  var calculatorLabels;
+  
+  if( model.coefficients === undefined)
+    calculatorLabels = ['Stress (MPa)', 'Temperature (degC)', 'Temperature (K)', 'P(stress)', 'tr'];
+  else
+    calculatorLabels = ['Stress (MPa)', 'Temperature (degC)', 'Temperature (K)', 'tr'];
+
+  offset += 2;
+  excel.set(0, 0, offset++, 'Calculator', headStyle);
+
+  for (var i = 0; i < calculatorLabels.length; i++) {
+    excel.set(0, i, offset, calculatorLabels[i], bodyStyle);
+  }
+
+  offset++;
+
+  excel.set(0,0,offset, "0" , bodyStyle );
+  excel.set(0,1,offset, "0" , bodyStyle );
+  excel.set(0,2,offset, "=B" + (offset+1) + "+273.15" , bodyStyle );
+
+  if( model.coefficients === undefined ) {
+    excel.set(0,3,offset, modelEquations[model.name].p , bodyStyle);
+    excel.set(0,4,offset, modelEquations[model.name].tr , bodyStyle);
+  } else {
+    excel.set(0,3,offset, modelEquations[model.name].tr , bodyStyle);
   }
 }
 // -- END Excel Export
