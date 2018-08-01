@@ -23,7 +23,7 @@ To quantify creep and creep fracture in high temperature applications, a variety
 * Orr-Sherby-Dorn
 
 **Modern :**
-* Minimum Commitmment
+* Minimum Commitment
 * Soviet
 
 # 2. Requirements
