@@ -16,15 +16,15 @@ To quantify creep and creep fracture in high temperature applications, a variety
 
 ## 1.1 Models Implemented
 **Traditional :**
-* Goldhoff-Sherby
-* Larson-Miller
-* Manson-Haferd
-* Manson-Succop
-* Orr-Sherby-Dorn
+- [Goldhoff-Sherby](https://github.com/cabezuidenhout/creep-models/wiki/Goldhoff-Sherby)
+- [Larson-Miller](https://github.com/cabezuidenhout/creep-models/wiki/Larson-Miller)
+- [Manson-Haferd](https://github.com/cabezuidenhout/creep-models/wiki/Manson-Haferd)
+- [Manson-Succop](https://github.com/cabezuidenhout/creep-models/wiki/Manson-Succop)
+- [Orr-Sherby-Dorn](https://github.com/cabezuidenhout/creep-models/wiki/Orr-Sherby-Dorn)
 
 **Modern :**
-* Minimum Commitment
-* Soviet
+- [Soviet](https://github.com/cabezuidenhout/creep-models/wiki/Soviet)
+- [Minimum Commitment](https://github.com/cabezuidenhout/creep-models/wiki/Minimum-Commitment)
 
 # 2. Requirements
 * A web browser
