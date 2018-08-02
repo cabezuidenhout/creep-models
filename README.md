@@ -28,7 +28,7 @@ To quantify creep and creep fracture in high temperature applications, a variety
 
 # 2. Requirements
 * A web browser
-* Octave
+* [Octave](https://www.gnu.org/software/octave/)
   
 # 3. Installation
 
