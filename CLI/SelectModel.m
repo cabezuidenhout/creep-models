@@ -6,7 +6,7 @@ modelSelected = 0;
 while( !validModelSelected )
   printf("Select a Creep Model :\n");
   printf("1 - Manson-Haferd\n");
-  printf("2 - Goldhoff-Sherby")
+  printf("2 - Goldhoff-Sherby\n")
   printf("3 - Larson-Miller\n");
   printf("4 - Orr-Sherby-Dorn\n");
   printf("5 - Manson-Succop\n");
